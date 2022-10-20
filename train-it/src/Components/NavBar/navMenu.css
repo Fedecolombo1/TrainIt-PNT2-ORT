@@ -4,7 +4,7 @@
   position: relative;
   left: 10px;
   z-index: 1;
-  
+  left: 16px;
   -webkit-user-select: none;
   user-select: none;
 }

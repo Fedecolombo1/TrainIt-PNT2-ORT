@@ -2,7 +2,7 @@ import "./NavBar.css";
 import './navMenu.css'
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useEffect } from "react";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const NavBar = () => {
 
@@ -29,38 +29,13 @@ const NavBar = () => {
               <span></span>
 
               <ul className='col-12 row' id="menu">
-                <NavLink
-                  to="/"
-                >
-                  <li className='col-12'>Home</li>
-                </NavLink>
-                <NavLink
-                  to="/category/cursos"
-                >
-                  <li className='col-12'>Cursos</li>
-                </NavLink>
-                <NavLink
-                  to="/category/recursos"
-                >
-                  <li className='col-12'>Recursos</li>
-                </NavLink>
-                <NavLink
-                  to="/cart"
-                >
-                  <li className='col-12'>Carrito</li>
-                </NavLink>
+                
               </ul>
             </div>
           </nav>
         </nav>
 
-        <NavLink
-          activeClassName="activeNav"
-          className="col-4 row align nombre"
-          to="/"
-        >
-          Escala
-        </NavLink>
+        
 
       </header>
 
