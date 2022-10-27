@@ -4,7 +4,7 @@ import CustomInput from '../Components/TextInput';
 import CustomButton from '../Components/CustomButton';
 import { useState } from 'react';
 
-function CreateAlumno() {
+function CreateClaseScreen() {
     const [name, setName] = useState('')
     const [surname, setSurname] = useState('')
 
@@ -16,15 +16,19 @@ function CreateAlumno() {
             <CustomInput placeholder="nombre" value={name} setValue={setName} secureTextEntry={false}/>
         </View>
         <View style={style.formInput}>
-            <Text>Apellido</Text>
-            <CustomInput placeholder="apellido" value={surname} setValue={setSurname} secureTextEntry={false}/>
+            <Text>Ciudad</Text>
+            <CustomInput placeholder="ciudad" value={surname} setValue={setSurname} secureTextEntry={false}/>
+        </View>
+        <View style={style.formInput}>
+            <Text>Horario</Text>
+            <CustomInput placeholder="horario" value={surname} setValue={setSurname} secureTextEntry={false}/>
         </View>
         <CustomButton text="Agregar" bgColor="#587f8d" />
     </View>
   )
 }
 
-export default CreateAlumno
+export default CreateClaseScreen
 
 const style = StyleSheet.create({
     container:{
@@ -38,6 +42,6 @@ const style = StyleSheet.create({
         marginBottom: 40
     },
     formInput: {
-        marginTop: 10
+        marginBottom: 10
     }
   });

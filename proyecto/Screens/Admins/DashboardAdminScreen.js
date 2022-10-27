@@ -11,14 +11,27 @@ function DashboardAdminScreen() {
                 <Text style={style.title}>Bienvenido, Nacho!</Text>
             </View>
             <View style={style.boxEstadisticas}>
-                <View style={style.cardEstadisticas}>
-                    <Text style={style.titleCard}>21</Text>
+                <View style={style.row}>
+                    <View style={style.boxEstadistica}>
+                        <Text style={style.titleEstadistica}>Feedback Pendiente</Text>
+                        <View style={style.cardEstadisticas}>
+                            <Text style={style.titleCard}>21</Text>
+                        </View>
+                    </View>
+                    <View style={style.boxEstadistica}>
+                        <Text style={style.titleEstadistica}>Clases realizadas</Text>
+                        <View style={style.cardEstadisticas}>
+                            <Text style={style.titleCard}>10</Text>
+                        </View>
+                    </View>
                 </View>
-                <View style={style.cardEstadisticas}>
-                    <Text style={style.titleCard}>10</Text>
-                </View>
-                <View style={style.cardEstadisticas}>
-                    <Text style={style.titleCard}>48</Text>
+                <View style={style.row}>
+                    <View style={style.boxEstadistica}>
+                        <Text style={style.titleEstadistica}>Porcentaje Asistencias</Text>
+                        <View style={style.cardEstadisticas}>
+                            <Text style={style.titleCard}>48</Text>
+                        </View>
+                    </View>
                 </View>
             </View>
             <View style={style.cardBox}>
@@ -38,6 +51,7 @@ export default DashboardAdminScreen
 
 const style = StyleSheet.create({
     root: {
+        marginTop: '15%',
         width:'100%',
         height:'100%',
         paddingHorizontal: '5%',
@@ -77,18 +91,26 @@ const style = StyleSheet.create({
         paddingRight: '5%'
     },
     boxEstadisticas:{
-        marginTop: '5%',
-        paddingTop: '5%',
-        width: '100%',
+        
+    },
+    boxEstadistica:{
+        alignItems:'center',
+        width: 100
+    },
+    titleEstadistica: {
+        textAlign: 'center',
+        paddingVertical: 10,
+    },
+    row: {
         display:'flex',
         flexDirection:'row',
-        justifyContent:'space-around',
+        justifyContent: 'space-around',
     },
     cardEstadisticas:{
         backgroundColor: '#5460f7',
         width: 100,
-        height: 80,
-        borderRadius: '10%',
+        height: 100,
+        borderRadius: '120%',
         justifyContent:'center',
     }
 });

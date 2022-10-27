@@ -1,8 +1,8 @@
 import { StyleSheet, Text, View, Pressable, Image } from 'react-native';
 import { useState } from 'react';
+import { Vibration } from 'react-native';
 
-
-export default function AlumnosAdminScreen() {
+export default function ClasesListScreen() {
 
     const [visible, setVisible] = useState('none')
 
@@ -13,9 +13,9 @@ export default function AlumnosAdminScreen() {
 
   return (
     <View style={styles.container}>
-        <Text style={styles.title}>Alumnos</Text>
+        <Text style={styles.title}>Clases</Text>
         <Pressable onPress={bntBorrar} style={styles.card}>
-            <Text style={styles.titleCard}>Leonardo Buezo</Text>
+            <Text style={styles.titleCard}>Entrenamiento Functional</Text>
             <Text style={styles.txtCard}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</Text>
         </Pressable>
 
@@ -24,7 +24,7 @@ export default function AlumnosAdminScreen() {
         </Pressable>
 
         <Pressable style={styles.card}>
-            <Text style={styles.titleCard}>Federico Colombo</Text>
+            <Text style={styles.titleCard}>Ciclismo</Text>
             <Text style={styles.txtCard}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</Text>
         </Pressable>
         <Pressable style={styles.agregarBox}>

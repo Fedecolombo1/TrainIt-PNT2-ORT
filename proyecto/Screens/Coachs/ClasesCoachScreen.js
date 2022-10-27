@@ -10,7 +10,7 @@ function ClasesCoachScreen() {
             <View style={style.header}>
                 <Text style={style.title}>Bienvenido, Nacho!</Text>
             </View>
-            <Text>Siguiente Clase</Text>
+            <Text style={style.subtitle}>Siguiente Clase</Text>
             <View style={style.cardBox}>
                 <Pressable style={style.card}>
                     <Text style={style.titleCard}>Clases</Text>
@@ -38,7 +38,7 @@ const style = StyleSheet.create({
     title: {
         width: '100%',
         textAlign:'start',
-        fontSize: '25px'
+        fontSize: 25
     },
     cardBox:{
         marginTop: '5%',
@@ -77,5 +77,9 @@ const style = StyleSheet.create({
         height: 80,
         borderRadius: '10%',
         justifyContent:'center',
+    },
+    subtitle:{
+        fontSize: 20,
+        textAlign: 'center'
     }
 });
