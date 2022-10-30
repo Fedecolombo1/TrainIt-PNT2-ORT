@@ -6,30 +6,30 @@ export default function Header() {
 
     const [visible, setVisible] = useState('none')
 
-    const bntBorrar = () => {
+    const showToggle = () => {
         visible=='none' ? setVisible('flex') : setVisible('none')
     }
 
   return (
     <>
         <View style={styles.container}>
-            <Pressable style={styles.menu}>
+            <Pressable onPress={showToggle} style={styles.menu}>
                 <Image 
                 style={styles.logoMenu}
                 source={{uri:'https://static.thenounproject.com/png/1600037-200.png'}}
                 />
             </Pressable>
             <View style={[styles.navMenu, visible=='none' ? {left: -450} : {left: 0}]}>
-                <Pressable style={styles.menu}>
+                <Pressable onPress={showToggle} style={styles.menu}>
                     <Image
                     style={styles.logoMenu}
                     source={{uri:'https://static.thenounproject.com/png/1600037-200.png'}}
                     />
-                    <View style={styles.ancordBox}>
+                </Pressable>
+                <View style={styles.ancordBox}>
                         <Text style={styles.ancord}>Coaches</Text>
                         <Text style={styles.ancord}>Alumnos</Text>
-                    </View>
-                </Pressable>
+                </View>
             </View>
         </View>
        
@@ -39,10 +39,10 @@ export default function Header() {
 
 const styles = StyleSheet.create({
     container:{
+        width: '100%',
+        height: '100%',
         marginTop: '10%',
         position: 'absolute',
-        height: '100%',
-        width: '100%',
         justifyContent:'center',
         zIndex: 2,
     },
@@ -51,8 +51,9 @@ const styles = StyleSheet.create({
         marginTop:0,
         padding: 10,
         position: 'absolute',
-        width: '100%',
-        height: '100%'
+        width: 10,
+        height: 10,
+        zIndex: 3
     },
     logoMenu:{
         width: 60,

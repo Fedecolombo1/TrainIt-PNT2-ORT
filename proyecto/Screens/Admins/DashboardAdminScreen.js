@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text, StyleSheet, Pressable } from 'react-native'
-import Header from '../Components/Header';
+import Header from '../../Components/Header';
 
 function DashboardAdminScreen() {
   return (

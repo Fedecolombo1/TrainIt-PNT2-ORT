@@ -7,6 +7,7 @@ import { useState } from 'react';
 function CreateClaseScreen() {
     const [name, setName] = useState('')
     const [surname, setSurname] = useState('')
+    const [horario, setHorario] = useState('')
 
   return (
     <View style={style.container}>
@@ -21,7 +22,7 @@ function CreateClaseScreen() {
         </View>
         <View style={style.formInput}>
             <Text>Horario</Text>
-            <CustomInput placeholder="horario" value={surname} setValue={setSurname} secureTextEntry={false}/>
+            <CustomInput placeholder="horario" value={horario} setValue={setHorario} secureTextEntry={false}/>
         </View>
         <CustomButton text="Agregar" bgColor="#587f8d" />
     </View>
