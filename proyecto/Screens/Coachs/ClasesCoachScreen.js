@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text, StyleSheet, Pressable } from 'react-native'
-import Header from '../Components/Header';
+import Header from '../../Components/Header';
 
 function ClasesCoachScreen() {
   return (
@@ -52,14 +52,14 @@ const style = StyleSheet.create({
     },
     card:{
         backgroundColor: '#2e5f71',
-        width: '45%',
-        height:'55%',
+        width: '25%',
+        height:'70%',
         borderRadius: '15%',
         justifyContent:'center',
     },
     titleCard:{
         color: 'white',
-        fontSize: '22px',
+        fontSize: '20px',
         textAlign:'center',
         paddingRight: '5%'
     },

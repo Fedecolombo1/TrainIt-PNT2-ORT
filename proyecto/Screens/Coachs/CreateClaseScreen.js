@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, StyleSheet, Pressable } from 'react-native'
-import CustomInput from '../Components/TextInput';
-import CustomButton from '../Components/CustomButton';
+import CustomInput from '../../Components/TextInput';
+import CustomButton from '../../Components/CustomButton';
 import { useState } from 'react';
 
 function CreateClaseScreen() {

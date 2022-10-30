@@ -1,30 +1,32 @@
 import { StatusBar } from 'expo-status-bar';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import AlumnosAdminScreen from './Screens/Admins/AlumnosAdminScreen';
-import ClasesCoachScreen from './Screens/ClasesCoachScreen';
-import ClasesListScreen from './Screens/ClasesListScreen';
-import CoachsAdminScreen from './Screens/CoachsAdminScreen';
-import CreateAlumno from './Screens/CreateAlumnoScreen';
-import CreateClaseScreen from './Screens/CreateClaseScreen';
-import DashboardAdminScreen from './Screens/Admins/DashboardAdminScreen';
-import HomeScreen from './Screens/HomeScreen';
-import LoginScreen from "./Screens/LoginScreen";
 
+//import AlumnosAdminScreen from './Screens/Admins/AlumnosAdminScreen';
+//import ClasesCoachScreen from './Screens/Coachs/ClasesCoachScreen';
+//import ClasesListScreen from './Screens/Coachs/ClasesListScreen';
+//import CoachsAdminScreen from './Screens/Admins/CoachsAdminScreen';
+//import CreateAlumno from './Screens/Admins/CreateAlumnoScreen';
+//import CreateClaseScreen from './Screens/Coachs/CreateClaseScreen';
+//import DashboardAdminScreen from './Screens/Admins/DashboardAdminScreen';
+//import ClassBrowser from './Screens/Class/ClassBrowser.js'
+//import LoginScreen from './Screens/Login/LoginScreen.js';
+//import HomeScreen from './Screens/HomeScreen.js';
 
 export default function App() {
   return (
+    
       <View style={styles.container}>
-       
-          {/* <LoginScreen/>
-          <HomeScreen />
-          <DashboardAdminScreen/>
-          <CoachsAdminScreen /> 
-          <CreateAlumno/>
-          <AlumnosAdminScreen/>
-          <ClasesCoachScreen/>
-          <ClasesListScreen/>
-          <CreateClaseScreen/>*/}
-          <ClasesListScreen/>
+
+       {//<ClassBrowser />
+        //<LoginScreen/>
+        //<HomeScreen />
+        //<CoachsAdminScreen /> 
+        //<CreateAlumno/>
+        //<AlumnosAdminScreen/>
+        //<ClasesCoachScreen/>
+        //<ClasesListScreen/>
+        //<CreateClaseScreen/>
+      }
        
     </View>
   );
