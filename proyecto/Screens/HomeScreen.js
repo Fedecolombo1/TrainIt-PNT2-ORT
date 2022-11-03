@@ -1,18 +1,19 @@
 import React from 'react'
-import { View, Text, StyleSheet, TextInput } from 'react-native'
+import { Button } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native'
 
-function HomeScreen() {
+function HomeScreen({navigation}) {
   return (
-    <View>
-        <View id="menuToggle">
-              <TextInput type="checkbox" />
-
-              <View></View>
-              <View></View>
-              <View></View>
-
-        </View>
-    </View>
+    <>
+      <Text>Estamos en el Home</Text>
+      <Button title="Login" onPress={() => navigation.navigate("Login")}/>
+      <Button title="CoachsAdmin" onPress={() => navigation.navigate("CoachsAdmin")}/>
+      <Button title="AlumnosAdminScreen" onPress={() => navigation.navigate("AlumnosAdminScreen")}/>
+      <Button title="ClasesCoachScreen" onPress={() => navigation.navigate("ClasesCoachScreen")}/>
+      <Button title="ClassBrowser" onPress={() => navigation.navigate("ClassBrowser")}/>
+      <Button title="CreateClaseScreen" onPress={() => navigation.navigate("CreateClaseScreen")}/>
+      <Button title="ClasesListScreen" onPress={() => navigation.navigate("ClasesListScreen")}/>
+    </>
   )
 }
 

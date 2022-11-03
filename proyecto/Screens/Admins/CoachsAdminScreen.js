@@ -2,23 +2,27 @@ import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import Card from '../../Components/Card/Index.js'
 import BtnMas from '../../Components/BtnMas/Index.js'
 import { useState, useEffect } from 'react';
+import { getCoaches } from '../../Services/coaches.js'
 
 export default function CoachsAdminScreen() {
 
-    const [data, setData] = useState('hola')
+    const [coaches, setCoaches] = useState([])
 
-    // useEffect(() => {
-    //     fetch('http://192.168.1.51:3000/coaches')
-    //     .then((response) => response.json())
-    //     .then((data) => setData(data));
-    // }, [])
+    useEffect(() => {
+        getCoaches()
+        .then((data) => setCoaches(data))
+    }, [])
 
   return (
     <View style={styles.container}>
         <Text style={styles.title}>Coaches</Text>
         <ScrollView showsVerticalScrollIndicator={false}>
-            {/* {data.map(coach => <Card key={coach._id} title={coach.nombre} text='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'/>)} */}
-            <Card title="{coach de api}" text='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'/>
+            {
+                coaches.length > 0 ?
+                coaches.map(coach => <Card key={coach._id} coach={coach}/>)
+                :
+                <Text>CARGANDO..</Text>
+            }
         </ScrollView>
 
         <BtnMas />

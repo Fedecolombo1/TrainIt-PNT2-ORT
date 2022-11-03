@@ -1,20 +1,22 @@
 import React from 'react'
 import { Pressable, Text, StyleSheet } from 'react-native'
 import { useState } from 'react'
+import { agregarCoach } from '../../Services/coaches.js'
 
-function Index({title, text}) {
+function Index({coach, title}) {
 
     const [visible, setVisible] = useState('none')
 
     const bntBorrar = () => {
         visible=='none' ? setVisible('flex') : setVisible('none')
+        
     }
 
   return (
     <>
         <Pressable onPress={bntBorrar} style={styles.card}>
-                <Text style={styles.titleCard}>{title}</Text>
-                <Text style={styles.txtCard}>{text}</Text>
+                {coach ? <Text style={styles.titleCard}>{coach.nombre}</Text> : <Text style={styles.titleCard}>{title}</Text>}
+                <Text style={styles.txtCard}>Descripcion hardcodeada</Text>
         </Pressable>
         <Pressable style={[styles.btnBorrar, visible=='none' ? {display: 'none'} : {display: 'flex'}]}>
             <Text style={styles.btnText}>Borrar</Text>
