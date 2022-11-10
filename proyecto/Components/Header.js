@@ -12,7 +12,7 @@ export default function Header() {
 
   return (
     <>
-        <View style={styles.container}>
+        <View style={[styles.container, visible=='none' ? {zIndex: -450} : {zIndex: 0}]}>
             <Pressable onPress={showToggle} style={styles.menu}>
                 <Image 
                 style={styles.logoMenu}
@@ -44,7 +44,6 @@ const styles = StyleSheet.create({
         marginTop: '10%',
         position: 'absolute',
         justifyContent:'center',
-        zIndex: 2,
     },
     menu:{
         top: 0,

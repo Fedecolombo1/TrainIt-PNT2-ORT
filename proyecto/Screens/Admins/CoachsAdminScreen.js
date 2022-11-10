@@ -1,16 +1,22 @@
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Pressable, Image } from 'react-native';
 import Card from '../../Components/Card/Index.js'
 import BtnMas from '../../Components/BtnMas/Index.js'
 import { useState, useEffect } from 'react';
-import { getCoaches } from '../../Services/coaches.js'
+import { getCoaches, getTest } from '../../Services/coaches.js'
 
-export default function CoachsAdminScreen() {
+export default function CoachsAdminScreen({navigation}) {
 
     const [coaches, setCoaches] = useState([])
 
     useEffect(() => {
         getCoaches()
-        .then((data) => setCoaches(data))
+         .then((data) => setCoaches(data))
+
+        // getTest().then((data) => {
+        //     console.log(data);
+        //     setCoaches(data)
+        // })
+
     }, [])
 
   return (
@@ -25,7 +31,12 @@ export default function CoachsAdminScreen() {
             }
         </ScrollView>
 
-        <BtnMas />
+        <Pressable style={styles.agregarBox} onPress={() => navigation.navigate("CreateCoach")}>
+            <Image
+            style={styles.masImg}
+            source={{uri:'https://cdn-icons-png.flaticon.com/512/32/32339.png'}}
+            />
+        </Pressable>
     </View>
   );
 }
@@ -39,5 +50,19 @@ const styles = StyleSheet.create({
     title:{
         textAlign:'start',
         fontSize: 30
+    },
+    agregarBox:{
+        position:'absolute',
+        bottom: 40,
+        right: 40,
+        backgroundColor:'#2d4b5a',
+        opacity: 0.75,
+        borderRadius: 30,
+        padding: 8,
+        zIndex: 50
+    },
+    masImg:{
+        width: 38,
+        height: 38,
     }
 });

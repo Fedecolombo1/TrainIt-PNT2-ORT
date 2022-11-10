@@ -5,7 +5,6 @@ import { View, Text, StyleSheet } from 'react-native'
 function HomeScreen({navigation}) {
   return (
     <>
-      <Text>Estamos en el Home</Text>
       <Button title="Login" onPress={() => navigation.navigate("Login")}/>
       <Button title="CoachsAdmin" onPress={() => navigation.navigate("CoachsAdmin")}/>
       <Button title="AlumnosAdminScreen" onPress={() => navigation.navigate("AlumnosAdminScreen")}/>

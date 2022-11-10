@@ -11,15 +11,17 @@ import DashboardAdminScreen from './Screens/Admins/DashboardAdminScreen';
 import ClassBrowser from './Screens/Class/ClassBrowser.js'
 import LoginScreen from './Screens/Login/LoginScreen.js';
 import HomeScreen from './Screens/HomeScreen.js';
+import CreateCoach from './Screens/Admins/CreateCoachScreen'
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-
+//import { createDrawerNavigator } from '@react-navigation/drawer';
 
 export default function App() {
 
   const StackNavigator = createNativeStackNavigator()
+  //const DrawerNavigator = createDrawerNavigator()
 
   return (
 
@@ -30,6 +32,7 @@ export default function App() {
           <StackNavigator.Screen name='Login' component={LoginScreen}/>
           <StackNavigator.Screen name='CoachsAdmin' component={CoachsAdminScreen}/>
           <StackNavigator.Screen name='CreateAlumno' component={CreateAlumno}/>
+          <StackNavigator.Screen name='CreateCoach' component={CreateCoach}/>
           <StackNavigator.Screen name='AlumnosAdminScreen' component={AlumnosAdminScreen}/>
           <StackNavigator.Screen name='ClasesCoachScreen' component={ClasesCoachScreen}/>
           <StackNavigator.Screen name='ClassBrowser' component={ClassBrowser}/>
@@ -38,18 +41,19 @@ export default function App() {
         </StackNavigator.Navigator>
       </NavigationContainer>
 
-      {/* <View style={styles.container}>
-       {//<ClassBrowser />
-        //<LoginScreen/>
-        //<HomeScreen />
-        //<CoachsAdminScreen /> 
-        //<CreateAlumno/>
-        //<AlumnosAdminScreen/>
-        //<ClasesCoachScreen/>
-        //<ClasesListScreen/>
-        //<CreateClaseScreen/>
-      }
-    </View> */}
+      {/* <NavigationContainer>
+        <DrawerNavigator.Navigator initialRouteName='Home'>
+          <DrawerNavigator.Screen name='Home' component={HomeScreen}/>
+          <DrawerNavigator.Screen name='Login' component={LoginScreen}/>
+          <DrawerNavigator.Screen name='CoachsAdmin' component={CoachsAdminScreen}/>
+          <DrawerNavigator.Screen name='CreateAlumno' component={CreateAlumno}/>
+          <DrawerNavigator.Screen name='AlumnosAdminScreen' component={AlumnosAdminScreen}/>
+          <DrawerNavigator.Screen name='ClasesCoachScreen' component={ClasesCoachScreen}/>
+          <DrawerNavigator.Screen name='ClassBrowser' component={ClassBrowser}/>
+          <DrawerNavigator.Screen name='CreateClaseScreen' component={CreateClaseScreen}/>
+          <DrawerNavigator.Screen name='ClasesListScreen' component={ClasesListScreen}/>
+        </DrawerNavigator.Navigator>
+      </NavigationContainer> */}
     </>
   );
 }

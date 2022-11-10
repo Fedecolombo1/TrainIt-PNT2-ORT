@@ -1,9 +1,9 @@
 import React from 'react'
 import { StyleSheet, Pressable, Image} from 'react-native';
 
-function Index() {
+function Index({navigation}) {
   return (
-    <Pressable style={styles.agregarBox}>
+    <Pressable style={styles.agregarBox} onPress={() => navigation.navigate("ClasesListScreen")}>
         <Image
         style={styles.masImg}
         source={{uri:'https://cdn-icons-png.flaticon.com/512/32/32339.png'}}
@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
         opacity: 0.75,
         borderRadius: 30,
         padding: 8,
+        zIndex: 50
     },
     masImg:{
         width: 38,

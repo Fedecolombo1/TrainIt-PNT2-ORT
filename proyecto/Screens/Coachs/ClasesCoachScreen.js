@@ -1,9 +1,11 @@
 import React from 'react'
-import { View, Text, StyleSheet, Pressable, Image} from 'react-native'
+import { View, Text, StyleSheet, Image} from 'react-native'
 import Header from '../../Components/Header';
 import CardSection from '../../Components/CardSection/Index.js'
+import { Button } from 'react-native';
 
-function ClasesCoachScreen() {
+
+function ClasesCoachScreen({navigation}) {
   return (
     <>
         <Header />
@@ -21,8 +23,9 @@ function ClasesCoachScreen() {
             />
 
             <View style={style.cardBox}>
-                <CardSection title='Clases'/>
+                <Button title="Go to Home" onPress={() => navigation.navigate('AlumnosAdminScreen')} />
             </View>
+            
         </View>
     </>
   )
