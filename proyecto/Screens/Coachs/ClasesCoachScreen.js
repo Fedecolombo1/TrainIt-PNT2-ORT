@@ -1,14 +1,13 @@
 import React from 'react'
-import { View, Text, StyleSheet, Image} from 'react-native'
+import { View, Text, StyleSheet, Image, Pressable} from 'react-native'
 import Header from '../../Components/Header';
 import CardSection from '../../Components/CardSection/Index.js'
-import { Button } from 'react-native';
 
 
 function ClasesCoachScreen({navigation}) {
   return (
     <>
-        <Header />
+        {/* <Header /> */}
         <View style={style.root}>
             <View style={style.header}>
                 <Text style={style.title}>Bienvenido, Nacho!</Text>
@@ -21,11 +20,11 @@ function ClasesCoachScreen({navigation}) {
                     uri: 'https://elcomercio.pe/resizer/vmeQ_oLIRc57kVgxTHVit4M0zhk=/580x330/smart/filters:format(jpeg):quality(75)/arc-anglerfish-arc2-prod-elcomercio.s3.amazonaws.com/public/DKKNSRIX4ZHWJGC62ZS3GBVKNY.jpg',
                 }}
             />
-
             <View style={style.cardBox}>
-                <Button title="Go to Home" onPress={() => navigation.navigate('AlumnosAdminScreen')} />
+                <Pressable style={style.card} onPress={() => navigation.navigate('ClasesListScreen')}>
+                    <Text style={style.titleCard}>Clases</Text>
+                </Pressable>
             </View>
-            
         </View>
     </>
   )
@@ -37,9 +36,10 @@ const style = StyleSheet.create({
     root: {
         width:'100%',
         height:'100%',
-        paddingTop: 90,
+        marginTop: 30,
         paddingHorizontal: '5%',
-        justifyContent:'space-between'
+        justifyContent:'space-between',
+        alignItems: 'center'
     },
     header:{
         borderBottomWidth: 2,
@@ -71,5 +71,19 @@ const style = StyleSheet.create({
     imgMapa:{
         width: '100%',
         height: 300
-    }
+    },
+    card:{
+        backgroundColor: '#2e5f71',
+        width: 200,
+        height: 150,
+        borderRadius: '15%',
+        justifyContent:'center',
+        marginBottom: 70
+    },
+    titleCard:{
+        color: 'white',
+        fontSize: '20px',
+        textAlign:'center',
+        paddingRight: '5%'
+    },
 });

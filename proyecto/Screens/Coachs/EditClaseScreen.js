@@ -11,7 +11,7 @@ function CreateClaseScreen() {
 
   return (
     <View style={style.container}>
-        <Text style={style.title}>Crear Clase</Text>
+        <Text style={style.title}>Editar Clase</Text>
         <View style={style.formInput}>
             <Text>Nombre</Text>
             <CustomInput placeholder="nombre" value={name} setValue={setName} secureTextEntry={false}/>

@@ -1,8 +1,8 @@
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Pressable, Image } from 'react-native';
 import Card from '../../Components/Card/Index.js'
 import BtnMas from '../../Components/BtnMas/Index.js'
 
-export default function ClasesListScreen() {
+export default function ClasesListScreen({navigation}) {
   return (
     <View style={styles.container}>
         <Text style={styles.title}>Clases</Text>
@@ -12,7 +12,12 @@ export default function ClasesListScreen() {
             <Card title='Cardio' text='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'/>
         </ScrollView>
 
-        <BtnMas />
+        <Pressable style={styles.agregarBox} onPress={() => navigation.navigate("CreateClaseScreen")}>
+            <Image
+            style={styles.masImg}
+            source={{uri:'https://cdn-icons-png.flaticon.com/512/32/32339.png'}}
+            />
+        </Pressable>
     </View>
   );
 }
@@ -26,5 +31,19 @@ const styles = StyleSheet.create({
     title:{
         textAlign:'start',
         fontSize: 30
+    },
+    agregarBox:{
+        position:'absolute',
+        bottom: 40,
+        right: 40,
+        backgroundColor:'#2d4b5a',
+        opacity: 0.75,
+        borderRadius: 30,
+        padding: 8,
+        zIndex: 50
+    },
+    masImg:{
+        width: 38,
+        height: 38,
     }
 });

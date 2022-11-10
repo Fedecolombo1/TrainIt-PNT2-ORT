@@ -1,9 +1,9 @@
 import React from 'react'
-import { Pressable, Text, StyleSheet } from 'react-native'
+import { Pressable, Text, StyleSheet, View } from 'react-native'
 import { useState } from 'react'
 import { agregarCoach } from '../../Services/coaches.js'
 
-function Index({coach, title}) {
+function Index({coach, title, navigate, navigation}) {
 
     const [visible, setVisible] = useState('none')
 
@@ -18,9 +18,16 @@ function Index({coach, title}) {
                 {coach ? <Text style={styles.titleCard}>{coach.nombre}</Text> : <Text style={styles.titleCard}>{title}</Text>}
                 <Text style={styles.txtCard}>Descripcion hardcodeada</Text>
         </Pressable>
-        <Pressable style={[styles.btnBorrar, visible=='none' ? {display: 'none'} : {display: 'flex'}]}>
-            <Text style={styles.btnText}>Borrar</Text>
-        </Pressable>
+        <View style={styles.btnBox}>
+            {/*COMO USO EL NAVIGATE SI NO ESTOY EN UN HIJO DEL STACK NAVIGATOR?*/}
+            <Pressable onPress={() => navigation.navigate({navigate})} style={[styles.btnEditar, visible=='none' ? {display: 'none'} : {display: 'flex'}]}>
+                <Text style={styles.btnText}>Editar</Text>
+            </Pressable>
+            <Pressable style={[styles.btnBorrar, visible=='none' ? {display: 'none'} : {display: 'flex'}]}>
+                <Text style={styles.btnText}>Borrar</Text>
+            </Pressable>            
+        </View>
+        
     </>
   )
 }
@@ -46,10 +53,24 @@ const styles = StyleSheet.create({
     txtCard:{
         fontSize: 17,
     },
+    btnBox:{
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent:'space-between',
+        width: '100%'
+    },
     btnBorrar:{
         marginTop: 10,
         backgroundColor: 'red',
-        width: '100%', 
+        width: '49%', 
+        height: 60,
+        borderRadius: '5%',
+        justifyContent: 'center'
+    },
+    btnEditar:{
+        marginTop: 10,
+        backgroundColor: 'orange',
+        width: '49%', 
         height: 60,
         borderRadius: '5%',
         justifyContent: 'center'

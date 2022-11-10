@@ -1,9 +1,9 @@
 import React from 'react'
 import { Text, StyleSheet, Pressable } from 'react-native'
 
-function Index({title}) {
+function Index({title, navigate, navigation}) {
   return (
-    <Pressable style={style.card}>
+    <Pressable style={style.card} onPress={() => navigation.navigate({navigate})}>
         <Text style={style.titleCard}>{title}</Text>
     </Pressable>
   )
@@ -18,7 +18,7 @@ const style = StyleSheet.create({
         height: 150,
         borderRadius: '15%',
         justifyContent:'center',
-        marginBottom: 40
+        marginBottom: 70
     },
     titleCard:{
         color: 'white',

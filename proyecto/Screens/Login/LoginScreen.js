@@ -54,7 +54,7 @@ function LoginScreen({navigation}) {
       if (response?.type === 'success') {
         const { authentication } = response;
         console.log(authentication);
-
+         
         //PARTE BACKEND
         fetch('url google')
         .then(res => res.json())
