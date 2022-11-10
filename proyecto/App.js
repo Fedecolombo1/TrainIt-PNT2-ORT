@@ -20,6 +20,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 export default function App() {
 
+  const [authenticationData, setAuthenticationData] = useState(false)
+
   const StackNavigator = createNativeStackNavigator()
   //const DrawerNavigator = createDrawerNavigator()
 
@@ -28,18 +30,27 @@ export default function App() {
     <>
       <NavigationContainer>
         <StackNavigator.Navigator initialRouteName='Home'>
+        {
+          authenticationData ? 
+          <>
           <StackNavigator.Screen name='Home' component={HomeScreen}/>
-          <StackNavigator.Screen name='Login' component={LoginScreen}/>
-          <StackNavigator.Screen name='CoachsAdmin' component={CoachsAdminScreen}/>
-          <StackNavigator.Screen name='CreateAlumno' component={CreateAlumno}/>
-          <StackNavigator.Screen name='CreateCoach' component={CreateCoach}/>
-          <StackNavigator.Screen name='AlumnosAdminScreen' component={AlumnosAdminScreen}/>
-          <StackNavigator.Screen name='ClasesCoachScreen' component={ClasesCoachScreen}/>
-          <StackNavigator.Screen name='ClassBrowser' component={ClassBrowser}/>
-          <StackNavigator.Screen name='CreateClaseScreen' component={CreateClaseScreen}/>
-          <StackNavigator.Screen name='ClasesListScreen' component={ClasesListScreen}/>
+            <StackNavigator.Screen name='Login' component={LoginScreen}/>
+            <StackNavigator.Screen name='CoachsAdmin' component={CoachsAdminScreen}/>
+            <StackNavigator.Screen name='CreateAlumno' component={CreateAlumno}/>
+            <StackNavigator.Screen name='CreateCoach' component={CreateCoach}/>
+            <StackNavigator.Screen name='AlumnosAdminScreen' component={AlumnosAdminScreen}/>
+            <StackNavigator.Screen name='ClasesCoachScreen' component={ClasesCoachScreen}/>
+            <StackNavigator.Screen name='ClassBrowser' component={ClassBrowser}/>
+            <StackNavigator.Screen name='CreateClaseScreen' component={CreateClaseScreen}/>
+            <StackNavigator.Screen name='ClasesListScreen' component={ClasesListScreen}/>
+          </>                      
+          :
+            <StackNavigator.Screen name='Login' component={LoginScreen}/>
+        }
         </StackNavigator.Navigator>
       </NavigationContainer>
+
+
 
       {/* <NavigationContainer>
         <DrawerNavigator.Navigator initialRouteName='Home'>
