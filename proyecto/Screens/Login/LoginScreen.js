@@ -8,34 +8,7 @@ import * as Google from 'expo-auth-session/providers/google';
 function LoginScreen({navigation}) {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
-
-    // useEffect(() => {
-    //   GoogleSignin.configure({
-    //     iosClientId: '249794781702-5q1ghcl2ujigleann4cfr3l033g37jth.apps.googleusercontent.com', // [iOS] if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
-    //     androidClientId: '249794781702-5q1ghcl2ujigleann4cfr3l033g37jth.apps.googleusercontent.com',
-    //   });
-    // })
-
-    // const signIn = async () => {
-    //   try {
-    //     await GoogleSignin.hasPlayServices();
-    //     const userInfo = await GoogleSignin.signIn();
-    //     console.log(userInfo.user);
-        
-    //     this.setState({ userInfo });
-    //   } catch (error) {
-    //     if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-    //       // user cancelled the login flow
-    //     } else if (error.code === statusCodes.IN_PROGRESS) {
-    //       // operation (e.g. sign in) is in progress already
-    //     } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-    //       // play services not available or outdated
-    //     } else {
-    //       // some other error happened
-    //     }
-    //   }
-    // }
-
+    
     const onSignIn = () => {
         console.log('sign in');
     }
@@ -56,7 +29,7 @@ function LoginScreen({navigation}) {
         console.log(authentication);
          
         //PARTE BACKEND
-        fetch('url google')
+        fetch(`http://192.168.1.51/auth/v1/login/google/${authentication.accessToken}`)
         .then(res => res.json())
         .then(data => console.log(data))
       }

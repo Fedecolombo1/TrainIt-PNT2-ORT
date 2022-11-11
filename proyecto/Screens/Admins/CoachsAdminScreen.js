@@ -2,20 +2,17 @@ import { StyleSheet, Text, View, ScrollView, Pressable, Image } from 'react-nati
 import Card from '../../Components/Card/Index.js'
 import BtnMas from '../../Components/BtnMas/Index.js'
 import { useState, useEffect } from 'react';
-import { getCoaches, getTest } from '../../Services/coaches.js'
+import { getCoaches } from '../../Services/coaches.js'
 
 export default function CoachsAdminScreen({navigation}) {
 
     const [coaches, setCoaches] = useState([])
 
     useEffect(() => {
-        getCoaches()
-         .then((data) => setCoaches(data))
-
-        // getTest().then((data) => {
-        //     console.log(data);
-        //     setCoaches(data)
-        // })
+        
+        getCoaches().then((data) => {
+            setCoaches(data)
+        })
 
     }, [])
 

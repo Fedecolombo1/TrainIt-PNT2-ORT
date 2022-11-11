@@ -20,7 +20,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 export default function App() {
 
-  const [authenticationData, setAuthenticationData] = useState(true)
+  const [authenticationData, setAuthenticationData] = useState(false)
 
   const StackNavigator = createNativeStackNavigator()
   //const DrawerNavigator = createDrawerNavigator()
