@@ -33,7 +33,7 @@ export default function App() {
         {
           authenticationData ? 
           <>
-          <StackNavigator.Screen name='Home' component={HomeScreen}/>
+            <StackNavigator.Screen name='Home' component={HomeScreen}/>
             <StackNavigator.Screen name='Login' component={LoginScreen}/>
             <StackNavigator.Screen name='CoachsAdmin' component={CoachsAdminScreen}/>
             <StackNavigator.Screen name='CreateAlumno' component={CreateAlumno}/>
