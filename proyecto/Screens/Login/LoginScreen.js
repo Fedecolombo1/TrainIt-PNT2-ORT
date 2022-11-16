@@ -5,10 +5,13 @@ import CustomInput from '../../Components/TextInput';
 import * as Google from 'expo-auth-session/providers/google';
 import { useNavigation } from '@react-navigation/native';
 //import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
+import { useGlobalState, setGlobalState } from '../../state/index'
 
-function LoginScreen() {
-  const [user, setUser] = useState({})
+function LoginScreen({navigation}) {
+  const [user, setUser] = useGlobalState('user');
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [register, setRegister] = useState(false)
+  const [rol, setRol] = useState('atleta')
 
   const signOut = () => {
     setUser({})
@@ -16,9 +19,9 @@ function LoginScreen() {
   }
 
   const [request, response, promptAsync] = Google.useAuthRequest({
-    expoClientId: '344662254786-2bt47i49383l81j6c1t5ee3g217lg1ln.apps.googleusercontent.com',
+    expoClientId: '1060877945491-su4bgghli7rj75klkj7ipg2c4m1mc498.apps.googleusercontent.com',
   });
-  const navigation = useNavigation()
+  //const navigation = useNavigation()
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -27,32 +30,65 @@ function LoginScreen() {
         const { authentication } = response;
         console.log(authentication.accessToken) //uso este log para poder acceder al token si tengo que hacer pruebas desde el back
 
-        fetch(`http://192.168.0.87:3000/auth/v1/login/google/${authentication.accessToken}`)
+        fetch(`http://192.168.1.51:3000/auth/v1/login/google/${authentication.accessToken}`)
           .then(res => res.json())
           .then(data => {
             setIsLoggedIn(true)
-            setUser(data)
+            console.log(data + "   dataaa -----------------");
+            console.log(user + "   usuario ----------------");
+            setUser({user: data})
+            //console.log(user);
           })
           .catch(err => {
             console.log(err);
           })
+
+        
       }
     }
 
   }, [response]);
 
+  const registrarAtleta = () => {
+    setRol('atleta')
+    promptAsync()
+  }
+
+  const registrarCoach = () => {
+    setRol('coach')
+    //promptAsync()
+    setUser({
+      nombre: 'Fede',
+      rol: 'coach'
+    })
+    console.log(user);
+    navigation.navigate('Home')
+  }
+
   return (
 
     !isLoggedIn
+      ?
+      !register 
       ?
       <View style={style.root}>
         <Text style={style.title}>Train It</Text>
         <Text style={style.login}>Inicia sesion para poder continuar</Text>
         <CustomButton style={style.googleButton} text="Sign with Google" onPress={() => promptAsync()}/>
+        <Text style={style.registerTxt}>No tiene cuenta? Registrese aca abajo</Text>
+        <CustomButton style={style.googleButton} bgColor='#00779E' text="Register with Google" onPress={() => setRegister(true)}/>
+      </View>
+      :
+      <View style={style.root}>
+        <Text style={style.title}>Train It</Text>
+        <Text style={style.login}>Como quiere registrarse?</Text>
+        <CustomButton style={style.googleButton} bgColor='#00779E' text="Como Atleta" onPress={() => registrarAtleta()}/>
+        <CustomButton style={style.googleButton} bgColor='#006E30' text="Como Coach" onPress={() => registrarCoach()}/>
+        <CustomButton style={style.googleButton} bgColor='#ac0000' text="Volver atras" onPress={() => setRegister(false)}/>
       </View>
       :
       <View>
-        <Text style={style.login}>Bienvendo {user.email} a Train IT</Text>
+        {/* <Text style={style.login}>Bienvendo {user.email} a Train IT</Text> */}
         <CustomButton text="Sign out" onPress={signOut}></CustomButton>
       </View>
   )
@@ -81,6 +117,14 @@ const style = StyleSheet.create({
     paddingBottom : 20,
     width: '100%',
     textAlign: 'center'
+  },
+  registerTxt: {
+    fontSize: 15,
+    paddingTop: 5,
+    paddingBottom: 5,
+    width: '100%',
+    textAlign: 'center',
+    color: 'grey'
   },
   googleButton: {
     backgroundColor: "#DD4D44",

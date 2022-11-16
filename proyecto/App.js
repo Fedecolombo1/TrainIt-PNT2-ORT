@@ -17,10 +17,11 @@ import { useEffect } from 'react';
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 //import { createDrawerNavigator } from '@react-navigation/drawer';
+import { useGlobalState } from './state/index.js'
 
 export default function App() {
 
-  const [authenticationData, setAuthenticationData] = useState(false)
+  const [user, setUser] = useGlobalState('user');
 
   const StackNavigator = createNativeStackNavigator()
   //const DrawerNavigator = createDrawerNavigator()
@@ -31,10 +32,11 @@ export default function App() {
       <NavigationContainer>
         <StackNavigator.Navigator initialRouteName='Home'>
         {
-          authenticationData ? 
-          <>
-            <StackNavigator.Screen name='Home' component={HomeScreen}/>
+            !user ? 
             <StackNavigator.Screen name='Login' component={LoginScreen}/>
+            :
+            <>    
+            <StackNavigator.Screen name='Home' component={HomeScreen}/>
             <StackNavigator.Screen name='CoachsAdmin' component={CoachsAdminScreen}/>
             <StackNavigator.Screen name='CreateAlumno' component={CreateAlumno}/>
             <StackNavigator.Screen name='CreateCoach' component={CreateCoach}/>
@@ -43,9 +45,7 @@ export default function App() {
             <StackNavigator.Screen name='ClassBrowser' component={ClassBrowser}/>
             <StackNavigator.Screen name='CreateClaseScreen' component={CreateClaseScreen}/>
             <StackNavigator.Screen name='ClasesListScreen' component={ClasesListScreen}/>
-          </>                      
-          :
-            <StackNavigator.Screen name='Login' component={LoginScreen}/>
+            </>                  
         }
         </StackNavigator.Navigator>
       </NavigationContainer>

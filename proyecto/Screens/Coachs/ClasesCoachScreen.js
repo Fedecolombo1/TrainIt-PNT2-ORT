@@ -1,10 +1,21 @@
-import React from 'react'
-import { View, Text, StyleSheet, Image, Pressable} from 'react-native'
+import * as React from 'react';
+import { View, Text, StyleSheet, Image, Pressable, useState} from 'react-native'
 import Header from '../../Components/Header';
 import CardSection from '../../Components/CardSection/Index.js'
-
+import MapView, { Marker, Polyline } from 'react-native-maps';
+// import MapViewDirections from 'react-native-maps-directions';
 
 function ClasesCoachScreen({navigation}) {
+
+    const [origin, setOrigin] = React.useState({
+        latitude: -34.605995,
+        longitude:  -58.364102
+    })
+
+    const [destination, setDestination] = React.useState({
+        latitude: -34.617857, 
+        longitude:  -58.363000
+    })
   return (
     <>
         {/* <Header /> */}
@@ -14,12 +25,41 @@ function ClasesCoachScreen({navigation}) {
             </View>
             <Text style={style.subtitle}>Siguiente Clase</Text>
 
-            <Image
-                style={style.imgMapa}
-                source={{
-                    uri: 'https://elcomercio.pe/resizer/vmeQ_oLIRc57kVgxTHVit4M0zhk=/580x330/smart/filters:format(jpeg):quality(75)/arc-anglerfish-arc2-prod-elcomercio.s3.amazonaws.com/public/DKKNSRIX4ZHWJGC62ZS3GBVKNY.jpg',
+            <MapView 
+                style={style.mapa}
+                initialRegion={{
+                    latitude: origin.latitude,
+                    longitude: origin.longitude,
+                    latitudeDelta: 0.09,
+                    longitudeDelta: 0.04
                 }}
-            />
+            >
+                <Marker 
+                    draggable
+                    coordinate={origin}
+                    onDragEnd={(direction) => setOrigin(direction.nativeEvent.coordinate)}
+                />
+
+                <Marker 
+                    draggable
+                    coordinate={destination}
+                    onDragEnd={(direction) => setDestination(direction.nativeEvent.coordinate)}
+                />
+
+                {/* PolyLine con api de google paga
+                <MapViewDirections
+                    origin={origin}
+                    destination={destination}
+                    apiKey={}
+                /> */}
+
+                <Polyline
+                    coordinates={[ origin, destination ]}
+                    strokeColor="#2e5f71"
+                    strokeWidth={4}
+                />
+            </MapView>
+
             <View style={style.cardBox}>
                 <Pressable style={style.card} onPress={() => navigation.navigate('ClasesListScreen')}>
                     <Text style={style.titleCard}>Clases</Text>
@@ -66,7 +106,8 @@ const style = StyleSheet.create({
     subtitle:{
         fontSize: 19,
         textAlign: 'center',
-        fontWeight: '500'
+        fontWeight: '500',
+        marginBottom: 5
     },
     imgMapa:{
         width: '100%',
@@ -86,4 +127,8 @@ const style = StyleSheet.create({
         textAlign:'center',
         paddingRight: '5%'
     },
+    mapa:{
+        width: '100%',
+        height: '60%'
+    }
 });
