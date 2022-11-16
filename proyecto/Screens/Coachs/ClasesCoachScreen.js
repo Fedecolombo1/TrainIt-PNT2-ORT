@@ -4,60 +4,47 @@ import Header from '../../Components/Header';
 import CardSection from '../../Components/CardSection/Index.js'
 import MapView, { Marker, Polyline } from 'react-native-maps';
 // import MapViewDirections from 'react-native-maps-directions';
+import { useGlobalState, setGlobalState } from '../../state/index'
+import CustomButton from '../../Components/CustomButton';
+
 
 function ClasesCoachScreen({navigation}) {
+    const [user, setUser] = useGlobalState('user');
 
-    const [origin, setOrigin] = React.useState({
-        latitude: -34.605995,
-        longitude:  -58.364102
-    })
+    const initialOrigin = {
+        latitud: -34.60376,
+        longitude : -58.38162
+    }
 
-    const [destination, setDestination] = React.useState({
-        latitude: -34.617857, 
-        longitude:  -58.363000
-    })
+    const [coordenadasClase, setCoordenadasClase] = React.useState(initialOrigin)
+
   return (
     <>
         {/* <Header /> */}
         <View style={style.root}>
             <View style={style.header}>
-                <Text style={style.title}>Bienvenido, Nacho!</Text>
+                <Text style={style.title}>Bienvenido, {user.user.email}!</Text>
             </View>
             <Text style={style.subtitle}>Siguiente Clase</Text>
 
             <MapView 
                 style={style.mapa}
                 initialRegion={{
-                    latitude: origin.latitude,
-                    longitude: origin.longitude,
+                    latitude: coordenadasClase.latitude,
+                    longitude: coordenadasClase.longitude,
                     latitudeDelta: 0.09,
                     longitudeDelta: 0.04
+                }}
+                onPress={(direction) => {
+                    console.log(direction.nativeEvent.coordinate)
+                    setCoordenadasClase(direction.nativeEvent.coordinate)
                 }}
             >
                 <Marker 
                     draggable
-                    coordinate={origin}
-                    onDragEnd={(direction) => setOrigin(direction.nativeEvent.coordinate)}
+                    coordinate={coordenadasClase}
                 />
 
-                <Marker 
-                    draggable
-                    coordinate={destination}
-                    onDragEnd={(direction) => setDestination(direction.nativeEvent.coordinate)}
-                />
-
-                {/* PolyLine con api de google paga
-                <MapViewDirections
-                    origin={origin}
-                    destination={destination}
-                    apiKey={}
-                /> */}
-
-                <Polyline
-                    coordinates={[ origin, destination ]}
-                    strokeColor="#2e5f71"
-                    strokeWidth={4}
-                />
             </MapView>
 
             <View style={style.cardBox}>
