@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useInsertionEffect, useState } from 'react'
 import { Text, View, StyleSheet, Button } from 'react-native'
 import CustomButton from '../../Components/CustomButton';
-import CustomInput from '../../Components/TextInput';
 import * as Google from 'expo-auth-session/providers/google';
 import { useNavigation } from '@react-navigation/native';
 //import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
@@ -10,11 +9,10 @@ import AuthContext from '../../Services/AuthContext';
 
 function LoginScreen() {
 
-  const { setUser } = useContext(AuthContext)
+  const { user, setUser } = useContext(AuthContext)
 
   const navigation = useNavigation()
 
-  const [register, setRegister] = useState(false)
   const [rol, setRol] = useState('')
 
   const [request, response, promptAsync] = Google.useAuthRequest({
@@ -24,42 +22,27 @@ function LoginScreen() {
   useEffect(() => {
     if (response?.type === 'success') {
       const { authentication } = response;
-      console.log(authentication.accessToken) //uso este log para poder acceder al token si tengo que hacer pruebas desde el back
-      
-      if (rol === 'Athlete') {
-        console.log(`Entro a registrarme como ${rol}`);
-        fetch(`http://192.168.1.51:3000/auth/v1/login/google/${authentication.accessToken}`)
+      //console.log(authentication.accessToken) //uso este log para poder acceder al token si tengo que hacer pruebas desde el back
+      if (rol === 'Atleta') {
+        fetch(`http://192.168.0.87:3000/auth/v1/login-athlete/google/${authentication.accessToken}`)
           .then(res => res.json())
           .then(data => {
-            if(data.datosValidados){
               setUser(data)
-            }else{
-              navigation.navigate("Register")
-            }
           })
           .catch(err => {
             console.log(err);
           })
       } else if (rol === 'Coach') {
-        console.log(`Entro a registrarme como ${rol}`);
-        fetch(`http://192.168.1.51:3000/auth/v1/login/google/${authentication.accessToken}`)
-          .then(res => res.json())
+        fetch(`http://192.168.0.87:3000/auth/v1/login-coach/google/${authentication.accessToken}`)
+          .then(res => {
+            res.status === 201 ? res.json() : new Error("Hubo un error al iniciar sesion con google")
+          })
           .then(data => {
-            if(data.datosValidados){
+            if (data.datosValidados) {
               setUser(data)
-            }else{
+            } else {
               navigation.navigate("Register")
             }
-          })
-          .catch(err => {
-            console.log(err);
-          })
-      }else{
-        console.log(`Entro a iniciar sesion como ${rol}`);
-        fetch(`http://192.168.1.51:3000/auth/v1/login/google/${authentication.accessToken}`)
-          .then(res => res.json())
-          .then(data => {
-            setUser(data)
           })
           .catch(err => {
             console.log(err);
@@ -69,37 +52,32 @@ function LoginScreen() {
 
   }, [response]);
 
-  const loginGoogle = () => {
-    setRol('loginGoogle')
-    promptAsync()
-  }
-
   const setRolBtn = (rol) => {
+    console.log(rol)
     setRol(rol)
   }
 
   return (
-      <View style={style.root}>
-        {
+    <View style={style.root}>
+      {
         !rol
-        ?
-        <>
-        <Text style={style.title}>Train It</Text>
-        <Text style={style.login}>Por favor seleccione una opcion</Text>
-        <CustomButton style={style.googleButton} bgColor='#00779E' text="Atleta" onPress={() => setRolBtn('Atleta')}/>
-        <CustomButton style={style.googleButton} bgColor='#00779E' text="Coach" onPress={() => setRolBtn('Coach')}/>
-        </>
-        :
-        <>
-        <Text style={style.title}>Train It</Text>
-        <Text style={style.login}>Inicia sesion para poder continuar</Text>
-        <CustomButton style={style.googleButton} text="LogIn with Google" onPress={() => loginGoogle()} />
-        <Text style={style.registerTxt}>No tiene cuenta? Registrese aca abajo</Text>
-        <CustomButton style={style.googleButton} bgColor='#00779E' text="Register with Google" onPress={() => promptAsync()} />
-        <CustomButton style={style.googleButton} bgColor='#00779E' text="Volver atras" onPress={() => setRol()} />
-        </>
-        }
-      </View>
+          ?
+          <>
+            <Text style={style.title}>Train It</Text>
+            <Text style={style.login}>Por favor seleccione una opcion</Text>
+            <CustomButton style={style.googleButton} bgColor='#00779E' text="Atleta" onPress={() => setRolBtn('Atleta')} />
+            <CustomButton style={style.googleButton} bgColor='#00779E' text="Coach" onPress={() => setRolBtn('Coach')} />
+          </>
+          :
+          <>
+            <Text style={style.title}>Train It</Text>
+            <Text style={style.login}>Inicia sesion para poder continuar</Text>
+            <CustomButton style={style.googleButton} text="LogIn with Google" onPress={() => promptAsync()} />
+            <Text style={style.registerTxt}>No tiene cuenta? Registrese aca abajo</Text>
+            <CustomButton style={style.googleButton} bgColor='#00779E' text="Volver atras" onPress={() => setRol()} />
+          </>
+      }
+    </View>
   )
 }
 

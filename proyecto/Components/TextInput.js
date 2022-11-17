@@ -1,15 +1,16 @@
 import React from 'react'
 import { View, TextInput, StyleSheet } from 'react-native'
 
-function CustomInput({value, setValue, placeholder, secureTextEntry}) {
+function CustomInput({value, setValue, placeholder, secureTextEntry, type}) {
   return (
     <View style={style.container}>
         <TextInput 
+            keyboardType={type} //'email-address' 'number-pad' 'default'
             style={style.input} 
             placeholder={placeholder}
             value={value}
             onChangeText={setValue}
-            secureTextEntry={secureTextEntry}
+            secureTextEntry={secureTextEntry} 
         />
     </View>
   )

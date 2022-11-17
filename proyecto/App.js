@@ -51,7 +51,7 @@ export default function App() {
 
   const StackNavigator = createNativeStackNavigator()
   //const DrawerNavigator = createDrawerNavigator()
-
+   console.log(user);
   return (
 
     <>
