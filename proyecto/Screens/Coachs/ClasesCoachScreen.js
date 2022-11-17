@@ -6,13 +6,14 @@ import MapView, { Marker, Polyline } from 'react-native-maps';
 // import MapViewDirections from 'react-native-maps-directions';
 import { useGlobalState, setGlobalState } from '../../state/index'
 import CustomButton from '../../Components/CustomButton';
-
+import AuthContext from '../../Services/AuthContext/index';
 
 function ClasesCoachScreen({navigation}) {
-    const [user, setUser] = useGlobalState('user');
+
+    const { user, setUser } = React.useContext(AuthContext)
 
     const initialOrigin = {
-        latitud: -34.60376,
+        latitude: -34.60376,
         longitude : -58.38162
     }
 
@@ -23,15 +24,15 @@ function ClasesCoachScreen({navigation}) {
         {/* <Header /> */}
         <View style={style.root}>
             <View style={style.header}>
-                <Text style={style.title}>Bienvenido, {user.user.email}!</Text>
+                <Text style={style.title}>Bienvenido, {user.email}!</Text>
             </View>
             <Text style={style.subtitle}>Siguiente Clase</Text>
 
             <MapView 
                 style={style.mapa}
                 initialRegion={{
-                    latitude: coordenadasClase.latitude,
-                    longitude: coordenadasClase.longitude,
+                    latitude: initialOrigin.latitude,
+                    longitude: initialOrigin.longitude,
                     latitudeDelta: 0.09,
                     longitudeDelta: 0.04
                 }}
@@ -74,9 +75,9 @@ const style = StyleSheet.create({
         paddingVertical: 10
     },
     title: {
-        width: '100%',
+        width: 400,
         textAlign:'start',
-        fontSize: 32,
+        fontSize: 28,
         fontWeight: '600',
         paddingHorizontal: 10,
     },
@@ -116,6 +117,6 @@ const style = StyleSheet.create({
     },
     mapa:{
         width: '100%',
-        height: '60%'
+        height: '50%'
     }
 });

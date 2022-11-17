@@ -1,20 +1,21 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react'
+import React, { useContext } from 'react'
 import { Button } from 'react-native';
 import { View, Text, StyleSheet } from 'react-native'
 import { useGlobalState } from '../state/index'
 import CustomButton from '../Components/CustomButton';
+import AuthContext from '../Services/AuthContext';
 
 function HomeScreen() {
 
   const navigation = useNavigation()
 
-  const [user, setUser] = useGlobalState('user');
+  // const [user, setUser] = useGlobalState('user');
 
-  const usuarioVacio = {}
+  const { setUser } = useContext(AuthContext)
 
   const signOut = () => {
-    setUser({})
+    setUser(null)
   }
 
   return (
@@ -22,7 +23,6 @@ function HomeScreen() {
 
       {/* <Text>Bienvendo {user.user.email} a Train IT</Text> */}
 
-      <Button title="Login" onPress={() => navigation.navigate("Login")} />
       <Button title="CoachsAdmin" onPress={() => navigation.navigate("CoachsAdmin")} />
       <Button title="AlumnosAdminScreen" onPress={() => navigation.navigate("AlumnosAdminScreen")} />
       <Button title="ClasesCoachScreen" onPress={() => navigation.navigate("ClasesCoachScreen")} />
