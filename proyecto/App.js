@@ -62,10 +62,14 @@ export default function App() {
               !user ? 
               <>
               <StackNavigator.Screen name='Login' component={LoginScreen}/>
-              <StackNavigator.Screen name='Register' component={RegisterScreen}/>
               </>
               :
-              <>    
+              <>   
+              {!user.datosValidados 
+              ? 
+              <StackNavigator.Screen name='Register' component={RegisterScreen}/>
+              :
+              <>
               <StackNavigator.Screen name='Home' component={HomeScreen}/>
               <StackNavigator.Screen name='CoachsAdmin' component={CoachsAdminScreen}/>
               <StackNavigator.Screen name='CreateAlumno' component={CreateAlumno}/>
@@ -75,6 +79,8 @@ export default function App() {
               <StackNavigator.Screen name='ClassBrowser' component={ClassBrowser}/>
               <StackNavigator.Screen name='CreateClaseScreen' component={CreateClaseScreen}/>
               <StackNavigator.Screen name='ClasesListScreen' component={ClasesListScreen}/>
+              </>
+              }
               </>                  
           }
           </StackNavigator.Navigator>

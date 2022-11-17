@@ -74,33 +74,31 @@ function LoginScreen() {
     promptAsync()
   }
 
-  const registrarAtleta = () => {
-    setRol('Athlete')
-    promptAsync()
-  }
-
-  const registrarCoach = () => {
-    setRol('Coach')
-    promptAsync()
+  const setRolBtn = (rol) => {
+    setRol(rol)
   }
 
   return (
-      !register
-      ?
       <View style={style.root}>
+        {
+        !rol
+        ?
+        <>
+        <Text style={style.title}>Train It</Text>
+        <Text style={style.login}>Por favor seleccione una opcion</Text>
+        <CustomButton style={style.googleButton} bgColor='#00779E' text="Atleta" onPress={() => setRolBtn('Atleta')}/>
+        <CustomButton style={style.googleButton} bgColor='#00779E' text="Coach" onPress={() => setRolBtn('Coach')}/>
+        </>
+        :
+        <>
         <Text style={style.title}>Train It</Text>
         <Text style={style.login}>Inicia sesion para poder continuar</Text>
         <CustomButton style={style.googleButton} text="LogIn with Google" onPress={() => loginGoogle()} />
         <Text style={style.registerTxt}>No tiene cuenta? Registrese aca abajo</Text>
-        <CustomButton style={style.googleButton} bgColor='#00779E' text="Register with Google" onPress={() => setRegister(true)} />
-      </View>
-      :
-      <View style={style.root}>
-        <Text style={style.title}>Train It</Text>
-        <Text style={style.login}>Como quiere registrarse?</Text>
-        <CustomButton style={style.googleButton} bgColor='#00779E' text="Como Atleta" onPress={() => registrarAtleta()} />
-        <CustomButton style={style.googleButton} bgColor='#006E30' text="Como Coach" onPress={() => registrarCoach()} />
-        <CustomButton style={style.googleButton} bgColor='#ac0000' text="Volver atras" onPress={() => setRegister(false)} />
+        <CustomButton style={style.googleButton} bgColor='#00779E' text="Register with Google" onPress={() => promptAsync()} />
+        <CustomButton style={style.googleButton} bgColor='#00779E' text="Volver atras" onPress={() => setRol()} />
+        </>
+        }
       </View>
   )
 }
@@ -118,13 +116,12 @@ const style = StyleSheet.create({
   },
   title: {
     fontSize: 70,
-    marginBottom: 50,
     textAlign: 'center',
     margin: 5
   },
   login: {
     fontSize: 20,
-    paddingTop: 5,
+    paddingTop: 15,
     paddingBottom: 20,
     width: '100%',
     textAlign: 'center'
