@@ -43,7 +43,11 @@ const styles = StyleSheet.create({
         borderRadius: '10%',
         padding: 15,
         paddingHorizontal: 20,
-        justifyContent: 'center'
+        justifyContent: 'center',
+        shadowOffset: {width: -2, height: 4},  
+        shadowColor: '#171717',  
+        shadowOpacity: 0.2,  
+        shadowRadius: 3,  
     },
     titleCard:{
         fontSize: 25,

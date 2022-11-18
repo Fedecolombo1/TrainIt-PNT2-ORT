@@ -107,7 +107,11 @@ const style = StyleSheet.create({
         height: 150,
         borderRadius: '15%',
         justifyContent:'center',
-        marginBottom: 70
+        marginBottom: 70,
+        shadowOffset: {width: -2, height: 4},  
+        shadowColor: '#171717',  
+        shadowOpacity: 0.2,  
+        shadowRadius: 3,  
     },
     titleCard:{
         color: 'white',

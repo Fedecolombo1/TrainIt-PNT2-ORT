@@ -38,9 +38,9 @@ function RegisterScreen() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(bodyObj)
     };
-    fetch(`http://192.168.0.87:3000/athletes/finalizar-registracion/`, requestOptions)
+    fetch(`http://192.168.1.51:3000/athletes/finalizar-registracion/`, requestOptions)
       .then(response => response.json())
-      .then(data => console.log(data.message))
+      .then(data => setUser(data))
       .catch(err => console.log(err))
   }
 
@@ -81,7 +81,7 @@ function RegisterScreen() {
                   ?
                   <>
                     <Text style={style.registerTxt}>Complete su Fecha Nacimiento</Text>
-                    <CustomInput placeholder="Fecha Nacimiento" value={fechaNac} setValue={setFechaNac} secureTextEntry={false} />
+                    <CustomInput type={'number-pad'} placeholder="Fecha Nacimiento" value={fechaNac} setValue={setFechaNac} secureTextEntry={false} />              
                     <CustomButton text={user.rol === "Atleta" ? "Siguiente" : "Finalizar"} onPress={() => setFechaNacTxt(true)} />
                     <CustomButton text="Logout" onPress={() => setUser(null)} />
 
@@ -98,7 +98,7 @@ function RegisterScreen() {
 
                       </>
                       :
-                      <></>
+                      <CustomButton text="Finalizar" onPress={finalizar} />
                     }
                   </>
                 }

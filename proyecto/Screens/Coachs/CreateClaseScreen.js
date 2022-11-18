@@ -3,11 +3,19 @@ import { View, Text, StyleSheet, Pressable } from 'react-native'
 import CustomInput from '../../Components/TextInput';
 import CustomButton from '../../Components/CustomButton';
 import { useState } from 'react';
+import MapView, { Marker } from 'react-native-maps';
 
 function CreateClaseScreen() {
     const [name, setName] = useState('')
     const [surname, setSurname] = useState('')
     const [horario, setHorario] = useState('')
+
+    const initialOrigin = {
+        latitude: -34.60376,
+        longitude : -58.38162
+    }
+
+    const [coordenadasClase, setCoordenadasClase] = React.useState(initialOrigin)
 
   return (
     <View style={style.container}>
@@ -24,6 +32,25 @@ function CreateClaseScreen() {
             <Text>Horario</Text>
             <CustomInput placeholder="horario" value={horario} setValue={setHorario} secureTextEntry={false}/>
         </View>
+        <MapView 
+                style={style.mapa}
+                initialRegion={{
+                    latitude: initialOrigin.latitude,
+                    longitude: initialOrigin.longitude,
+                    latitudeDelta: 0.09,
+                    longitudeDelta: 0.04
+                }}
+                onPress={(direction) => {
+                    console.log(direction.nativeEvent.coordinate)
+                    setCoordenadasClase(direction.nativeEvent.coordinate)
+                }}
+            >
+                <Marker 
+                    draggable
+                    coordinate={coordenadasClase}
+                />
+
+        </MapView>
         <CustomButton text="Agregar" bgColor="#587f8d" />
     </View>
   )
@@ -40,9 +67,14 @@ const style = StyleSheet.create({
     title:{
         textAlign:'start',
         fontSize: 30,
-        marginBottom: 40
+        marginBottom: 10
     },
     formInput: {
+        marginBottom: 10
+    },
+    mapa:{
+        width: '100%',
+        height: '50%',
         marginBottom: 10
     }
   });

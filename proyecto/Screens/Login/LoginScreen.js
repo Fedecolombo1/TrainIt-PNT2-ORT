@@ -24,7 +24,7 @@ function LoginScreen() {
       const { authentication } = response;
       //console.log(authentication.accessToken) //uso este log para poder acceder al token si tengo que hacer pruebas desde el back
       if (rol === 'Atleta') {
-        fetch(`http://192.168.0.87:3000/auth/v1/login-athlete/google/${authentication.accessToken}`)
+        fetch(`http://192.168.1.51:3000/auth/v1/login-athlete/google/${authentication.accessToken}`)
           .then(res => res.json())
           .then(data => {
               setUser(data)
@@ -33,7 +33,7 @@ function LoginScreen() {
             console.log(err);
           })
       } else if (rol === 'Coach') {
-        fetch(`http://192.168.0.87:3000/auth/v1/login-coach/google/${authentication.accessToken}`)
+        fetch(`http://192.168.1.51:3000/auth/v1/login-coach/google/${authentication.accessToken}`)
           .then(res => {
             res.status === 201 ? res.json() : new Error("Hubo un error al iniciar sesion con google")
           })
