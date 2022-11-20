@@ -3,15 +3,12 @@ import { Text, View, StyleSheet, Button } from 'react-native'
 import CustomButton from '../../Components/CustomButton';
 import * as Google from 'expo-auth-session/providers/google';
 import { useNavigation } from '@react-navigation/native';
-//import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
-// import { useGlobalState, setGlobalState } from '../../state/index'
+import { Picker } from '@react-native-picker/picker';
 import AuthContext from '../../Services/AuthContext';
 
 function LoginScreen() {
 
   const { user, setUser } = useContext(AuthContext)
-
-  const navigation = useNavigation()
 
   const [rol, setRol] = useState('')
 
@@ -24,10 +21,11 @@ function LoginScreen() {
       const { authentication } = response;
       //console.log(authentication.accessToken) //uso este log para poder acceder al token si tengo que hacer pruebas desde el back
       if (rol === 'Atleta') {
-        fetch(`http://192.168.1.51:3000/auth/v1/login-athlete/google/${authentication.accessToken}`)
+        fetch(`http://192.168.0.87:3000/auth/v1/login-athlete/google/${authentication.accessToken}`)
           .then(res => res.json())
           .then(data => {
-              setUser(data)
+            console.log(data)
+            setUser(data)
           })
           .catch(err => {
             console.log(err);
@@ -35,14 +33,15 @@ function LoginScreen() {
       } else if (rol === 'Coach') {
         fetch(`http://192.168.1.51:3000/auth/v1/login-coach/google/${authentication.accessToken}`)
           .then(res => {
-            res.status === 201 ? res.json() : new Error("Hubo un error al iniciar sesion con google")
+            if (res.ok) {
+              res.json()
+            } else {
+              new Error("Hubo un error al inicar sesion con google")
+            }
           })
           .then(data => {
-            if (data.datosValidados) {
-              setUser(data)
-            } else {
-              navigation.navigate("Register")
-            }
+            setUser(data)
+
           })
           .catch(err => {
             console.log(err);
@@ -53,7 +52,6 @@ function LoginScreen() {
   }, [response]);
 
   const setRolBtn = (rol) => {
-    console.log(rol)
     setRol(rol)
   }
 
@@ -72,9 +70,8 @@ function LoginScreen() {
           <>
             <Text style={style.title}>Train It</Text>
             <Text style={style.login}>Inicia sesion para poder continuar</Text>
-            <CustomButton style={style.googleButton} text="LogIn with Google" onPress={() => promptAsync()} />
-            <Text style={style.registerTxt}>No tiene cuenta? Registrese aca abajo</Text>
-            <CustomButton style={style.googleButton} bgColor='#00779E' text="Volver atras" onPress={() => setRol()} />
+            <CustomButton style={style.googleButton} text="Sign In With Google" onPress={() => promptAsync()} />
+            <CustomButton style={style.googleButton} bgColor='#00779E' text="Go Back" onPress={() => setRol()} />
           </>
       }
     </View>

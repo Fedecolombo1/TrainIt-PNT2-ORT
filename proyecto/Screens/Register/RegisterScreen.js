@@ -4,17 +4,23 @@ import { Text, View, StyleSheet } from 'react-native'
 import CustomButton from '../../Components/CustomButton';
 import CustomInput from '../../Components/TextInput';
 import AuthContext from '../../Services/AuthContext';
+import { Picker } from '@react-native-picker/picker';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 function RegisterScreen() {
   const { user, setUser } = useContext(AuthContext)
 
-  const navigation = useNavigation()
+  const date = new Date();
+
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
 
   const [nombre, setNombre] = useState('')
   const [apellido, setApellido] = useState('')
-  const [fechaNac, setFechaNac] = useState('')
+  const [fechaNac, setFechaNac] = useState(new Date())
   const [dni, setDni] = useState('')
-  const [aptoFisico, setAptoFisico] = useState('')
+  const [aptoFisico, setAptoFisico] = useState(true)
 
   const [nomApe, setNomApe] = useState('')
   const [dniTxt, setDniTxt] = useState('')
@@ -28,21 +34,28 @@ function RegisterScreen() {
       nombre: nombre,
       apellido: apellido,
       dni: dni,
-      edad: fechaNac,
+      fechaNacimiento: fechaNac,
       aptoFisico: aptoFisico
     }
 
-    console.log("Por llamar al put");
     const requestOptions = {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(bodyObj)
     };
-    fetch(`http://192.168.1.51:3000/athletes/finalizar-registracion/`, requestOptions)
+    fetch(`http://192.168.0.87:3000/athletes/finalizar-registracion/`, requestOptions)
       .then(response => response.json())
-      .then(data => setUser(data))
+      .then(data => {
+        setUser(data)
+      })
       .catch(err => console.log(err))
   }
+
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate;
+    setFechaNac(currentDate);
+  };
+
 
   return (
     <View style={style.root}>
@@ -54,6 +67,7 @@ function RegisterScreen() {
         :
         <>
           <Text style={style.title}>Finalizaste tu registracion!</Text>
+          <CustomButton text="Logout" onPress={() => setUser(null)} />
         </>
       }
       {
@@ -65,13 +79,12 @@ function RegisterScreen() {
             <CustomInput type={'default'} placeholder="Apellido" value={apellido} setValue={setApellido} secureTextEntry={false} />
             <CustomButton text="Siguiente" onPress={() => setNomApe(true)} />
             <CustomButton text="Logout" onPress={() => setUser(null)} />
-
           </>
           :
           <>
             {!dniTxt ?
               <>
-                <Text style={style.registerTxt}>Complete su Dni</Text>
+                <Text style={style.registerTxt}>Dni</Text>
                 <CustomInput type={'number-pad'} placeholder="Dni" value={dni} setValue={setDni} secureTextEntry={false} />
                 <CustomButton text="Siguiente" onPress={() => setDniTxt(true)} />
               </>
@@ -80,25 +93,37 @@ function RegisterScreen() {
                 {!fechaNacTxt
                   ?
                   <>
-                    <Text style={style.registerTxt}>Complete su Fecha Nacimiento</Text>
-                    <CustomInput type={'number-pad'} placeholder="Fecha Nacimiento" value={fechaNac} setValue={setFechaNac} secureTextEntry={false} />              
-                    <CustomButton text={user.rol === "Atleta" ? "Siguiente" : "Finalizar"} onPress={() => setFechaNacTxt(true)} />
+                    <Text style={style.registerTxt}>Fecha Nacimiento</Text>
+                    <DateTimePicker
+                      mode='date'
+                      display='spinner'
+                      value={fechaNac}
+                      maximumDate={new Date(`${year}-${month}-${day}`)}
+                      onChange={onChange}
+                    />
+                    <CustomButton text={user.rol === "Atleta" ? "Siguiente" : "Finalizar"} onPress={user.rol === 'Atleta' ? () => setFechaNacTxt(true) : finalizar} />
                     <CustomButton text="Logout" onPress={() => setUser(null)} />
-
                   </>
                   :
                   <>
                     {user.rol == 'Atleta'
                       ?
                       <>
-                        <Text style={style.registerTxt}>Complete su Apto Fisico</Text>
-                        <CustomInput placeholder="Apto Fisico" value={aptoFisico} setValue={setAptoFisico} secureTextEntry={false} />
+                        <Text style={style.registerTxt}>Tiene su apto fisico al dia?</Text>
+                        <Picker
+                          selectedValue={aptoFisico}
+                          onValueChange={(itemValue, itemIndex) => {
+                            setAptoFisico(itemValue)
+                          }
+                          }>
+                          <Picker.Item label="Si" value={true} />
+                          <Picker.Item label="No" value={false} />
+                        </Picker>
                         <CustomButton text="Finalizar" onPress={finalizar} />
                         <CustomButton text="Logout" onPress={() => setUser(null)} />
-
                       </>
                       :
-                      <CustomButton text="Finalizar" onPress={finalizar} />
+                      <></>
                     }
                   </>
                 }
@@ -131,7 +156,7 @@ const style = StyleSheet.create({
     textAlign: 'center'
   },
   registerTxt: {
-    fontSize: 15,
+    fontSize: 20,
     paddingTop: 5,
     paddingBottom: 5,
     paddingLeft: 5,
