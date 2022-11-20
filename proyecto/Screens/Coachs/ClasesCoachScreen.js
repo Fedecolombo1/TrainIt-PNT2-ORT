@@ -1,126 +1,155 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, Image, Pressable, useState} from 'react-native'
-import Header from '../../Components/Header';
-import CardSection from '../../Components/CardSection/Index.js'
-import MapView, { Marker, Polyline } from 'react-native-maps';
-// import MapViewDirections from 'react-native-maps-directions';
-import { useGlobalState, setGlobalState } from '../../state/index'
-import CustomButton from '../../Components/CustomButton';
+import { View, Text, StyleSheet, Pressable, ScrollView } from 'react-native'
+import MapView, { Marker } from 'react-native-maps';
 import AuthContext from '../../Services/AuthContext/index';
 
-function ClasesCoachScreen({navigation}) {
+function ClasesCoachScreen({ navigation }) {
 
     const { user, setUser } = React.useContext(AuthContext)
 
     const initialOrigin = {
         latitude: -34.60376,
-        longitude : -58.38162
+        longitude: -58.38162
     }
+
+    React.useEffect(() => {
+        navigation.setOptions({
+            headerLargeTitle: false,
+            headerTitle: "Proxima clase",
+            headerRight: () => (
+                <Pressable
+                    onPress={() => navigation.navigate("CreateClaseScreen")}
+                    style={{
+                        backgroundColor: "purple",
+                        width: 30,
+                        height: 30,
+                        borderRadius: 10,
+                        justifyContent: 'center'
+                    }}
+                >
+                    <Text
+                        style={{
+                            color: "white",
+                            fontSize: 23,
+                            textAlign: 'center'
+                        }}
+                    >+</Text>
+                </Pressable>
+            )
+        })
+    }, [navigation])
 
     const [coordenadasClase, setCoordenadasClase] = React.useState(initialOrigin)
 
-  return (
-    <>
-        {/* <Header /> */}
-        <View style={style.root}>
-            <View style={style.header}>
+    return (
+        <ScrollView>
+            {/* <Header /> */}
+            <View style={style.root}>
+                {/* <View style={style.header}>
                 <Text style={style.title}>Bienvenido, {user.email}!</Text>
+            </View> */}
+                <Text style={style.subtitle}>Siguiente Clase:</Text>
+
+                <Text style={style.subtitle}>Aca va a ir el nombre de la clase</Text>
+
+                <Text style={style.subtitle}>Aca cuanta gente esta anotada</Text>
+
+                <MapView
+                    style={style.mapa}
+                    scrollEnabled={false}
+                    zoomEnabled={false}
+                    initialRegion={{
+                        latitude: initialOrigin.latitude,
+                        longitude: initialOrigin.longitude,
+                        latitudeDelta: 0.02,
+                        longitudeDelta: 0.040
+                    }}
+                    onPress={(direction) => {
+                        console.log(direction.nativeEvent.coordinate)
+                    }}
+                    moveOnMarkerPress={false}
+                >
+                    <Marker
+                        draggable
+                        coordinate={coordenadasClase}
+                    />
+
+                </MapView>
+
+                <View style={style.cardBox}>
+                    <Text style={style.subtitle}>Ver todas las clases</Text>
+                    <Pressable style={style.card} onPress={() => navigation.navigate('ClasesListScreen')}>
+                        <Text style={style.titleCard}>Clases</Text>
+                    </Pressable>
+                </View>
             </View>
-            <Text style={style.subtitle}>Siguiente Clase</Text>
-
-            <MapView 
-                style={style.mapa}
-                initialRegion={{
-                    latitude: initialOrigin.latitude,
-                    longitude: initialOrigin.longitude,
-                    latitudeDelta: 0.09,
-                    longitudeDelta: 0.04
-                }}
-                onPress={(direction) => {
-                    console.log(direction.nativeEvent.coordinate)
-                    setCoordenadasClase(direction.nativeEvent.coordinate)
-                }}
-            >
-                <Marker 
-                    draggable
-                    coordinate={coordenadasClase}
-                />
-
-            </MapView>
-
-            <View style={style.cardBox}>
-                <Pressable style={style.card} onPress={() => navigation.navigate('ClasesListScreen')}>
-                    <Text style={style.titleCard}>Clases</Text>
-                </Pressable>
-            </View>
-        </View>
-    </>
-  )
+        </ScrollView>
+    )
 }
 
 export default ClasesCoachScreen
 
 const style = StyleSheet.create({
     root: {
-        width:'100%',
-        height:'100%',
+        width: '100%',
+        height: '100%',
         marginTop: 30,
         paddingHorizontal: '5%',
-        justifyContent:'space-between',
+        justifyContent: 'space-between',
         alignItems: 'center'
     },
-    header:{
+    header: {
         borderBottomWidth: 2,
         borderBottomColor: '#eee',
         paddingVertical: 10
     },
     title: {
         width: 400,
-        textAlign:'start',
+        textAlign: 'start',
         fontSize: 28,
         fontWeight: '600',
         paddingHorizontal: 10,
     },
-    cardBox:{
+    cardBox: {
         marginTop: '5%',
         paddingTop: '5%',
         width: '100%',
         borderTopWidth: '1px',
         borderTopColor: 'black',
-        display:'flex',
-        flexDirection:'row',
-        justifyContent:'space-around'
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-around'
     },
-    subtitle:{
+    subtitle: {
         fontSize: 19,
         textAlign: 'center',
         fontWeight: '500',
         marginBottom: 5
     },
-    imgMapa:{
+    imgMapa: {
         width: '100%',
-        height: 300
+        height: '80%'
     },
-    card:{
+    card: {
         backgroundColor: '#2e5f71',
         width: 200,
         height: 150,
         borderRadius: '15%',
-        justifyContent:'center',
+        justifyContent: 'center',
         marginBottom: 70,
-        shadowOffset: {width: -2, height: 4},  
-        shadowColor: '#171717',  
-        shadowOpacity: 0.2,  
-        shadowRadius: 3,  
+        shadowOffset: { width: -2, height: 4 },
+        shadowColor: '#171717',
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
     },
-    titleCard:{
+    titleCard: {
         color: 'white',
         fontSize: '20px',
-        textAlign:'center',
+        textAlign: 'center',
         paddingRight: '5%'
     },
-    mapa:{
+    mapa: {
         width: '100%',
-        height: '50%'
+        height: '100%'
     }
 });

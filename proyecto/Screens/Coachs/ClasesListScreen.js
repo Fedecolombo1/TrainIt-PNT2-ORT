@@ -1,8 +1,29 @@
 import { StyleSheet, Text, View, ScrollView, Pressable, Image } from 'react-native';
 import Card from '../../Components/Card/Index.js'
 import BtnMas from '../../Components/BtnMas/Index.js'
+import { useEffect } from 'react';
+import { useNavigation } from '@react-navigation/native';
 
-export default function ClasesListScreen({navigation}) {
+export default function ClasesListScreen() {
+
+    const navigation = useNavigation()
+
+    useEffect(() => {
+        navigation.setOptions({
+            headerTitle: "Crear clase",
+            headerSearchBarOptions: {
+                placeholder: "Clases",
+                onChangeText: (event) => {
+                    searchFilterFunction(event.nativeEvent.text)
+                }
+            }
+        })
+    }, [navigation])
+
+    const searchFilterFunction = () => {
+
+    }
+
   return (
     <View style={styles.container}>
         <Text style={styles.title}>Clases</Text>
