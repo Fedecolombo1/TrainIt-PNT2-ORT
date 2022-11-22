@@ -11,6 +11,7 @@ function LoginScreen() {
   const { user, setUser } = useContext(AuthContext)
 
   const [rol, setRol] = useState('')
+  const [error, setError] = useState('')
 
   const [request, response, promptAsync] = Google.useAuthRequest({
     expoClientId: '1060877945491-su4bgghli7rj75klkj7ipg2c4m1mc498.apps.googleusercontent.com',
@@ -19,32 +20,35 @@ function LoginScreen() {
   useEffect(() => {
     if (response?.type === 'success') {
       const { authentication } = response;
-      //console.log(authentication.accessToken) //uso este log para poder acceder al token si tengo que hacer pruebas desde el back
+      console.log(authentication.accessToken) //uso este log para poder acceder al token si tengo que hacer pruebas desde el back
       if (rol === 'Atleta') {
         fetch(`http://192.168.0.87:3000/auth/v1/login-athlete/google/${authentication.accessToken}`)
-          .then(res => res.json())
+          .then(res => res.ok ? res.json() : null)
           .then(data => {
-            console.log(data)
-            setUser(data)
-          })
-          .catch(err => {
-            console.log(err);
-          })
-      } else if (rol === 'Coach') {
-        fetch(`http://192.168.1.51:3000/auth/v1/login-coach/google/${authentication.accessToken}`)
-          .then(res => {
-            if (res.ok) {
-              res.json()
+            if (data) {
+              setUser(data)
             } else {
-              new Error("Hubo un error al inicar sesion con google")
+              throw new Error("Hubo un error al iniciar la sesion")
             }
           })
+          .catch(err => {
+            setError(err.message);
+            console.log(error);
+          })
+      } else if (rol === 'Coach') {
+        fetch(`http://192.168.0.87:3000/auth/v1/login-coach/google/${authentication.accessToken}`)
+          .then(res => res.ok ? res.json() : null
+          )
           .then(data => {
-            setUser(data)
-
+            if (data) {
+              setUser(data)
+            } else {
+              throw new Error("Hubo un error al iniciar la sesion")
+            }
           })
           .catch(err => {
-            console.log(err);
+            setError(err.message);
+            console.log(error);
           })
       }
     }
@@ -57,6 +61,7 @@ function LoginScreen() {
 
   return (
     <View style={style.root}>
+
       {
         !rol
           ?
@@ -70,6 +75,7 @@ function LoginScreen() {
           <>
             <Text style={style.title}>Train It</Text>
             <Text style={style.login}>Inicia sesion para poder continuar</Text>
+            <Text style={style.errorMessage}>{error}</Text>
             <CustomButton style={style.googleButton} text="Sign In With Google" onPress={() => promptAsync()} />
             <CustomButton style={style.googleButton} bgColor='#00779E' text="Go Back" onPress={() => setRol()} />
           </>
@@ -117,5 +123,13 @@ const style = StyleSheet.create({
     borderRadius: '5px',
     borderColor: '#888',
     shadowColor: 'grey'
+  },
+
+  errorMessage: {
+    color: 'red',
+    fontSize: 15,
+    fontWeight: 'bold',
+    alignContent: 'center',
+    justifyContent: 'center'
   }
 });
