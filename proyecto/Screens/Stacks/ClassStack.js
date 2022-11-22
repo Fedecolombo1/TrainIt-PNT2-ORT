@@ -1,4 +1,3 @@
-import { useNavigation } from '@react-navigation/native';
 import React, { useContext } from 'react'
 import { StyleSheet } from 'react-native'
 import AuthContext from '../../Services/AuthContext';
@@ -12,8 +11,6 @@ import ClasesListScreen from '../Coachs/ClasesListScreen';
 
 function ClassStack() {
 
-    const navigation = useNavigation()
-
     const { setUser } = useContext(AuthContext)
     const StackNavigator = createNativeStackNavigator()
 
@@ -24,12 +21,12 @@ function ClassStack() {
     return (
 
         <StackNavigator.Navigator initialRouteName='Class'>
-            <StackNavigator.Screen name='Class' component={Class} />
+            {/* <StackNavigator.Screen name='Class' component={Class} /> */}
+            <StackNavigator.Screen name='Class' component={ClasesCoachScreen} />
             <StackNavigator.Screen name='AlumnosAdminScreen' component={AlumnosAdminScreen} />
-            <StackNavigator.Screen name='ClasesCoachScreen' component={ClasesCoachScreen} />
-            <StackNavigator.Screen name='ClassBrowser' component={ClassBrowser} />
-            <StackNavigator.Screen name='CreateClassScreen' component={CreateClaseScreen} />
-            <StackNavigator.Screen name='ClasesListScreen' component={ClasesListScreen} />
+            <StackNavigator.Screen name='Buscador Clase' component={ClassBrowser} />
+            <StackNavigator.Screen name='Crear Clase' component={CreateClaseScreen} />
+            <StackNavigator.Screen name='Clases' component={ClasesListScreen} />
         </StackNavigator.Navigator>
 
     )

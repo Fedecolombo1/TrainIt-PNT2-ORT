@@ -44,35 +44,29 @@ function CreateClaseScreen() {
 
 
     return (
-        <View>
-            <View style={style.container}>
-                <ScrollView>
-                <Text style={style.title}>Crear Clase</Text>
-                <View style={style.formInput}>
-                    <Text>Nombre</Text>
-                    <CustomInput type={'default'} placeholder="Nombre Clase" value={nombreClase} setValue={setnombreClase} secureTextEntry={false} />
-                </View>
-                <View style={style.formInput}>
-                    <Text>Cupo</Text>
-                    <CustomInput type={'number-pad'} placeholder="Cupo" value={cupo} setValue={setCupo} secureTextEntry={false} />
-                </View>
-                <View style={style.formInput}>
-                    {!open
-                        ?
-                        <Button title="Elegir Horario" onPress={() => setOpen(true)} />
-                        :
-                        <>
-                            <Button title="Cerrar" onPress={() => setOpen(false)} />
-                            <DateTimePicker
-                                mode='datetime'
-                                display='spinner'
-                                value={date}
-                                onChange={onChange}
-                            />
-                        </>
-                    }
 
-                </View>
+        <View style={{ flex: 1 }}>
+            <ScrollView>
+                <Text style={style.title}>Crear Clase</Text>
+                <Text style={style.formInput} >Nombre</Text>
+                <CustomInput type={'default'} placeholder="Nombre Clase" value={nombreClase} setValue={setnombreClase} secureTextEntry={false} />
+                <Text style={style.formInput}>Cupo</Text>
+                <CustomInput type={'number-pad'} placeholder="Cupo" value={cupo} setValue={setCupo} secureTextEntry={false} />
+                {!open
+                    ?
+                    <Button title="Elegir Horario" onPress={() => setOpen(true)} />
+                    :
+                    <>
+                        <Button title="Cerrar" onPress={() => setOpen(false)} />
+                        <DateTimePicker
+                            mode='datetime'
+                            display='spinner'
+                            value={date}
+                            onChange={onChange}
+                        />
+                    </>
+                }
+
                 <MapView
                     style={style.mapa}
                     initialRegion={{
@@ -94,9 +88,9 @@ function CreateClaseScreen() {
 
                 </MapView>
                 <CustomButton text="Agregar" bgColor="#587f8d" onPress={createClass} />
-                </ScrollView>
-            </View>
-        </View >
+
+            </ScrollView >
+        </View>
 
 
     )
@@ -106,7 +100,7 @@ export default CreateClaseScreen
 
 const style = StyleSheet.create({
     container: {
-        paddingTop: 40,
+        justifyContent: 'center',
         paddingHorizontal: 30,
         height: '100%'
     },
@@ -120,7 +114,7 @@ const style = StyleSheet.create({
     },
     mapa: {
         width: '100%',
-        height: '120%',
+        height: '90%',
         marginBottom: 10
     }
 });

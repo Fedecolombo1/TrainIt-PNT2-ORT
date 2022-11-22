@@ -2,10 +2,11 @@ import * as React from 'react';
 import { View, Text, StyleSheet, Pressable, ScrollView } from 'react-native'
 import MapView, { Marker } from 'react-native-maps';
 import AuthContext from '../../Services/AuthContext/index';
+import { Ionicons } from '@expo/vector-icons';
 
 function ClasesCoachScreen({ navigation }) {
 
-    const { user, setUser } = React.useContext(AuthContext)
+    const { user } = React.useContext(AuthContext)
 
     const initialOrigin = {
         latitude: -34.60376,
@@ -15,26 +16,14 @@ function ClasesCoachScreen({ navigation }) {
     React.useEffect(() => {
         navigation.setOptions({
             headerLargeTitle: false,
-            headerTitle: "Proxima clase",
+            headerTitle: "Class",
             headerRight: () => (
-                <Pressable
-                    onPress={() => navigation.navigate("CreateClaseScreen")}
-                    style={{
-                        backgroundColor: "purple",
-                        width: 30,
-                        height: 30,
-                        borderRadius: 10,
-                        justifyContent: 'center'
-                    }}
-                >
-                    <Text
-                        style={{
-                            color: "white",
-                            fontSize: 23,
-                            textAlign: 'center'
-                        }}
-                    >+</Text>
-                </Pressable>
+                <Ionicons
+                    name="add"
+                    size={30}
+                    color="black"
+                    onPress={() => navigation.navigate("Crear Clase")}
+                />
             )
         })
     }, [navigation])
@@ -43,11 +32,7 @@ function ClasesCoachScreen({ navigation }) {
 
     return (
         <ScrollView>
-            {/* <Header /> */}
             <View style={style.root}>
-                {/* <View style={style.header}>
-                <Text style={style.title}>Bienvenido, {user.email}!</Text>
-            </View> */}
                 <Text style={style.subtitle}>Siguiente Clase:</Text>
 
                 <Text style={style.subtitle}>Aca va a ir el nombre de la clase</Text>
@@ -78,7 +63,7 @@ function ClasesCoachScreen({ navigation }) {
 
                 <View style={style.cardBox}>
                     <Text style={style.subtitle}>Ver todas las clases</Text>
-                    <Pressable style={style.card} onPress={() => navigation.navigate('ClasesListScreen')}>
+                    <Pressable style={style.card} onPress={() => navigation.navigate('Clases')}>
                         <Text style={style.titleCard}>Clases</Text>
                     </Pressable>
                 </View>
@@ -132,8 +117,8 @@ const style = StyleSheet.create({
     },
     card: {
         backgroundColor: '#2e5f71',
-        width: 200,
-        height: 150,
+        width: 150,
+        height: 100,
         borderRadius: '15%',
         justifyContent: 'center',
         marginBottom: 70,
