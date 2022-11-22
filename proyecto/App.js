@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StatusBar } from 'react-native';
 import LoginScreen from './Screens/Login/LoginScreen.js';
 import { useCallback, useState } from 'react';
 import { useEffect } from 'react';
@@ -35,6 +35,11 @@ export default function App() {
 
   return (
     <>
+      <StatusBar
+        animated={true}
+        backgroundColor="#61dafb"
+        barStyle='dark-content'
+        hidden={false} />
       <AuthContext.Provider value={{ user, setUser }} >
         {!user
           ?

@@ -8,20 +8,8 @@ export default function HomeNavigation() {
 
     const { user } = useContext(AuthContext)
     return (
-
-        <>
-            <NavigationContainer>
-
-                {!user.datosValidados
-                    ?
-                    <RegisterScreen />
-                    :
-                    <MainNavigator /> 
-                }
-            </NavigationContainer>
-
-        </>
-
+        <NavigationContainer>
+            <MainNavigator />
+        </NavigationContainer>
     )
-
 }
