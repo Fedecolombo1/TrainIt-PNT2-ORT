@@ -1,4 +1,3 @@
-import { useNavigation } from '@react-navigation/native';
 import React from 'react'
 import { StyleSheet } from 'react-native'
 import { createStackNavigator } from "@react-navigation/stack";
@@ -10,8 +9,6 @@ import ClassBrowser from '../Class/ClassBrowser';
 import ClasesListScreen from '../Coachs/ClasesListScreen';
 
 function HomeStack() {
-
-  const navigation = useNavigation()
 
   const Stack = createStackNavigator();
 
