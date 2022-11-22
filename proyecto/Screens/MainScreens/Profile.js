@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import CustomButton from "../../Components/CustomButton";
 import AuthContext from "../../Services/AuthContext";
 
@@ -14,7 +14,7 @@ export default function Profile() {
 
     return (
 
-        <View>
+        <View style={style.container}>
             <Text>{user.nombre}</Text>
             <Text>{user.apellido}</Text>
             <Text>{user.fechaNacimiento}</Text>
@@ -25,3 +25,10 @@ export default function Profile() {
 
     )
 }
+
+const style = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center'
+    }
+})

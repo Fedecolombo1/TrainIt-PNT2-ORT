@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react"
-import { View, Text, StyleSheet, ViewBase, Pressable } from "react-native"
+import { View, Text, StyleSheet, ViewBase, Pressable, ScrollView } from "react-native"
 import MapView, { Marker } from "react-native-maps"
 import AuthContext from "../../Services/AuthContext";
 import { Ionicons } from '@expo/vector-icons';
@@ -12,22 +12,24 @@ export default function Home({ navigation }) {
     }
 
     const { user, setUser } = useContext(AuthContext)
-    const [coordenadasClase, setCoordenadasClase] = useState(initialOrigin)
 
     useEffect(() => {
         navigation.setOptions({
             headerRight: () => (
-                <Pressable style={{ marginRight: 15 }}>
-                    <Ionicons name="ios-notifications-outline" size={24} color="black" />
-                </Pressable>
-            )
+                <Ionicons
+                    name="ios-notifications-outline"
+                    style={{ marginRight: 22 }}
+                    size={22}
+                    color="black"
+                    onPress={() => { console.log("Aca vamos a ver las notificaciones") }}
+                />)
         })
     }, [navigation])
 
     return (
         <View style={style.root}>
-            <Text>Bienvenido {user.nombre} {user.apellido}</Text>
-            <Text>Tu proxima clase</Text>
+            <Text style={style.title} >Bienvenido {user.nombre} {user.apellido} a TRAIN-IT</Text>
+            <Text style={style.formInput}>Tu proxima clase</Text>
             <MapView
                 style={style.mapa}
                 scrollEnabled={false}
@@ -38,11 +40,10 @@ export default function Home({ navigation }) {
                     latitudeDelta: 0.035,
                     longitudeDelta: 0.03
                 }}
-
             >
                 <Marker
                     draggable={false}
-                    coordinate={coordenadasClase}
+                    coordinate={initialOrigin}
                 />
 
             </MapView>
@@ -55,20 +56,20 @@ const style = StyleSheet.create({
         height: '100%',
         marginTop: 30,
         paddingHorizontal: '5%',
-        justifyContent: 'space-between',
         alignItems: 'center'
     },
     title: {
         textAlign: 'start',
-        fontSize: 30,
-        marginBottom: 10
+        fontSize: 20,
+        marginBottom: 10,
+        justifyContent: 'center',
     },
     formInput: {
         marginBottom: 10
     },
     mapa: {
-        width: '100%',
-        height: '120%',
+        width: '90%',
+        height: '85%',
         marginBottom: 10
     }
 });
