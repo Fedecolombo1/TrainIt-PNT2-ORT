@@ -10,18 +10,18 @@ export default function Home({ navigation }) {
         latitude: -34.60376,
         longitude: -58.38162
     }
-
     const { user, setUser } = useContext(AuthContext)
 
     useEffect(() => {
         navigation.setOptions({
             headerRight: () => (
                 <Ionicons
+                //TODO:  change icon based on diferent conditions, if theres a notification of feedbacks pending
                     name="ios-notifications-outline"
                     style={{ marginRight: 22 }}
                     size={22}
                     color="black"
-                    onPress={() => { console.log("Aca vamos a ver las notificaciones") }}
+                    onPress={() => {navigation.navigate("Notification")}}
                 />)
         })
     }, [navigation])
