@@ -28,27 +28,52 @@ function RegisterScreen() {
   const [validated, setValidated] = useState(false)
 
   const finalizar = () => {
-    setValidated(true)
-    const bodyObj = {
-      googleId: user.googleId,
-      nombre: nombre,
-      apellido: apellido,
-      dni: dni,
-      fechaNacimiento: fechaNac,
-      aptoFisico: aptoFisico
+
+    if (user.rol === 'Atleta') {
+      const bodyObj = {
+        googleId: user.googleId,
+        nombre: nombre,
+        apellido: apellido,
+        dni: dni,
+        fechaNacimiento: fechaNac,
+        aptoFisico: aptoFisico
+      }
+
+      const requestOptions = {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(bodyObj)
+      };
+      fetch(`http://192.168.0.87:3000/athletes/finalizar-registracion/`, requestOptions)
+        .then(response => response.json())
+        .then(data => {
+          setUser(data)
+        })
+        .catch(err => console.log(err))
+
+    } else {
+      const bodyObj = {
+        googleId: user.googleId,
+        nombre: nombre,
+        apellido: apellido,
+        dni: dni,
+        fechaNacimiento: fechaNac
+      }
+
+      const requestOptions = {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(bodyObj)
+      };
+      fetch(`http://192.168.0.87:3000/coaches/finalizar-registracion/`, requestOptions)
+        .then(response => response.json())
+        .then(data => {
+          setUser(data)
+        })
+        .catch(err => console.log(err))
     }
 
-    const requestOptions = {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(bodyObj)
-    };
-    fetch(`http://192.168.0.87:3000/athletes/finalizar-registracion/`, requestOptions)
-      .then(response => response.json())
-      .then(data => {
-        setUser(data)
-      })
-      .catch(err => console.log(err))
+    setValidated(true)
   }
 
   const onChange = (event, selectedDate) => {
@@ -59,6 +84,7 @@ function RegisterScreen() {
 
   return (
     <View style={style.root}>
+
       {!validated ?
         <>
           <Text style={style.title}>Train It</Text>
@@ -70,15 +96,15 @@ function RegisterScreen() {
           <CustomButton text="Logout" onPress={() => setUser(null)} />
         </>
       }
-      {
+      {!validated ?
+
         !nomApe ?
           <>
             <Text style={style.registerTxt}>Nombre</Text>
             <CustomInput type={'default'} placeholder="Nombre" value={nombre} setValue={setNombre} secureTextEntry={false} />
             <Text style={style.registerTxt}>Apellido</Text>
             <CustomInput type={'default'} placeholder="Apellido" value={apellido} setValue={setApellido} secureTextEntry={false} />
-            <CustomButton text="Siguiente" onPress={() => setNomApe(true)} />
-            <CustomButton text="Logout" onPress={() => setUser(null)} />
+            <CustomButton text="Next" onPress={() => setNomApe(true)} />
           </>
           :
           <>
@@ -86,7 +112,8 @@ function RegisterScreen() {
               <>
                 <Text style={style.registerTxt}>Dni</Text>
                 <CustomInput type={'number-pad'} placeholder="Dni" value={dni} setValue={setDni} secureTextEntry={false} />
-                <CustomButton text="Siguiente" onPress={() => setDniTxt(true)} />
+                <CustomButton text="Next" onPress={() => setDniTxt(true)} />
+                <CustomButton text="Back" onPress={() => setNomApe(false)} />
               </>
               :
               <>
@@ -101,8 +128,8 @@ function RegisterScreen() {
                       maximumDate={new Date(`${year}-${month}-${day}`)}
                       onChange={onChange}
                     />
-                    <CustomButton text={user.rol === "Atleta" ? "Siguiente" : "Finalizar"} onPress={user.rol === 'Atleta' ? () => setFechaNacTxt(true) : finalizar} />
-                    <CustomButton text="Logout" onPress={() => setUser(null)} />
+                    <CustomButton text={user.rol === "Atleta" ? "Next" : "Send"} onPress={user.rol === 'Atleta' ? () => setFechaNacTxt(true) : finalizar} />
+                    <CustomButton text="Back" onPress={() => setDniTxt(false)} />
                   </>
                   :
                   <>
@@ -119,8 +146,8 @@ function RegisterScreen() {
                           <Picker.Item label="Si" value={true} />
                           <Picker.Item label="No" value={false} />
                         </Picker>
-                        <CustomButton text="Finalizar" onPress={finalizar} />
-                        <CustomButton text="Logout" onPress={() => setUser(null)} />
+                        <CustomButton text="Send" onPress={finalizar} />
+                        <CustomButton text="Back" onPress={() => setFechaNacTxt(false)} />
                       </>
                       :
                       <></>
@@ -130,7 +157,10 @@ function RegisterScreen() {
               </>
             }
           </>
+        :
+        <></>
       }
+
 
     </View >
   )
