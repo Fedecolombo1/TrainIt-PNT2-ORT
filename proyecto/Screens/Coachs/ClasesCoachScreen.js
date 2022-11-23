@@ -22,7 +22,15 @@ function ClasesCoachScreen({ navigation }) {
                     name="add"
                     size={30}
                     color="black"
-                    onPress={() => navigation.navigate("Crear Clase")}
+                    onPress={() => {
+                        if (user.rol === 'Coach') {
+                            navigation.navigate("Crear Clase")
+                        } else if(user.rol === 'Atleta') {
+                            navigation.navigate("Unirse A Clase")
+                        }
+                    }
+
+                    }
                 />
             )
         })
@@ -48,9 +56,6 @@ function ClasesCoachScreen({ navigation }) {
                         longitude: initialOrigin.longitude,
                         latitudeDelta: 0.02,
                         longitudeDelta: 0.040
-                    }}
-                    onPress={(direction) => {
-                        console.log(direction.nativeEvent.coordinate)
                     }}
                     moveOnMarkerPress={false}
                 >
