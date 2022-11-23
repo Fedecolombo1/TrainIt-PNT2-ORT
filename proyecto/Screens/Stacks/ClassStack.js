@@ -8,6 +8,7 @@ import AlumnosAdminScreen from '../Admins/AlumnosAdminScreen';
 import ClasesCoachScreen from '../Coachs/ClasesCoachScreen';
 import ClassBrowser from '../Class/ClassBrowser';
 import ClasesListScreen from '../Coachs/ClasesListScreen';
+import UnirseClase from '../Class/UnirseClase';
 
 function ClassStack() {
 
@@ -27,6 +28,7 @@ function ClassStack() {
             <StackNavigator.Screen name='Buscador Clase' component={ClassBrowser} />
             <StackNavigator.Screen name='Crear Clase' component={CreateClaseScreen} />
             <StackNavigator.Screen name='Clases' component={ClasesListScreen} />
+            <StackNavigator.Screen name='Unirse A Clase' component={UnirseClase} />
         </StackNavigator.Navigator>
 
     )

@@ -7,6 +7,8 @@ import AlumnosAdminScreen from '../Admins/AlumnosAdminScreen';
 import ClasesCoachScreen from '../Coachs/ClasesCoachScreen';
 import ClassBrowser from '../Class/ClassBrowser';
 import ClasesListScreen from '../Coachs/ClasesListScreen';
+import FeedbackView from '../Feedback';
+import SolicitudFeedback from '../Feedback/SolicitudFeedback';
 
 function HomeStack() {
 
@@ -16,11 +18,13 @@ function HomeStack() {
 
     <Stack.Navigator initialRouteName='Home'>
       <Stack.Screen name='Home' component={Home} />
-      <Stack.Screen name='AlumnosAdminScreen' component={AlumnosAdminScreen} />
+      {/* <Stack.Screen name='AlumnosAdminScreen' component={AlumnosAdminScreen} />
       <Stack.Screen name='ClasesCoachScreen' component={ClasesCoachScreen} />
       <Stack.Screen name='ClassBrowser' component={ClassBrowser} />
       <Stack.Screen name='CreateClassScreen' component={CreateClaseScreen} />
-      <Stack.Screen name='ClasesListScreen' component={ClasesListScreen} />
+      <Stack.Screen name='ClasesListScreen' component={ClasesListScreen} /> */}
+      <Stack.Screen name='Notification' component={FeedbackView} />
+      <Stack.Screen name='SolicitudFeedback' component={SolicitudFeedback} />
     </Stack.Navigator>
 
   )
