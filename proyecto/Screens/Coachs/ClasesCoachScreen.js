@@ -107,14 +107,15 @@ const style = StyleSheet.create({
         borderTopWidth: '1px',
         borderTopColor: 'black',
         display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-around'
+        flexDirection: 'column',
+        justifyContent: 'space-around',
+        alignItems: 'center'
     },
     subtitle: {
         fontSize: 19,
         textAlign: 'center',
         fontWeight: '500',
-        marginBottom: 5
+        margin: 5
     },
     imgMapa: {
         width: '100%',
@@ -131,6 +132,7 @@ const style = StyleSheet.create({
         shadowColor: '#171717',
         shadowOpacity: 0.2,
         shadowRadius: 3,
+        margin: 10
     },
     titleCard: {
         color: 'white',
