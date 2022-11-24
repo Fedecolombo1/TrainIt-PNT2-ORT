@@ -23,14 +23,13 @@ export default function App() {
 
   useEffect(useCallback(() => {
     //Guarda el user en el storage del dispositivo
-    setTimeout(() => {
 
-      if (user) {
-        AsyncStorage.storeData('user', user)
-      } else {
-        AsyncStorage.clearAll()
-      }
-    })
+    if (user) {
+      AsyncStorage.storeData('user', user)
+    } else {
+      AsyncStorage.clearAll()
+    }
+
   }), [user])
 
   return (

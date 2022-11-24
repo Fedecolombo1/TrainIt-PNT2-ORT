@@ -1,10 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useContext, useState } from 'react'
-import { Text, View, StyleSheet } from 'react-native'
+import { Text, View, StyleSheet, Switch } from 'react-native'
 import CustomButton from '../../Components/CustomButton';
 import CustomInput from '../../Components/TextInput';
 import AuthContext from '../../Services/AuthContext';
-import { Picker } from '@react-native-picker/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 function RegisterScreen() {
@@ -26,6 +25,9 @@ function RegisterScreen() {
   const [dniTxt, setDniTxt] = useState('')
   const [fechaNacTxt, setFechaNacTxt] = useState('')
   const [validated, setValidated] = useState(false)
+
+  const toggleSwitch = () => setAptoFisico(previousState => !previousState);
+
 
   const finalizar = () => {
 
@@ -93,7 +95,7 @@ function RegisterScreen() {
         :
         <>
           <Text style={style.title}>Finalizaste tu registracion!</Text>
-          <CustomButton text="Logout" onPress={() => setUser(null)} />
+          <Text style={style.title}>Seras redirigido a la pagina de inicio de la app</Text>
         </>
       }
       {!validated ?
@@ -137,15 +139,13 @@ function RegisterScreen() {
                       ?
                       <>
                         <Text style={style.registerTxt}>Tiene su apto fisico al dia?</Text>
-                        <Picker
-                          selectedValue={aptoFisico}
-                          onValueChange={(itemValue, itemIndex) => {
-                            setAptoFisico(itemValue)
-                          }
-                          }>
-                          <Picker.Item label="Si" value={true} />
-                          <Picker.Item label="No" value={false} />
-                        </Picker>
+                        <Switch
+                          trackColor={{ false: "#767577", true: "#81b0ff" }}
+                          thumbColor={aptoFisico ? "#f5dd4b" : "#f4f3f4"}
+                          ios_backgroundColor="#3e3e3e"
+                          onValueChange={toggleSwitch}
+                          value={aptoFisico}
+                        />
                         <CustomButton text="Send" onPress={finalizar} />
                         <CustomButton text="Back" onPress={() => setFechaNacTxt(false)} />
                       </>

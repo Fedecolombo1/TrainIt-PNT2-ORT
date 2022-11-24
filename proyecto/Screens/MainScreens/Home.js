@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react"
 import { View, Text, StyleSheet, ViewBase, Pressable, ScrollView } from "react-native"
 import MapView, { Marker } from "react-native-maps"
 import AuthContext from "../../Services/AuthContext";
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function Home({ navigation }) {
 
@@ -15,11 +15,12 @@ export default function Home({ navigation }) {
     useEffect(() => {
         navigation.setOptions({
             headerRight: () => (
-                <Ionicons
+                <MaterialCommunityIcons
                 //TODO:  change icon based on diferent conditions, if theres a notification of feedbacks pending
-                    name="ios-notifications-outline"
+                //bell-badge-outline icon when theres a notification
+                    name="bell-outline"
                     style={{ marginRight: 22 }}
-                    size={22}
+                    size={23}
                     color="black"
                     onPress={() => {navigation.navigate("Notification")}}
                 />)
