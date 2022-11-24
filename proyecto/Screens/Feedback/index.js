@@ -25,17 +25,21 @@ export default function FeedbackView({navigation}) {
     } else if (user.rol === 'Coach') {
         return (
             <View style={style.root}>
-            <Text>{user.nombre} aca vas a poder ver tus feedbacks y completarlos en caso de que tengas que hacerlo</Text>
-            <ScrollView style={style.scrollBox} showsVerticalScrollIndicator={false}>
-                <Card title="Feedback 1"/>
-                <Card title="Feedback 2"/>
-            </ScrollView>
-        </View>
+                <Text>{user.nombre} aca vas a poder ver tus feedbacks y completarlos en caso de que tengas que hacerlo</Text>
+                <ScrollView style={style.scrollBox} showsVerticalScrollIndicator={false}>
+                    <Card coach={true} state={"pending"} title="Feedback 1"/>
+                    <Card coach={true} state={"closed"} title="Feedback 2"/>
+                </ScrollView>
+            </View>
         )
-    } else if (user.rol === 'Administraddor') {
+    } else if (user.rol === 'Administrador') {
         return (
-            <View>
+            <View style={style.root}>
                 <Text>Aca apareceran los usuarios que esten pendientes de dar de alta en la aplicacion</Text>
+                <ScrollView style={style.scrollBox} showsVerticalScrollIndicator={false}>
+                    <Card coach={true} title="Juan Carlos"/>
+                    <Card title="Pedro Picapiedra"/>
+                </ScrollView>
             </View>
         )
     }

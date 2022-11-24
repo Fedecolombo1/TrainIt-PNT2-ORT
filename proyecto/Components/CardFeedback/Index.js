@@ -1,9 +1,11 @@
 import React from 'react'
-import { Pressable, Text, StyleSheet, View } from 'react-native'
+import { Pressable, Text, StyleSheet, TextInput, Button } from 'react-native'
 import { useState } from 'react'
 import { agregarCoach } from '../../Services/coaches.js'
 
 function Index({coach, title, feedback, state}) {
+
+    const [text, setText] = useState()
     
     estilo = function(state) {
         let color;
@@ -45,14 +47,23 @@ function Index({coach, title, feedback, state}) {
             }
         }
         
-        }
+    }
 
   return (
     <>
         <Pressable style={estilo(state)}>
-                {coach ? <Text style={styles.titleCard}>{coach.nombre}</Text> : <Text style={styles.titleCard}>{title}</Text>}
+                <Text style={styles.titleCard}>{title}</Text>
                 <Text style={styles.txtCard}>{feedback}</Text>
                 <Text style={styles.txtCard}>Estado: {state}</Text>
+                {(state == "pending" && coach == true)
+                    ? 
+                    <>
+                        <TextInput style={styles.txtInput} onChangeText={() => {} } value={text} multiline={true} /> 
+                        <Button title="enviar"/>
+                    </>
+                    : 
+                    <></>
+                }
         </Pressable>      
     </>
   )
@@ -71,5 +82,12 @@ const styles = StyleSheet.create({
     },
     pending:{
         backgroundColor: 'orange'
+    },
+    txtInput:{
+        backgroundColor: "white",
+        marginTop: 25,
+        padding: 5,
+        height: 80,
+        borderRadius: 5
     }
 })
