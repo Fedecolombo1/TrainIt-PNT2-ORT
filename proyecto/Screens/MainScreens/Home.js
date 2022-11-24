@@ -30,7 +30,9 @@ export default function Home({ navigation }) {
     return (
         <View style={style.root}>
             <Text style={style.title} >Bienvenido {user.nombre} {user.apellido} a TRAIN-IT</Text>
-            <Text style={style.formInput}>Tu proxima clase</Text>
+            <Text style={style.text}>Tu proxima clase: Calistenia</Text>
+            <Text style={style.text}>Cupo de Clase <Text style={style.textNum}>15/18</Text></Text>
+            <Text style={style.text}>Faltan 5 dias</Text>
             <MapView
                 style={style.mapa}
                 scrollEnabled={false}
@@ -65,12 +67,19 @@ const style = StyleSheet.create({
         marginBottom: 10,
         justifyContent: 'center',
     },
-    formInput: {
-        marginBottom: 10
-    },
     mapa: {
         width: '90%',
-        height: '85%',
-        marginBottom: 10
-    }
+        height: '45%',
+        marginBottom: 10,
+        marginTop: 15
+    },
+    text: {
+        marginVertical: 4,
+        fontSize: 21,
+        textAlign: 'start'
+    },
+    textNum:{
+        fontWeight: "600",
+        color: 'green'
+    },
 });

@@ -3,31 +3,20 @@ import { Pressable, Text, StyleSheet, View } from 'react-native'
 import { useState } from 'react'
 import { agregarCoach } from '../../Services/coaches.js'
 
-function Index({coach, title, navigate, navigation}) {
-
-    const [visible, setVisible] = useState('none')
-
-    const bntBorrar = () => {
-        visible=='none' ? setVisible('flex') : setVisible('none')
-        
-    }
+function Index({coach, title, navigate, estaUnido}) {
 
   return (
     <>
-        <Pressable onPress={bntBorrar} style={styles.card}>
+        <Pressable onPress={navigate} style={styles.card}>
                 {coach ? <Text style={styles.titleCard}>{coach.nombre}</Text> : <Text style={styles.titleCard}>{title}</Text>}
                 <Text style={styles.txtCard}>Descripcion hardcodeada</Text>
+                {!estaUnido
+                ?
+                <Text style={styles.txtUnite}>Unite a esta clase!</Text>
+                :
+                <></>
+                }
         </Pressable>
-        <View style={styles.btnBox}>
-            {/*COMO USO EL NAVIGATE SI NO ESTOY EN UN HIJO DEL STACK NAVIGATOR?*/}
-            <Pressable onPress={() => navigation.navigate({navigate})} style={[styles.btnEditar, visible=='none' ? {display: 'none'} : {display: 'flex'}]}>
-                <Text style={styles.btnText}>Editar</Text>
-            </Pressable>
-            <Pressable style={[styles.btnBorrar, visible=='none' ? {display: 'none'} : {display: 'flex'}]}>
-                <Text style={styles.btnText}>Borrar</Text>
-            </Pressable>            
-        </View>
-        
     </>
   )
 }
@@ -48,6 +37,7 @@ const styles = StyleSheet.create({
         shadowColor: '#171717',  
         shadowOpacity: 0.2,  
         shadowRadius: 3,  
+        justifyContent: 'space-around'
     },
     titleCard:{
         fontSize: 25,
@@ -83,5 +73,11 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 20,
         textAlign: 'center'
+    },
+    txtUnite:{
+        fontSize: 17,
+        color: "red",
+        textAlign: 'center',
+        fontWeight: "600"
     }
 })

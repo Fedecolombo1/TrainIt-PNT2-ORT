@@ -45,7 +45,6 @@ export default function MainNavigator() {
                         options={{
                             headerShown: false
                         }}
-
                     />
                     <Tab.Screen
                         name="ClassTab"
