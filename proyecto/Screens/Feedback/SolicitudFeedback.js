@@ -7,25 +7,32 @@ import { Picker } from '@react-native-picker/picker';
 let listaDeCoaches = [];
 
 
+
 export default function SolicitudFeedback({ navigation }) {
 
     const { user } = useContext(AuthContext)
     const [coach, setCoach] = useState()
     const [clase, setClase] = useState()
+    const [athletes, setAthletes] = useState([])
+
+    useEffect(useCallback(() => {
+        fetch(`http://192.168.0.87:3000/coaches`)
+            .then(res => res.json())
+            .then(data => {
+                console.log(data)
+                setAthletes(data)
+            })
+            .catch(err => console.log(err))
+    }), [])
+
 
     const listarCoachesApiCall = () => {
-        fetch(`http://192.168.0.120:3000/coaches`)
-            .then(res => res.json())
-            .then(data => listaDeCoaches = data.slice())
-            .catch(err => console.log(err))
+        // fetch(`http://192.168.0.87:3000/athletes`)
+        //     .then(res => res.json())
+        //     .then(data => setAthletes(data.slice()))
+        //     .catch(err => console.log(err))
     }
 
-    useEffect(() => {
-        listarCoachesApiCall();
-        console.log('muestro cantidad de coaches: ', listaDeCoaches.length)
-        console.log('muestro lista de coaches: ')
-        listaDeCoaches.forEach(el => console.log(el))
-    }, [])
 
     const requestFeedback = () => {
         const bodyObj = {
@@ -41,7 +48,7 @@ export default function SolicitudFeedback({ navigation }) {
         console.log('Detallamos bodyObj:');
         console.log(bodyObj);
 
-        fetch(`http://192.168.0.120:3000/feedback`, requestOptions)
+        fetch(`http://192.168.0.87:3000/feedback`, requestOptions)
             .then(res => {
                 res.status == 200 || res.status == 201 ? alert(`Bien! \nTu solicitud fue enviada.`) : alert('Por favor revisa tu lista de feedbacks.')
             })
@@ -62,7 +69,7 @@ export default function SolicitudFeedback({ navigation }) {
                     }
                     }>
                     {
-                        listaDeCoaches.map(element => {
+                        athletes.map(element => {
                             const fullname = element.nombre + ' ' + element.apellido;
                             return <Picker.Item key={element._id} label={fullname} value={element} />
                         })
@@ -79,7 +86,7 @@ export default function SolicitudFeedback({ navigation }) {
                 />
             </View>
             <View style={style.btnsBox}>
-                <Button title="Solicitar" onPress={requestFeedback}/>
+                <Button title="Solicitar" onPress={requestFeedback} />
             </View>
         </View>
     )
