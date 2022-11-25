@@ -1,13 +1,29 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect, useCallback } from "react";
 import { Button, Text, View, StyleSheet, ScrollView } from "react-native";
 import AuthContext from "../../Services/AuthContext";
 import { Picker } from '@react-native-picker/picker';
 
+let listaDeCoaches = [];
+
+
 export default function SolicitudFeedback() {
 
     const { user } = useContext(AuthContext)
-
     const [coach, setCoach] = useState()
+
+    const listarCoachesApiCall = () => {
+        fetch(`http://192.168.0.120:3000/coaches`)
+        .then(res => res.json())
+        .then(data => listaDeCoaches = data.slice())
+        .catch(err => console.log(err))
+    }
+
+    useEffect(() => {
+        listarCoachesApiCall();
+        console.log('muestro cantidad de coaches: ', listaDeCoaches.length)
+        console.log('muestro lista de coaches: ')
+        listaDeCoaches.forEach(el => console.log(el))
+    }, [])
 
     const apiCall = () => {
         const bodyObj = {
@@ -33,11 +49,13 @@ export default function SolicitudFeedback() {
                         setCoach(itemValue)
                     }
                     }>
-                    <Picker.Item label="Carlos Duran" value={"Carlos Duran"} />
-                    <Picker.Item label="Leo Buezo" value={"Leo Buezo"} />
-                    <Picker.Item label="Ignacio Vega" value={"Ignacio Vega"} />
-                    <Picker.Item label="Fede Colombo" value={"Fede Colombo"} />
-                    <Picker.Item label="Ivan Stecki" value={"ACA DEBERIA GUARDAR ID/OBJETO"} />
+                    {
+                    listaDeCoaches.map(element => {
+                        const fullname = element.nombre + ' ' + element.apellido;
+                        return <Picker.Item key={element._id} label={fullname} value={element.dni} />
+                    })
+
+                    }
                 </Picker>
             </View>
             <Button title="Solicitar" onPress={apiCall} />
