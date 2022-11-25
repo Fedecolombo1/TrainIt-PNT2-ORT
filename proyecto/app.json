@@ -19,7 +19,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "backgroundColor" : "#000000"
+      "backgroundColor" : "#f2f0e9"
     },
     "android": {
       "adaptiveIcon": {
