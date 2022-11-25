@@ -1,14 +1,18 @@
 import { StyleSheet, Text, View, ScrollView, Pressable, Image } from 'react-native';
 import Card from '../../Components/Card/Index.js'
 import BtnMas from '../../Components/BtnMas/Index.js'
-import { useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import AuthContext from '../../Services/AuthContext/index.js';
+import { getClases } from '../../Services/Clases.js';
 
-export default function ClasesListScreen() {
+export default function ClasesListScreen({navigation}) {
 
-    const navigation = useNavigation()
+    const { user } = useContext(AuthContext)
+
+    const [clases, setClases] = useState([])
 
     useEffect(() => {
         navigation.setOptions({
@@ -26,20 +30,56 @@ export default function ClasesListScreen() {
 
     }
 
+    const navigate = (claseDetail) => {
+        return navigation.navigate("Detalle Clase", {clase: claseDetail})
+    }
+
+    useEffect(() => {
+        
+        getClases().then((data) => {
+            setClases(data)
+        })
+
+    }, [])
+
+    const estaUnidoAClase = (id) => {
+        console.log(id);
+        const clase = clases.find(clase => clase.id = id);
+        // console.log(clase);
+        if(clase){
+            const alu = clase.alumnos.find(alu => alu.id == user.id)
+            if(alu){
+                return true
+            }
+        }
+    }
+
+
     return (
         <SafeAreaView>
 
             <View style={styles.container}>
                 {/* <Text style={styles.title}>Clases</Text> */}
                 <ScrollView style={styles.cardBox} showsVerticalScrollIndicator={false}>
-                    <Card title='Entrenamiento Functional' text='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.' />
-                    <Card title='Ciclismo' text='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.' />
-                    <Card title='Cardio' text='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.' />
+                    {
+                        clases.length > 0 ?
+                        clases.map( clase => {
+                           return <Card estaUnido={estaUnidoAClase(clase._id)} navigate={() => navigate(clase)} title={clase._id} key={clase._id} /> 
+                        })
+                        :
+                        <Text>CARGANDO..</Text>                        
+                    }
                 </ScrollView>
 
-                <Pressable style={styles.agregarBox} onPress={() => navigation.navigate("CreateClaseScreen")}>
+                {user.rol == "Coach"
+                ?
+                <Pressable style={styles.agregarBox} onPress={() => navigation.navigate("Crear Clase")}>
                     <Ionicons name="add" size={24} color="black" />
                 </Pressable>
+                :
+                <></>
+                }
+                
             </View>
         </SafeAreaView>
     );

@@ -35,12 +35,12 @@ export default function Profile() {
     return (
 
         <View style={style.container}>
-            <Text>Nombre:</Text>
-            <Text>{user.nombre}</Text>
-            <Text>Apellido:</Text>
-            <Text>{user.apellido}</Text>
-            <Text>Edad:</Text>
-            <Text>{getAge()}</Text>
+            <View style={style.datosBox}>
+                <Text style={style.text}>Nombre: {user.nombre}</Text>
+                <Text style={style.text}>Apellido: {user.apellido}</Text>
+                <Text style={style.text}>Edad: {getAge()}</Text>
+            </View>
+
 
             <CustomButton text="Sign out" onPress={signOut}></CustomButton>
 
@@ -52,6 +52,16 @@ export default function Profile() {
 const style = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center'
+        justifyContent: "space-between",
+        padding: 20,
+        height: '100%'
+    },
+    datosBox:{
+        marginTop: 60
+    },
+    text: {
+        marginVertical: 2,
+        fontSize: 21,
+        textAlign: 'center',
     }
 })
