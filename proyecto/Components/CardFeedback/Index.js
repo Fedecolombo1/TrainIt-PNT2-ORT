@@ -53,8 +53,10 @@ function Index({coach, title, feedback, state}) {
     <>
         <Pressable style={estilo(state)}>
                 <Text style={styles.titleCard}>{title}</Text>
+                <Text style={styles.txtCardTitle}>Estado:</Text>
+                <Text style={styles.txtCard}>{state}</Text>
+                <Text style={styles.txtCardTitle}>Devolución:</Text>
                 <Text style={styles.txtCard}>{feedback}</Text>
-                <Text style={styles.txtCard}>Estado: {state}</Text>
                 {(state == "pending" && coach == true)
                     ? 
                     <>
@@ -79,6 +81,10 @@ const styles = StyleSheet.create({
     },
     txtCard:{
         fontSize: 17,
+    },
+    txtCardTitle:{
+        fontSize: 17,
+        fontWeight: "bold"
     },
     pending:{
         backgroundColor: 'orange'
