@@ -28,7 +28,7 @@ export default function MainNavigator() {
                                     ? 'ios-home'
                                     : 'ios-home-outline';
                             } else if (route.name === 'ClassTab') {
-                                iconName = focused ? 'ios-list' : 'ios-list-outline';
+                                iconName = focused ? 'ios-barbell' : 'ios-barbell-outline';
                             } else if (route.name === 'ProfileTab') {
                                 iconName = focused ? 'ios-person' : 'ios-person-outline';
 
