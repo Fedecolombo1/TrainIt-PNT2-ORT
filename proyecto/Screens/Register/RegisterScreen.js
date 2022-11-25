@@ -46,7 +46,7 @@ function RegisterScreen() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(bodyObj)
       };
-      fetch(`http://192.168.0.87:3000/athletes/finalizar-registracion/`, requestOptions)
+      fetch(`http://192.168.0.120:3000/athletes/finalizar-registracion/`, requestOptions)
         .then(response => response.json())
         .then(data => {
           setUser(data)
@@ -67,7 +67,7 @@ function RegisterScreen() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(bodyObj)
       };
-      fetch(`http://192.168.0.87:3000/coaches/finalizar-registracion/`, requestOptions)
+      fetch(`http://192.168.0.120:3000/coaches/finalizar-registracion/`, requestOptions)
         .then(response => response.json())
         .then(data => {
           setUser(data)

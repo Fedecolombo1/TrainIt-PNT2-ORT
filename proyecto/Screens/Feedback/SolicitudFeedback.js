@@ -1,26 +1,53 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect, useCallback } from "react";
 import { Button, Text, View, StyleSheet, ScrollView } from "react-native";
+import CustomInput from '../../Components/TextInput';
 import AuthContext from "../../Services/AuthContext";
 import { Picker } from '@react-native-picker/picker';
 
-export default function SolicitudFeedback() {
+let listaDeCoaches = [];
+
+
+export default function SolicitudFeedback({ navigation }) {
 
     const { user } = useContext(AuthContext)
-
     const [coach, setCoach] = useState()
+    const [clase, setClase] = useState()
 
-    const apiCall = () => {
+    const listarCoachesApiCall = () => {
+        fetch(`http://192.168.0.120:3000/coaches`)
+            .then(res => res.json())
+            .then(data => listaDeCoaches = data.slice())
+            .catch(err => console.log(err))
+    }
+
+    useEffect(() => {
+        listarCoachesApiCall();
+        console.log('muestro cantidad de coaches: ', listaDeCoaches.length)
+        console.log('muestro lista de coaches: ')
+        listaDeCoaches.forEach(el => console.log(el))
+    }, [])
+
+    const requestFeedback = () => {
         const bodyObj = {
             dni_atleta: user.dni,
-            titulo_clase : "deberia ser el nombre de la clase del coach que selecciono",
-            dni_coach : "deberia ser el dni del coach que selecciono"
+            titulo_clase: clase,
+            dni_coach: coach.dni
         }
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(bodyObj)
         };
+        console.log('Detallamos bodyObj:');
         console.log(bodyObj);
+
+        fetch(`http://192.168.0.120:3000/feedback`, requestOptions)
+            .then(res => {
+                res.status == 200 || res.status == 201 ? alert(`Bien! \nTu solicitud fue enviada.`) : alert('Por favor revisa tu lista de feedbacks.')
+            })
+            .catch(err => console.log(err))
+
+        navigation.navigate("Notification")
     }
 
     return (
@@ -30,17 +57,30 @@ export default function SolicitudFeedback() {
                 <Picker
                     selectedValue={coach}
                     onValueChange={(itemValue, itemIndex) => {
+                        console.log('coach elegido: ', itemValue)
                         setCoach(itemValue)
                     }
                     }>
-                    <Picker.Item label="Carlos Duran" value={"Carlos Duran"} />
-                    <Picker.Item label="Leo Buezo" value={"Leo Buezo"} />
-                    <Picker.Item label="Ignacio Vega" value={"Ignacio Vega"} />
-                    <Picker.Item label="Fede Colombo" value={"Fede Colombo"} />
-                    <Picker.Item label="Ivan Stecki" value={"ACA DEBERIA GUARDAR ID/OBJETO"} />
+                    {
+                        listaDeCoaches.map(element => {
+                            const fullname = element.nombre + ' ' + element.apellido;
+                            return <Picker.Item key={element._id} label={fullname} value={element} />
+                        })
+
+                    }
                 </Picker>
+                <Text style={style.title}>Sobre qué deseas una devolución?</Text>
+                <CustomInput
+                    value={clase}
+                    setValue={setClase}
+                    placeholder='Titulo Clase o puntos a medir'
+                    secureTextEntry={false}
+                    type='default'
+                />
             </View>
-            <Button title="Solicitar" onPress={apiCall} />
+            <View style={style.btnsBox}>
+                <Button title="Solicitar" onPress={requestFeedback}/>
+            </View>
         </View>
     )
 }
@@ -54,9 +94,9 @@ const style = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
-    coachSelectBox:{
+    coachSelectBox: {
         width: "100%"
-    },  
+    },
     title: {
         width: 400,
         textAlign: 'start',
@@ -70,7 +110,7 @@ const style = StyleSheet.create({
         fontWeight: '500',
         margin: 5
     },
-    btnsBox:{
+    btnsBox: {
         marginTop: 15
     }
 });
