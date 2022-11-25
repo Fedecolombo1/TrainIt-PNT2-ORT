@@ -43,7 +43,7 @@ export default function Profile() {
                         marginLeft: 20,
                         marginBottom: 20,
                         borderRadius: 50, }}
-                    source={{uri:'https://lh3.googleusercontent.com/a/ALm5wu1DNkBpjYLdK4aj-fncx-7yQrwffKINAtP0IpRHTQ=s96-c'}}
+                    source={{uri:user.picture}}
                 />
                 <Text style={style.text}>Nombre: {user.nombre}</Text>
                 <Text style={style.text}>Apellido: {user.apellido}</Text>
