@@ -3,6 +3,7 @@ import { Button, Text, View, StyleSheet, ScrollView } from "react-native";
 import CustomInput from '../../Components/TextInput';
 import AuthContext from "../../Services/AuthContext";
 import { Picker } from '@react-native-picker/picker';
+import { Hostname, PortNumber } from '../../config';
 
 let listaDeCoaches = [];
 
@@ -16,7 +17,7 @@ export default function SolicitudFeedback({ navigation }) {
     const [athletes, setAthletes] = useState([])
 
     useEffect(useCallback(() => {
-        fetch(`http://192.168.0.87:3000/coaches`)
+        fetch(`${Hostname}:${PortNumber}/coaches`)
             .then(res => res.json())
             .then(data => {
                 console.log(data)
@@ -27,7 +28,7 @@ export default function SolicitudFeedback({ navigation }) {
 
 
     const listarCoachesApiCall = () => {
-        // fetch(`http://192.168.0.87:3000/athletes`)
+        // fetch(`${Hostname}:${PortNumber}/athletes`)
         //     .then(res => res.json())
         //     .then(data => setAthletes(data.slice()))
         //     .catch(err => console.log(err))
@@ -48,7 +49,7 @@ export default function SolicitudFeedback({ navigation }) {
         console.log('Detallamos bodyObj:');
         console.log(bodyObj);
 
-        fetch(`http://192.168.0.87:3000/feedback`, requestOptions)
+        fetch(`${Hostname}:${PortNumber}/feedback`, requestOptions)
             .then(res => {
                 res.status == 200 || res.status == 201 ? alert(`Bien! \nTu solicitud fue enviada.`) : alert('Por favor revisa tu lista de feedbacks.')
             })

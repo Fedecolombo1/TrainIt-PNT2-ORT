@@ -2,7 +2,8 @@ import { useCallback, useContext, useEffect, useState } from "react";
 import { Button, ScrollView, Text, View, Alert } from "react-native";
 import AuthContext from "../../Services/AuthContext";
 import { StyleSheet } from "react-native";
-import Card from "../../Components/CardFeedback/Index"
+import Card from "../../Components/CardFeedback/Index";
+import { Hostname, PortNumber } from '../../config';
 
 export default function FeedbackView({ navigation }) {
     const { user } = useContext(AuthContext)
@@ -14,7 +15,7 @@ export default function FeedbackView({ navigation }) {
         console.log("entre en la vista de feedback. Estoy en useeffect usecallback");
         if (user.rol === 'Atleta') {
             console.log("Aca llame al feedback de atletas");
-            fetch(`http://192.168.0.87:3000/feedback/athlete/${user.dni}`)
+            fetch(`${Hostname}:${PortNumber}/feedback/athlete/${user.dni}`)
                 .then(res => res.json())
                 .then(data => {
                     console.log(data);
@@ -25,7 +26,7 @@ export default function FeedbackView({ navigation }) {
                 .catch(err => console.log(err))
         } else if (user.rol === 'Coach') {
             console.log("Aca llame al feedback de coach");
-            fetch(`http://192.168.0.87:3000/feedback/coach/` + user.dni)
+            fetch(`${Hostname}:${PortNumber}/feedback/coach/` + user.dni)
                 .then(res => res.json())
                 .then(data => {
                     setFeedbacksCoach(data.slice())
@@ -49,7 +50,7 @@ export default function FeedbackView({ navigation }) {
         };
         console.log('Detallamos bodyObj:');
         console.log(bodyObj);
-        fetch(`http://192.168.0.87:3000/feedback/close-feedback/` + user.dni, requestOptions)
+        fetch(`${Hostname}:${PortNumber}/feedback/close-feedback/` + user.dni, requestOptions)
             .then(res => {
                 res.status == 200 || res.status == 201
                     ?
