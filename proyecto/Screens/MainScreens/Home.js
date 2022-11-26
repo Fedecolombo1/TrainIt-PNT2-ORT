@@ -7,20 +7,18 @@ import Card from '../../Components/Card/Index.js'
 import { getClases } from '../../Services/Clases.js';
 
 export default function Home({ navigation }) {
-
     const initialOrigin = {
         latitude: -34.60376,
         longitude: -58.38162
     }
     const { user, setUser } = useContext(AuthContext)
     const [classes, setClasses] = useState([])
-    const [nextClass, setNextClass] = useState([])
+    const [nextClass, setNextClass] = useState({})
     const [diasRestantes, setDiasRestantes] = useState(0)
 
     useEffect(() => {
         getClases()
             .then((data) => {
-                
                 const randomNumber = Math.floor(Math.random() * data.length)
                 console.log(`randomNumber: ${randomNumber} y su id ${data[randomNumber]._id}`);
                 setClasses(data[randomNumber])
@@ -36,6 +34,8 @@ export default function Home({ navigation }) {
                     console.log(`Ya paso la clase ${classes.titulo}`)
 
                 setNextClass(data[randomNumber])
+                console.log(classes.alumnos);
+                console.log("next class ------------>", nextClass);
             })
             .catch(err => { console.log(err); })
     }, [])
@@ -58,32 +58,43 @@ export default function Home({ navigation }) {
                 />)
         })
     }, [navigation])
-
     return (
         <ScrollView>
             <View style={style.root}>
                 <Text style={style.title} >Bienvenido {user.nombre} {user.apellido} a TRAIN-IT</Text>
-                <Text style={style.text}>Tu proxima clase: {nextClass.titulo}</Text>
-                <Text style={style.text}>Cupo de Clase <Text style={style.textNum}> 0 / 0</Text></Text>
-                <Text style={style.text}>Faltan {-Math.trunc(diasRestantes)} dias</Text>
-                <MapView
-                    style={style.mapa}
-                    scrollEnabled={false}
-                    zoomEnabled={false}
-                    initialRegion={{
-                        latitude: initialOrigin.latitude,
-                        longitude: initialOrigin.longitude,
-                        latitudeDelta: 0.035,
-                        longitudeDelta: 0.03
-                    }}
-                >
-                    <Marker
-                        draggable={false}
-                        coordinate={initialOrigin}
-                    />
-                </MapView>
+                {nextClass ?
+                    <>
+                        <Text style={style.text}>Tu proxima clase: {nextClass.titulo}</Text>
+                        <Text style={style.text}>Cupo de Clase <Text style={style.textNum}> {nextClass.cupo} / {nextClass.cupo}</Text></Text>
+                        <Text style={style.text}>Faltan {-Math.trunc(diasRestantes)} dias</Text>
+                        <MapView
+                            style={style.mapa}
+                            scrollEnabled={false}
+                            zoomEnabled={false}
+                            initialRegion={{
+                                latitude: initialOrigin.latitude,
+                                longitude: initialOrigin.longitude,
+                                latitudeDelta: 0.035,
+                                longitudeDelta: 0.03
+                            }}
+                        >
+                            <Marker
+                                draggable={false}
+                                coordinate={initialOrigin}
+                            />
+                        </MapView>
+                    </>
+                    :
+                    <Text>No hay next class</Text>
+                }
                 <Text style={style.title}>Nuestra sugerencia</Text>
-                <Card navigate={() => { navigate(classes) }} title={classes.titulo} />
+                {classes ?
+                    //La primera vez que levanta, classes lo levanta como undefined. Revisar por que
+                    <Card cupo={classes.cupo} alumnosAnotados={(classes.alumnos)} navigate={() => { navigate(classes) }} title={classes.titulo} />
+                    :
+                    <>
+                    </>
+                }
             </View>
         </ScrollView>
     );

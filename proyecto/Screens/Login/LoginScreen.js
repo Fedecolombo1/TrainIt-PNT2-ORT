@@ -19,8 +19,10 @@ function LoginScreen() {
   });
 
   useEffect(() => {
+    
     if (response?.type === 'success') {
       const { authentication } = response;
+      
       console.log(authentication.accessToken) //uso este log para poder acceder al token si tengo que hacer pruebas desde el back
       if (rol === 'Atleta') {
         fetch(`${Hostname}:${PortNumber}/auth/v1/login-athlete/google/${authentication.accessToken}`)
@@ -76,9 +78,9 @@ function LoginScreen() {
           <>
             <Text style={style.title}>Train It</Text>
             <Text style={style.login}>Inicia sesion para poder continuar</Text>
-            <Text style={style.errorMessage}>{error}</Text>
             <CustomButton style={style.googleButton} text="Sign In With Google" onPress={() => promptAsync()} />
             <CustomButton style={style.googleButton} bgColor='#00779E' text="Go Back" onPress={() => setRol()} />
+            <Text style={style.errorMessage}>{error}</Text>
           </>
       }
     </View>
