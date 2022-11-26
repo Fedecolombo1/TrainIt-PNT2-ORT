@@ -36,8 +36,7 @@ export default function FeedbackView({ navigation }) {
                 .catch(err => console.log(err))
         }
 
-    }), [feedbacksAtleta])
-
+    }), [])
 
     const cerrarFeedback = () => {
         const bodyObj = {
@@ -70,7 +69,16 @@ export default function FeedbackView({ navigation }) {
                 <ScrollView style={style.scrollBox} showsVerticalScrollIndicator={false}>
                     {
                         feedbacksAtleta.filter(elem => elem.estado == 'pending').map(elemento => {
-                            return <Card state={elemento.estado} title={elemento.titulo_clase} />
+                            return (
+                                <View>
+                                    <Card state={elemento.estado} title={elemento.titulo_clase} />
+                                    {
+                                        (user.rol == 'Coach') ? 
+                                            <Button title="Dar Feedback" onPress={() => { navigation.navigate("DevolucionFeedback"), elemento.dni_atleta }} />
+                                        : null
+                                    }
+                                </View>
+                            )
                         })
                     }
                     {
@@ -78,7 +86,11 @@ export default function FeedbackView({ navigation }) {
                             return (
                                 <View>
                                     <Card state={elemento.estado} title={elemento.titulo_clase} feedback={elemento.feedbackContent} />
-                                    <Button title="Cerrar Feedback" onPress={() => cerrarFeedback()} />
+                                    {
+                                        (user.rol == 'Atleta') ?
+                                            <Button title="Cerrar Feedback" onPress={() => cerrarFeedback()} />
+                                        : null
+                                    }
                                 </View>
                             )
                         })

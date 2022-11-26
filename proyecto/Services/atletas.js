@@ -1,9 +1,9 @@
 import { useState } from 'react';
 
-const BASE_URL = 'http://192.168.1.51:3000/';
+const BASE_URL = 'http://192.168.0.120:3000/';
 
 export const getAtletas = () => {
-    return fetch('http://192.168.1.51:3000/atletas')
+    return fetch('http://192.168.0.120:3000/atletas')
             .then((response) => response.json())
 }
 
