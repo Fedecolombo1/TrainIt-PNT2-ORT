@@ -10,7 +10,12 @@ function Index({coach, title, navigate, estaUnido, fecha, cupo,alumnosAnotados})
         <Pressable onPress={navigate} style={styles.card}>
                 {coach ? <Text style={styles.titleCard}>{coach.nombre}</Text> : <Text style={styles.titleCard}>{title}</Text>}
                 <Text style={styles.txtCard}>Fecha: {fecha}</Text>
-                <Text style={styles.txtCard}>Cupo: {alumnosAnotados.length}/{cupo}</Text>
+                {alumnosAnotados
+                ?
+                    <Text style={styles.txtCard}>Cupo: {alumnosAnotados.length}/{cupo}</Text>
+                :
+                    <></>
+                }
                 {!estaUnido
                 ?
                 <Text style={styles.txtUnite}>Unite a esta clase!</Text>
