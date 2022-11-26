@@ -57,9 +57,8 @@ export default function Profile() {
                         <Text style={style.text}>{user.aptoFisico ? "Apto Fisico al dia" : "Renovar el apto fisico"}</Text>
                     </View>
                     <View style={style.textBox}>
-                        <Button title="Sign Out" onPress={signOut} />
+                        <Button color='#00779E' title="Sign Out" onPress={signOut} />
                     </View >
-                    {/* <CustomButton text="Sign out" onPress={signOut}></CustomButton> */}
                 </View>
             </View>
 
@@ -85,7 +84,7 @@ const style = StyleSheet.create({
         alignItems: 'center'
     },
     textBox: {
-        backgroundColor: 'white',
+        backgroundColor: '#f3f2f5',
         fontSize: 21,
         padding: 20,
         width: '100%',
@@ -134,7 +133,7 @@ const style = StyleSheet.create({
         display: 'flex',
         justifyContent: 'space-around',
         alignContent: 'center',
-        backgroundColor: 'white',
+        backgroundColor: '#f3f2f5',
         width: '100%',
         height: '60%',
         borderTopLeftRadius: 20,
