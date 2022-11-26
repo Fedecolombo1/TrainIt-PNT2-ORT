@@ -1,7 +1,8 @@
+import { Hostname, PortNumber } from '../config';
 
 export const getCoaches = () => {
     return new Promise((resolve, reject) => {
-        fetch('http://192.168.0.120:3000/coaches')
+        fetch(`${Hostname}:${PortNumber}/coaches`)
             .then((response) => response.json())
             .then(data => {
                 return resolve(data)

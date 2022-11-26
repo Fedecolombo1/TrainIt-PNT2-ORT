@@ -1,12 +1,15 @@
-import { useState } from 'react';
-
-const BASE_URL = 'http://192.168.0.120:3000/';
+import { Hostname, PortNumber } from '../config';
 
 export const getAtletas = () => {
-    return fetch('http://192.168.0.120:3000/atletas')
+    return new Promise((resolve, reject) => {
+        fetch(`${Hostname}:${PortNumber}/athletes`)
             .then((response) => response.json())
+            .then(data => {
+                return resolve(data)
+            })
+            .catch(err => reject(err))
+    })
 }
-
 
 // export const borrarCoach = (id) => {
 //     fetch('http://192.168.1.51:3000/delete/'+id)

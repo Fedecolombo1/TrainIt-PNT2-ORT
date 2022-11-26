@@ -103,27 +103,29 @@ function ClassDetail({navigation}) {
     <>
         <View style={styles.container}>
             <View>
-                <Text style={styles.text}>Nombre Clase: {clase.titulo}</Text>
+                <Text style={styles.nombre}>{clase.titulo}</Text>
                 <Text style={styles.text}>Cupo de Clase <Text style={styles.textNum}>{clase.alumnos.length}/{clase.cupo}</Text></Text>
             </View>
-            <MapView
-                style={styles.mapa}
-                scrollEnabled={true}
-                zoomEnabled={true}
-                initialRegion={{
-                    latitude: initialOrigin.latitude,
-                    longitude: initialOrigin.longitude,
-                    latitudeDelta: 0.02,
-                    longitudeDelta: 0.040
-                }}
-                moveOnMarkerPress={false}
-            >
-                <Marker
-                    draggable
-                    coordinate={coordenadasClase}
-                />
+            <View style={styles.mapaBox}>
+                <MapView
+                    style={styles.mapa}
+                    scrollEnabled={true}
+                    zoomEnabled={true}
+                    initialRegion={{
+                        latitude: initialOrigin.latitude,
+                        longitude: initialOrigin.longitude,
+                        latitudeDelta: 0.02,
+                        longitudeDelta: 0.040
+                    }}
+                    moveOnMarkerPress={false}
+                >
+                    <Marker
+                        draggable
+                        coordinate={coordenadasClase}
+                    />
 
-            </MapView>
+                </MapView>
+            </View>
             {user.rol == "Atleta" 
             ?
                 !clase.alumnos.find(alu => alu.atletaId == user.googleId)  
@@ -146,13 +148,13 @@ const styles = StyleSheet.create({
         paddingTop: 30,
         paddingHorizontal: 30,
         display: 'flex',
-        justifyContent: 'space-between',
+        justifyContent: 'space-around',
         height: "100%"
     },
     text: {
         marginVertical: 2,
         fontSize: 21,
-        textAlign: 'start'
+        textAlign: 'center'
     },
     textNum:{
         fontWeight: "600",
@@ -160,6 +162,23 @@ const styles = StyleSheet.create({
     },
     mapa: {
         width: '100%',
+        height: '95%',
+        marginTop: 10,
+        borderRadius: 10,
+    },
+    mapaBox:{
+        width: '100%',
         height: '74%',
+        shadowOffset: {width: -2, height: 4},  
+        shadowColor: '#171717',  
+        shadowOpacity: 0.2,  
+        shadowRadius: 3,  
+    },
+    nombre:{
+        marginTop: 2,
+        marginBottom: 10,
+        fontSize: 28,
+        textAlign: 'center',
+        fontWeight: '600'
     }
 })

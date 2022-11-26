@@ -13,56 +13,97 @@ export default function MainNavigator() {
 
     return (
         <>
-            {!user.datosValidados
-                ?
-                <RegisterScreen />
-                :
-                <Tab.Navigator
-                    initialRouteName='HomeTab'
-                    screenOptions={({ route }) => ({
-                        tabBarIcon: ({ focused, color, size }) => {
-                            let iconName;
+        {user.rol != "Administrador"
+        ?
+        !user.datosValidados
+            ?
+            <RegisterScreen />
+            :
+            <Tab.Navigator
+                initialRouteName='HomeTab'
+                screenOptions={({ route }) => ({
+                    tabBarIcon: ({ focused, color, size }) => {
+                        let iconName;
 
-                            if (route.name === 'HomeTab') {
-                                iconName = focused
-                                    ? 'ios-home'
-                                    : 'ios-home-outline';
-                            } else if (route.name === 'ClassTab') {
-                                iconName = focused ? 'ios-barbell' : 'ios-barbell-outline';
-                            } else if (route.name === 'ProfileTab') {
-                                iconName = focused ? 'ios-person' : 'ios-person-outline';
+                        if (route.name === 'HomeTab') {
+                            iconName = focused
+                                ? 'ios-home'
+                                : 'ios-home-outline';
+                        } else if (route.name === 'ClassTab') {
+                            iconName = focused ? 'ios-barbell' : 'ios-barbell-outline';
+                        } else if (route.name === 'ProfileTab') {
+                            iconName = focused ? 'ios-person' : 'ios-person-outline';
 
-                            }
-                            return <Ionicons name={iconName} size={size} color={color} />;
-                        },
-                        tabBarActiveTintColor: 'black',
-                        tabBarLabel: () => { return null }
-                    })}
-                >
-                    <Tab.Screen
-                        name="HomeTab"
-                        component={HomeStack}
-                        options={{
-                            headerShown: false
-                        }}
-                    />
-                    <Tab.Screen
-                        name="ClassTab"
-                        component={ClassStack}
-                        options={{
-                            headerShown: false
                         }
+                        return <Ionicons name={iconName} size={size} color={color} />;
+                    },
+                    tabBarActiveTintColor: 'black',
+                    tabBarLabel: () => { return null }
+                })}
+            >
+                <Tab.Screen
+                    name="HomeTab"
+                    component={HomeStack}
+                    options={{
+                        headerShown: false
+                    }}
+                />
+                <Tab.Screen
+                    name="ClassTab"
+                    component={ClassStack}
+                    options={{
+                        headerShown: false
+                    }
+                    }
+                />
+                <Tab.Screen
+                    name="ProfileTab"
+                    component={ProfileStack}
+                    options={{
+                        headerShown: false
+                    }}
+                />
+            </Tab.Navigator>
+        :
+        <Tab.Navigator
+                initialRouteName='HomeTab'
+                screenOptions={({ route }) => ({
+                    tabBarIcon: ({ focused, color, size }) => {
+                        let iconName;
+
+                        if (route.name === 'HomeTab') {
+                            iconName = focused
+                                ? 'ios-home'
+                                : 'ios-home-outline';
+                        } else if (route.name === 'ClassTab') {
+                            iconName = focused ? 'ios-barbell' : 'ios-barbell-outline';
+                        } else if (route.name === 'ProfileTab') {
+                            iconName = focused ? 'ios-person' : 'ios-person-outline';
+
                         }
-                    />
-                    <Tab.Screen
-                        name="ProfileTab"
-                        component={ProfileStack}
-                        options={{
-                            headerShown: false
-                        }}
-                    />
-                </Tab.Navigator>
-            }
+                        return <Ionicons name={iconName} size={size} color={color} />;
+                    },
+                    tabBarActiveTintColor: 'black',
+                    tabBarLabel: () => { return null }
+                })}
+            >
+            <Tab.Screen
+                    name="HomeTab"
+                    component={HomeStack}
+                    options={{
+                        headerShown: false
+                    }}
+            />
+            <Tab.Screen
+                    name="ProfileTab"
+                    component={ProfileStack}
+                    options={{
+                        headerShown: false
+                    }}
+                />
+        </Tab.Navigator>
+        }
+            
         </>
     )
 
