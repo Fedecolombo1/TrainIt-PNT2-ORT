@@ -3,26 +3,19 @@ import { Button, Text, View, StyleSheet, ScrollView } from "react-native";
 import CustomInput from '../../Components/TextInput';
 import AuthContext from "../../Services/AuthContext";
 import { Hostname, PortNumber } from '../../config';
+import { useRoute } from '@react-navigation/native';
 
-export default function DevolucionFeedback({ navigation , dni_atleta }) {
+export default function DevolucionFeedback({ navigation }) {
 
     const { user } = useContext(AuthContext)
     const [feedbackContent, setFeedbackContent] = useState()
-    const [athlete, setAthlete] = useState()
 
-    useEffect(useCallback(() => {
-        fetch(`${Hostname}:${PortNumber}/athlete/${dni_atleta}`)
-            .then(res => res.json())
-            .then(data => {
-                console.log(data)
-                setAthlete(data)
-            })
-            .catch(err => console.log(err))
-    }), [])
+    const route = useRoute();
+    const dniProp = route.params.dniProp;
 
     const giveFeedback = () => {
         const bodyObj = {
-            devolucion: feedbackContent,
+            devolucion: feedbackContent
         }
         const requestOptions = {
             method: 'PUT',
@@ -30,10 +23,10 @@ export default function DevolucionFeedback({ navigation , dni_atleta }) {
             body: JSON.stringify(bodyObj)
         };
 
-        fetch(`${Hostname}:${PortNumber}/feedback/give-feedback/${dni_atleta}`, requestOptions)
+        fetch(`${Hostname}:${PortNumber}/feedback/give-feedback/${dniProp}`, requestOptions)
             .then(res => {
                 res.status == 200 || res.status == 201 ? 
-                alert(`Bien! \nLa devolución fue enviada a ${athlete.nombre} ${athlete.apellido}.`) 
+                alert(`Bien! \nCompletaste una devolución.`) 
                 : 
                 alert('Por favor revisa tu lista de feedbacks.')
             })
@@ -44,7 +37,7 @@ export default function DevolucionFeedback({ navigation , dni_atleta }) {
 
     return (
         <View style={style.root}>
-            <Text style={style.title}>Aquí podrás brindar feedback para {athlete.nombre} {athlete.apellido}</Text>
+            <Text style={style.title}>Aquí podrás brindar feedback a tus alumnos y alumnas.</Text>
             <CustomInput
                     value={feedbackContent}
                     setValue={setFeedbackContent}
