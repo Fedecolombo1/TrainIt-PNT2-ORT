@@ -36,8 +36,7 @@ export default function FeedbackView({ navigation }) {
                 .catch(err => console.log(err))
         }
 
-    }), [feedbacksAtleta])
-
+    }), [])
 
     const cerrarFeedback = () => {
         const bodyObj = {
@@ -70,15 +69,29 @@ export default function FeedbackView({ navigation }) {
                 <ScrollView style={style.scrollBox} showsVerticalScrollIndicator={false}>
                     {
                         feedbacksAtleta.filter(elem => elem.estado == 'pending').map(elemento => {
-                            return <Card state={elemento.estado} title={elemento.titulo_clase} />
+                            let dniProp = elemento.dni_atleta
+                            return (
+                                <View>
+                                    <Card key={elemento._id} state={elemento.estado} title={elemento.titulo_clase} />
+                                    {
+                                        (user.rol == 'Coach') ? 
+                                            <Button title="Dar Feedback" onPress={() => { navigation.navigate("DevolucionFeedback", { dniProp }) }} />
+                                        : null
+                                    }
+                                </View>
+                            )
                         })
                     }
                     {
                         feedbacksAtleta.filter(elem => elem.estado == 'completed').map(elemento => {
                             return (
                                 <View>
-                                    <Card state={elemento.estado} title={elemento.titulo_clase} feedback={elemento.feedbackContent} />
-                                    <Button title="Cerrar Feedback" onPress={() => cerrarFeedback()} />
+                                    <Card key={elemento._id} state={elemento.estado} title={elemento.titulo_clase} feedback={elemento.feedbackContent} />
+                                    {
+                                        (user.rol == 'Atleta') ?
+                                            <Button title="Cerrar Feedback" onPress={() => cerrarFeedback()} />
+                                        : null
+                                    }
                                 </View>
                             )
                         })
@@ -87,7 +100,7 @@ export default function FeedbackView({ navigation }) {
                         feedbacksAtleta.filter(elem => elem.estado == 'closed').map(elemento => {
                             return (
                                 <View>
-                                    <Card state={elemento.estado} title={elemento.titulo_clase} feedback={elemento.feedbackContent} />
+                                    <Card key={elemento._id} state={elemento.estado} title={elemento.titulo_clase} feedback={elemento.feedbackContent} />
                                 </View>
                             )
                         })
@@ -101,13 +114,39 @@ export default function FeedbackView({ navigation }) {
     } else if (user.rol === 'Coach') {
         return (
             <View style={style.root}>
-                <Text>{user.nombre} aca vas a poder ver tus feedbacks y completarlos en caso de que tengas que hacerlo</Text>
-                <ScrollView style={style.scrollBox} showsVerticalScrollIndicator={false}>
-                    <Card coach={true} state={"pending"} title="Feedback 1" />
-                    <Card coach={true} state={"closed"} title="Feedback 2" />
-                </ScrollView>
-            </View>
-        )
+            <Text style={style.subtitle}>{user.nombre} aca vas a poder ver los feedbacks solicitados y hacer las devoluciones necesarias </Text>
+            <ScrollView style={style.scrollBox} showsVerticalScrollIndicator={false}>
+                {
+                    feedbacksCoach.filter(elem => elem.estado == 'pending').map(elemento => {
+                        return (
+                            <View>
+                                <Card key={elemento._id} state={elemento.estado} title={elemento.titulo_clase} />
+                                <Button title="Dar Feedback" onPress={() => { navigation.navigate("DevolucionFeedback", { dniProp: elemento.dni_atleta }) }} />
+                            </View>
+                        )
+                    })
+                }
+                {
+                    feedbacksCoach.filter(elem => elem.estado == 'completed').map(elemento => {
+                        return (
+                            <View>
+                                <Card key={elemento._id} state={elemento.estado} title={elemento.titulo_clase} feedback={elemento.feedbackContent} />
+                            </View>
+                        )
+                    })
+                }
+                {
+                    feedbacksCoach.filter(elem => elem.estado == 'closed').map(elemento => {
+                        return (
+                            <View>
+                                <Card key={elemento._id} state={elemento.estado} title={elemento.titulo_clase} feedback={elemento.feedbackContent} />
+                            </View>
+                        )
+                    })
+                }
+            </ScrollView>
+        </View>
+    )
     }
 }
 

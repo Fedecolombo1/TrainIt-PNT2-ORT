@@ -1,7 +1,7 @@
 
 export const getCoaches = () => {
     return new Promise((resolve, reject) => {
-        fetch('http://192.168.1.51:3000/coaches')
+        fetch('http://192.168.0.120:3000/coaches')
             .then((response) => response.json())
             .then(data => {
                 return resolve(data)

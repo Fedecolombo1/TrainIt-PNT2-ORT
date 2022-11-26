@@ -4,6 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import Home from '../MainScreens/Home';
 import FeedbackView from '../Feedback';
 import SolicitudFeedback from '../Feedback/SolicitudFeedback';
+import DevolucionFeedback from '../Feedback/DevolucionFeedback';
 import DetalleClase from "../Class/ClassDetail"
 
 function HomeStack() {
@@ -17,6 +18,7 @@ function HomeStack() {
       <Stack.Screen name='Detalle Clase' component={DetalleClase} />
       <Stack.Screen name='Notification' component={FeedbackView} />
       <Stack.Screen name='SolicitudFeedback' component={SolicitudFeedback} />
+      <Stack.Screen name='DevolucionFeedback' component={DevolucionFeedback} />
     </Stack.Navigator>
 
   )

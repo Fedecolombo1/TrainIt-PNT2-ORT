@@ -17,7 +17,7 @@ export default function UnirseClase({ navigation }) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(bodyObj)
         };
-        fetch(`http://192.168.0.87:3000/athletes/anotarse-a-clase`, requestOptions)
+        fetch(`http://192.168.0.120:3000/athletes/anotarse-a-clase`, requestOptions)
             .then(res => {
                 res.ok ? res.json() : null
             })
@@ -37,7 +37,7 @@ export default function UnirseClase({ navigation }) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(bodyObj)
         };
-        fetch(`http://192.168.0.87:3000/athletes/darse-de-baja-clase`, requestOptions)
+        fetch(`http://192.168.0.120:3000/athletes/darse-de-baja-clase`, requestOptions)
             .then(res => {
                 res.ok ? res.json() : null
             })

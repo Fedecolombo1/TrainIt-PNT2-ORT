@@ -26,15 +26,6 @@ export default function SolicitudFeedback({ navigation }) {
             .catch(err => console.log(err))
     }), [])
 
-
-    const listarCoachesApiCall = () => {
-        // fetch(`${Hostname}:${PortNumber}/athletes`)
-        //     .then(res => res.json())
-        //     .then(data => setAthletes(data.slice()))
-        //     .catch(err => console.log(err))
-    }
-
-
     const requestFeedback = () => {
         const bodyObj = {
             dni_atleta: user.dni,
