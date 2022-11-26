@@ -84,7 +84,8 @@ const styles = StyleSheet.create({
     container: {
         paddingTop: 40,
         paddingHorizontal: 30,
-        height: '100%',
+        height: '120%',
+        backgroundColor: '#00779E'
     },
     title: {
         textAlign: 'start',
@@ -109,6 +110,7 @@ const styles = StyleSheet.create({
         height: 38,
     },
     cardBox: {
-        width: "100%"
+        width: "100%",
+        marginTop: 30,
     }
 });
