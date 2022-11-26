@@ -9,10 +9,10 @@ function Index({coach, title, navigate, estaUnido, fecha, cupo,alumnosAnotados})
     <>
         <Pressable onPress={navigate} style={styles.card}>
                 {coach ? <Text style={styles.titleCard}>{coach.nombre}</Text> : <Text style={styles.titleCard}>{title}</Text>}
-                <Text style={styles.txtCard}>Fecha: {fecha}</Text>
+                <Text style={styles.txtCard}>Fecha {fecha}</Text>
                 {alumnosAnotados
                 ?
-                    <Text style={styles.txtCard}>Cupo: {alumnosAnotados.length}/{cupo}</Text>
+                    <Text style={styles.txtCard}>Cupo <Text style={styles.txtSpan}>{alumnosAnotados.length}/{cupo}</Text></Text>
                 :
                     <></>
                 }
@@ -32,8 +32,8 @@ export default Index
 const styles = StyleSheet.create({
     card:{
         width: '100%',
-        height: 250,
-        marginTop: 40,
+        height: 200,
+        marginTop: 20,
         backgroundColor: 'white',
         borderRadius: '10%',
         padding: 15,
@@ -47,12 +47,15 @@ const styles = StyleSheet.create({
     },
     titleCard:{
         fontSize: 25,
-        textAlign: 'center',
-        marginBottom: 20
+        textAlign: 'center'
     },
     txtCard:{
         fontSize: 17,
+        textAlign: 'start'
     },
+    txtSpan:{
+        color: 'green'
+    },  
     btnBox:{
         display: 'flex',
         flexDirection: 'row',
@@ -82,7 +85,7 @@ const styles = StyleSheet.create({
     },
     txtUnite:{
         fontSize: 17,
-        color: "red",
+        color: "#f06e9c",
         textAlign: 'center',
         fontWeight: "600"
     }

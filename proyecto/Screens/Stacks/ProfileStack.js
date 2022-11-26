@@ -6,7 +6,7 @@ export default function ProfileStack() {
 
     return (
         <Stack.Navigator initialRouteName="Profile">
-            <Stack.Screen name="Profile" component={Profile}/>
+            <Stack.Screen name="Profile" component={Profile} options={{headerStyle:{backgroundColor: '#00779E'},headerTitleStyle: {color: '#fff'}}} />
         </Stack.Navigator>
     )
 }
