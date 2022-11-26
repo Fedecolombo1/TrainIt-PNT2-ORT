@@ -108,8 +108,8 @@ function ClassDetail({navigation}) {
             </View>
             <MapView
                 style={styles.mapa}
-                scrollEnabled={false}
-                zoomEnabled={false}
+                scrollEnabled={true}
+                zoomEnabled={true}
                 initialRegion={{
                     latitude: initialOrigin.latitude,
                     longitude: initialOrigin.longitude,
