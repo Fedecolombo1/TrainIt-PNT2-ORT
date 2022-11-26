@@ -26,12 +26,20 @@ export default function ClasesListScreen({navigation}) {
         })
     }, [navigation])
 
-    const searchFilterFunction = () => {
-
+    const searchFilterFunction = (text) => {
+        if(text){
+            getClases().then((data) => {
+                setClases(data.filter(clase => clase.titulo == text));
+            })
+        }else{
+            getClases().then((data) => {
+                setClases(data)
+            })
+        }
     }
 
     const navigate = (claseDetail) => {
-        return navigation.navigate("Detalle Clase", {clase: claseDetail})
+        return navigation.navigate("Detalle Clase", {clase: claseDetail, setClases: setClases})
     }
 
     useEffect(() => {
@@ -41,20 +49,7 @@ export default function ClasesListScreen({navigation}) {
         })
 
     }, [])
-
-    const estaUnidoAClase = (id) => {
-        console.log(id);
-        const clase = clases.find(clase => clase.id = id);
-        // console.log(clase);
-        if(clase){
-            const alu = clase.alumnos.find(alu => alu.id == user.id)
-            if(alu){
-                return true
-            }
-        }
-    }
-
-
+    
     return (
         <SafeAreaView>
 
@@ -64,7 +59,7 @@ export default function ClasesListScreen({navigation}) {
                     {
                         clases.length > 0 ?
                         clases.map( clase => {
-                           return <Card estaUnido={estaUnidoAClase(clase._id)} navigate={() => navigate(clase)} title={clase._id} key={clase._id} /> 
+                           return <Card estaUnido={clase.alumnos.find(alu => alu.atletaId == user.googleId) ? true : false} navigate={() => navigate(clase)} title={clase.titulo} fecha={clase.diaActividad} cupo={clase.cupo} alumnosAnotados={(clase.alumnos)} key={clase._id} /> 
                         })
                         :
                         <Text>CARGANDO..</Text>                        

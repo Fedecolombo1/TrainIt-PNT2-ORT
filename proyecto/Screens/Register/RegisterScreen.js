@@ -5,6 +5,7 @@ import CustomButton from '../../Components/CustomButton';
 import CustomInput from '../../Components/TextInput';
 import AuthContext from '../../Services/AuthContext';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { Hostname, PortNumber } from '../../config';
 
 function RegisterScreen() {
   const { user, setUser } = useContext(AuthContext)
@@ -46,7 +47,7 @@ function RegisterScreen() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(bodyObj)
       };
-      fetch(`http://192.168.0.120:3000/athletes/finalizar-registracion/`, requestOptions)
+      fetch(`${Hostname}:${PortNumber}/athletes/finalizar-registracion/`, requestOptions)
         .then(response => response.json())
         .then(data => {
           setUser(data)
@@ -67,7 +68,7 @@ function RegisterScreen() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(bodyObj)
       };
-      fetch(`http://192.168.0.120:3000/coaches/finalizar-registracion/`, requestOptions)
+      fetch(`${Hostname}:${PortNumber}/coaches/finalizar-registracion/`, requestOptions)
         .then(response => response.json())
         .then(data => {
           setUser(data)

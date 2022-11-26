@@ -3,13 +3,14 @@ import { Pressable, Text, StyleSheet, View } from 'react-native'
 import { useState } from 'react'
 import { agregarCoach } from '../../Services/coaches.js'
 
-function Index({coach, title, navigate, estaUnido}) {
+function Index({coach, title, navigate, estaUnido, fecha, cupo,alumnosAnotados}) {
 
   return (
     <>
         <Pressable onPress={navigate} style={styles.card}>
                 {coach ? <Text style={styles.titleCard}>{coach.nombre}</Text> : <Text style={styles.titleCard}>{title}</Text>}
-                <Text style={styles.txtCard}>Descripcion hardcodeada</Text>
+                <Text style={styles.txtCard}>Fecha: {fecha}</Text>
+                <Text style={styles.txtCard}>Cupo: {alumnosAnotados.length}/{cupo}</Text>
                 {!estaUnido
                 ?
                 <Text style={styles.txtUnite}>Unite a esta clase!</Text>

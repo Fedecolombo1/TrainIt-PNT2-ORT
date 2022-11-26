@@ -5,6 +5,7 @@ import * as Google from 'expo-auth-session/providers/google';
 import { useNavigation } from '@react-navigation/native';
 import { Picker } from '@react-native-picker/picker';
 import AuthContext from '../../Services/AuthContext';
+import { Hostname, PortNumber } from '../../config';
 
 function LoginScreen() {
 
@@ -22,7 +23,7 @@ function LoginScreen() {
       const { authentication } = response;
       console.log(authentication.accessToken) //uso este log para poder acceder al token si tengo que hacer pruebas desde el back
       if (rol === 'Atleta') {
-        fetch(`http://192.168.0.120:3000/auth/v1/login-athlete/google/${authentication.accessToken}`)
+        fetch(`${Hostname}:${PortNumber}/auth/v1/login-athlete/google/${authentication.accessToken}`)
           .then(res => res.ok ? res.json() : null)
           .then(data => {
             if (data) {
@@ -36,7 +37,7 @@ function LoginScreen() {
             console.log(error);
           })
       } else if (rol === 'Coach') {
-        fetch(`http://192.168.0.120:3000/auth/v1/login-coach/google/${authentication.accessToken}`)
+        fetch(`${Hostname}:${PortNumber}/auth/v1/login-coach/google/${authentication.accessToken}`)
           .then(res => res.ok ? res.json() : null
           )
           .then(data => {

@@ -1,19 +1,21 @@
 import { useRoute } from '@react-navigation/native';
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { View, Text } from 'react-native'
 import { StyleSheet } from 'react-native'
 import MapView, { Marker } from 'react-native-maps';
 import CustomButton from '../../Components/CustomButton';
 import AuthContext from '../../Services/AuthContext';
+import { Hostname, PortNumber } from '../../config';
+import { getClases } from '../../Services/Clases';
 
-
-function ClassDetail({estaUnido}) {
+function ClassDetail({navigation}) {
 
     const { user } = useContext(AuthContext)
 
     const route = useRoute();
 
     const clase = route.params.clase;
+    const setClases = route.params.setClases;
 
     const initialOrigin = {
         latitude: -34.60376,
@@ -21,6 +23,81 @@ function ClassDetail({estaUnido}) {
     }
 
     const [coordenadasClase, setCoordenadasClase] = React.useState(initialOrigin)
+
+    useEffect(() => {
+        
+    },[])
+
+    const unirseAClase = () => {
+        const bodyObj = {
+            claseId: clase._id,
+            alumnoId: user.googleId
+        }
+        const requestOptions = {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(bodyObj)
+        };
+        console.log('Detallamos bodyObj:');
+        console.log(bodyObj);
+
+        fetch(`${Hostname}:${PortNumber}/training_class/alumno`, requestOptions)
+            .then(res => {
+                getClases().then((data) => {
+                    setClases(data)
+                })
+                res.status == 200 || res.status == 201 ? alert(`Bien! \nTe uniste a la clase!.`) : alert('Por favor intenta mas tarde.')
+            })
+            .catch(err => console.log(err))
+        navigation.navigate("Clases")
+    }
+
+    const darseDeBajaClase = () => {
+        const bodyObj = {
+            claseId: clase._id,
+            atletaId: user.googleId
+        }
+        const requestOptions = {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(bodyObj)
+        };
+        console.log('Detallamos bodyObj:');
+        console.log(bodyObj);
+
+        fetch(`${Hostname}:${PortNumber}/training_class/atleta`, requestOptions)
+            .then(res => {    
+                getClases().then((data) => {
+                    setClases(data)
+                })
+                res.status == 200 || res.status == 201 ? alert(`Ok! \nTe diste de baja la clase :(.`) : alert('Por favor intenta mas tarde.')
+            })
+            .catch(err => console.log(err))
+        navigation.navigate("Clases")
+    }
+
+    const cancelarClase = () => {
+        const bodyObj = {
+            claseId: clase._id
+        }
+        const requestOptions = {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(bodyObj)
+        };
+        console.log('Detallamos bodyObj:');
+        console.log(bodyObj);
+
+        fetch(`${Hostname}:${PortNumber}/training_class/cancelada`, requestOptions)
+            .then(res => {    
+                getClases().then((data) => {
+                    setClases(data)
+                })
+                res.status == 200 || res.status == 201 ? alert(`Ok! \nCancelaste la clase.`) : alert('Por favor intenta mas tarde.')
+            })
+            .catch(err => console.log(err))
+        navigation.navigate("Clases")
+    }
 
   return (
     <>
@@ -49,13 +126,13 @@ function ClassDetail({estaUnido}) {
             </MapView>
             {user.rol == "Atleta" 
             ?
-                !estaUnido 
+                !clase.alumnos.find(alu => alu.atletaId == user.googleId)  
                 ?
-                <CustomButton text={"Unirse"} onPress={"ApiCall"}/>
+                <CustomButton text={"Unirse"} onPress={unirseAClase}/>
                 :  
-                <CustomButton text={"Darme de baja"} bgColor={"red"} onPress={"ApiCall"}/>
+                <CustomButton text={"Darme de baja"} bgColor={"red"} onPress={darseDeBajaClase}/>
             :
-                <CustomButton text={"Cancelar"} bgColor={"red"} onPress={"ApiCall"}/>
+                <CustomButton text={"Cancelar"} bgColor={"red"} onPress={cancelarClase}/>
             }
         </View>
     </>
