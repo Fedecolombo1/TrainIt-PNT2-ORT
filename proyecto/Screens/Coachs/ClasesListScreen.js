@@ -62,7 +62,7 @@ export default function ClasesListScreen({navigation}) {
                            return <Card estaUnido={clase.alumnos.find(alu => alu.atletaId == user.googleId) ? true : false} navigate={() => navigate(clase)} title={clase.titulo} fecha={clase.diaActividad} cupo={clase.cupo} alumnosAnotados={(clase.alumnos)} key={clase._id} /> 
                         })
                         :
-                        <Text>CARGANDO..</Text>                        
+                        <Text style={{color: 'white', fontWeight: 'bold', fontSize: 20, textAlign: 'center'}}>Buscando..</Text>                        
                     }
                 </ScrollView>
 
@@ -82,8 +82,9 @@ export default function ClasesListScreen({navigation}) {
 
 const styles = StyleSheet.create({
     container: {
-        paddingTop: 40,
-        paddingHorizontal: 30,
+        paddingTop: 70,
+        paddingBottom: 295,
+        paddingHorizontal: 20,
         height: '120%',
         backgroundColor: '#00779E'
     },

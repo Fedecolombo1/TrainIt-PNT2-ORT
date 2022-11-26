@@ -30,7 +30,7 @@ function ClassStack() {
             <StackNavigator.Screen name='Crear Clase' component={CreateClaseScreen} />
             <StackNavigator.Screen name='Clases' component={ClasesListScreen} />
             <StackNavigator.Screen name='Unirse A Clase' component={UnirseClase} />
-            <StackNavigator.Screen name='Detalle Clase' component={DetalleClase} />
+            <StackNavigator.Screen name='Detalle Clase' component={DetalleClase}/>
         </StackNavigator.Navigator>
 
     )
