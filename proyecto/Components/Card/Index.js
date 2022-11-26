@@ -9,10 +9,10 @@ function Index({coach, title, navigate, estaUnido, fecha, cupo,alumnosAnotados})
     <>
         <Pressable onPress={navigate} style={styles.card}>
                 {coach ? <Text style={styles.titleCard}>{coach.nombre}</Text> : <Text style={styles.titleCard}>{title}</Text>}
-                <Text style={styles.txtCard}>Fecha {fecha}</Text>
+                <Text style={styles.txtCard}>Fecha: {fecha}</Text>
                 {alumnosAnotados
                 ?
-                    <Text style={styles.txtCard}>Cupo <Text style={styles.txtSpan}>{alumnosAnotados.length}/{cupo}</Text></Text>
+                    <Text style={styles.txtCard}>Lugares Disponbles: <Text style={styles.txtSpan}>{cupo-alumnosAnotados.length}</Text></Text>
                 :
                     <></>
                 }
@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     txtCard:{
+        fontWeight: '500',
         fontSize: 17,
         textAlign: 'start'
     },

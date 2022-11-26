@@ -59,7 +59,8 @@ export default function ClasesListScreen({navigation}) {
                     {
                         clases.length > 0 ?
                         clases.map( clase => {
-                           return <Card estaUnido={clase.alumnos.find(alu => alu.atletaId == user.googleId) ? true : false} navigate={() => navigate(clase)} title={clase.titulo} fecha={clase.diaActividad} cupo={clase.cupo} alumnosAnotados={(clase.alumnos)} key={clase._id} /> 
+                            const dateActividad = new Date(clase.diaActividad)
+                           return <Card estaUnido={clase.alumnos.find(alu => alu.atletaId == user.googleId) ? true : false} navigate={() => navigate(clase)} title={clase.titulo} fecha={`${dateActividad.getDay()}/${dateActividad.getMonth()}/${dateActividad.getFullYear()}`} cupo={clase.cupo} alumnosAnotados={(clase.alumnos)} key={clase._id} /> 
                         })
                         :
                         <Text style={{color: 'white', fontWeight: 'bold', fontSize: 20, textAlign: 'center'}}>Buscando..</Text>                        

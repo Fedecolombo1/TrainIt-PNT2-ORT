@@ -16,10 +16,10 @@ function ClassDetail({navigation}) {
 
     const clase = route.params.clase;
     const setClases = route.params.setClases;
-
+    console.log(clase.ubicacion);
     const initialOrigin = {
-        latitude: -34.60376,
-        longitude: -58.38162
+        latitude: clase.ubicacion.lat,
+        longitude: clase.ubicacion.lng
     }
 
     const [coordenadasClase, setCoordenadasClase] = React.useState(initialOrigin)

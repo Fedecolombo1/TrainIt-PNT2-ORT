@@ -8,23 +8,22 @@ import { getClases } from '../../Services/Clases.js';
 import logo from '../../assets/adaptive-icon.png'
 
 export default function Home({ navigation }) {
-    const initialOrigin = {
-        latitude: -34.60376,
-        longitude: -58.38162
-    }
+
     const { user, setUser } = useContext(AuthContext)
-    const [clases, setClases] = useState([])
+    const [clases, setClases] = useState({})
     const [nextClass, setNextClass] = useState({})
     const [diasRestantes, setDiasRestantes] = useState(0)
+    const [dateActividad, setDateActividad] = useState(0)
+    const [showCard, setShowCard] = useState(false)
 
     useEffect(() => {
         getClases()
             .then((data) => {
                 const randomNumber = Math.floor(Math.random() * data.length)
-                console.log(`randomNumber: ${randomNumber} y su id ${data[randomNumber]._id}`);
                 setClases(data[randomNumber])
 
                 const userDate = new Date(data[randomNumber].diaActividad)
+                setDateActividad(userDate)
                 const today = new Date();
                 const differenciaTiempo = today.getTime() - userDate.getTime();
                 const differenciaDias = differenciaTiempo / (1000 * 3600 * 24);
@@ -33,13 +32,19 @@ export default function Home({ navigation }) {
                     setDiasRestantes(differenciaDias)
                     :
                     console.log(`Ya paso la clase ${clases.titulo}`)
-
+                console.log(nextClass.ubicacion);
                 setNextClass(data[randomNumber])
-                console.log(clases.alumnos);
-                console.log("next class ------------>", nextClass);
+                if (true) {
+                    setShowCard(true)
+
+                } else {
+                    setShowCard(false)
+                }
+
+
             })
             .catch(err => { console.log(err); })
-    }, [])
+    }, [navigation])
 
     const navigate = (claseDetail) => {
         return navigation.navigate("Detalle Clase", { clase: claseDetail })
@@ -71,48 +76,54 @@ export default function Home({ navigation }) {
 
                 {nextClass ?
                     <>
-                        <Text style={style.subtitle}>Tu proxima clase</Text>
-                        <View style={style.cardHome}>
-                            <Text style={style.text}>{nextClass.titulo}</Text>
-                            {nextClass.alumnos
+                        {nextClass.alumnos
                             ?
-                                <Text style={style.text}>Cupo de Clase <Text style={style.textNum}> {nextClass.alumnos.length} / {nextClass.cupo}</Text></Text>
+                            <>
+                                <Text style={style.subtitle}>Tu proxima clase</Text>
+                                <View style={style.cardHome}>
+                                    <Text style={style.text}>{nextClass.titulo}</Text>
+                                    <Text style={style.text}>Cupo de Clase <Text style={style.textNum}> {nextClass.alumnos.length} / {nextClass.cupo}</Text></Text>
+
+                                    <Text style={style.text}>Faltan {-Math.trunc(diasRestantes)} dias</Text>
+                                </View>
+                                <View style={style.mapaBox}>
+                                    <MapView
+                                        style={style.mapa}
+                                        scrollEnabled={false}
+                                        zoomEnabled={false}
+                                        initialRegion={{
+                                            latitude: nextClass.ubicacion.lat,
+                                            longitude: nextClass.ubicacion.lng,
+                                            latitudeDelta: 0.02,
+                                            longitudeDelta: 0.04
+                                        }}
+                                    >
+                                        <Marker
+                                            draggable={false}
+                                            coordinate={{latitude: nextClass.ubicacion.lat,
+                                                        longitude: nextClass.ubicacion.lng
+                                            }}
+                                        />
+                                    </MapView>
+                                </View>
+                            </>
                             :
-                                <></>
-                            }
-                            <Text style={style.text}>Faltan {-Math.trunc(diasRestantes)} dias</Text>
-                        </View>
-                        <View style={style.mapaBox}>
-                            <MapView
-                                style={style.mapa}
-                                scrollEnabled={false}
-                                zoomEnabled={false}
-                                initialRegion={{
-                                    latitude: initialOrigin.latitude,
-                                    longitude: initialOrigin.longitude,
-                                    latitudeDelta: 0.035,
-                                    longitudeDelta: 0.03
-                                }}
-                            >
-                                <Marker
-                                    draggable={false}
-                                    coordinate={initialOrigin}
-                                />
-                            </MapView>
-                        </View>
-                        
+                            <></>
+                        }
                     </>
                     :
                     <Text>No hay next class</Text>
                 }
-                
-                <Text style={[style.subtitle, {marginBottom: -12, marginTop: 20}]}>Nuestra sugerencia</Text>
-                {clases ?
-                    //La primera vez que levanta, clases lo levanta como undefined. Revisar por que
-                    <Card cupo={clases.cupo} alumnosAnotados={(clases.alumnos)} navigate={() => { navigate(clases) }} title={clases.titulo} />
-                    :
+
+                {showCard ?
                     <>
+                        <Text style={[style.subtitle, { marginBottom: -12, marginTop: 20 }]}>Nuestra sugerencia</Text>
+                        <Card fecha={`${dateActividad.getDay()}/${dateActividad.getMonth()}/${dateActividad.getFullYear()}`} cupo={clases.cupo} alumnosAnotados={(clases.alumnos)} navigate={() => { navigate(clases) }} title={clases.titulo} />
                     </>
+                    :
+                    <Text style={style.subtitle}>
+                        No hay ninguna sugerencia... Por ahora
+                    </Text>
                 }
             </View>
         </ScrollView>
@@ -132,23 +143,24 @@ const style = StyleSheet.create({
         marginBottom: 10,
         justifyContent: 'center',
         fontStyle: 'italic',
-        fontWeight: 'bold',
+        fontWeight: '800',
         color: '#ef6797'
     },
-    subtitle:{
+    subtitle: {
         fontSize: 20,
         marginTop: 5,
         marginBottom: 10,
-        justifyContent: 'center'
+        justifyContent: 'center',
+        fontWeight: 'bold'
     },
     nombre: {
         marginTop: 10,
         marginBottom: 10,
         fontSize: 25,
         textAlign: 'center',
-        fontWeight: '600'
+        fontWeight: 'bold'
     },
-    mapaBox:{
+    mapaBox: {
         width: '100%',
         height: '45%',
         marginBottom: 10,
@@ -185,7 +197,7 @@ const style = StyleSheet.create({
         height: 100,
         marginBottom: -15
     },
-    cardHome:{
+    cardHome: {
         backgroundColor: '#00779E',
         width: '100%',
         paddingHorizontal: 15,
