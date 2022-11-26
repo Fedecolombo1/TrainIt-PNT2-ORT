@@ -7,5 +7,6 @@ export const getClases = () => {
             .then(data => {
                 return resolve(data)
             })
+            .catch(err => reject(err))
     })
 }
