@@ -7,7 +7,6 @@ import Card from '../../Components/Card/Index.js'
 import { getClases } from '../../Services/Clases.js';
 
 export default function Home({ navigation }) {
-
     const initialOrigin = {
         latitude: -34.60376,
         longitude: -58.38162
@@ -20,7 +19,6 @@ export default function Home({ navigation }) {
     useEffect(() => {
         getClases()
             .then((data) => {
-                
                 const randomNumber = Math.floor(Math.random() * data.length)
                 console.log(`randomNumber: ${randomNumber} y su id ${data[randomNumber]._id}`);
                 setClasses(data[randomNumber])
@@ -58,6 +56,7 @@ export default function Home({ navigation }) {
                 />)
         })
     }, [navigation])
+    console.log(classes.alumnos);
 
     return (
         <ScrollView>
@@ -83,7 +82,13 @@ export default function Home({ navigation }) {
                     />
                 </MapView>
                 <Text style={style.title}>Nuestra sugerencia</Text>
-                <Card navigate={() => { navigate(classes) }} title={classes.titulo} />
+                {!classes ?
+                //La primera vez que levanta, classes lo levanta como undefined. Revisar por que
+                    <Card cupo={classes.cupo} alumnosAnotados={(classes.alumnos)} navigate={() => { navigate(classes) }} title={classes.titulo} />
+                    :
+                    <>
+                    </>
+                }
             </View>
         </ScrollView>
     );
