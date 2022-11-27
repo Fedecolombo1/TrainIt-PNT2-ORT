@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { Button, Text, View } from "react-native";
 import CustomInput from "../../Components/TextInput";
+import { Hostname, PortNumber } from "../../config";
 import AuthContext from "../../Services/AuthContext";
 
 export default function UnirseClase({ navigation }) {
@@ -17,7 +18,7 @@ export default function UnirseClase({ navigation }) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(bodyObj)
         };
-        fetch(`http://192.168.0.120:3000/athletes/anotarse-a-clase`, requestOptions)
+        fetch(`http://${Hostname}:${PortNumber}/athletes/anotarse-a-clase`, requestOptions)
             .then(res => {
                 res.ok ? res.json() : null
             })
@@ -37,7 +38,7 @@ export default function UnirseClase({ navigation }) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(bodyObj)
         };
-        fetch(`http://192.168.0.120:3000/athletes/darse-de-baja-clase`, requestOptions)
+        fetch(`http://${Hostname}:${PortNumber}/athletes/darse-de-baja-clase`, requestOptions)
             .then(res => {
                 res.ok ? res.json() : null
             })

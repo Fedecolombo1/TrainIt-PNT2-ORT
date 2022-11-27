@@ -11,5 +11,5 @@ export const getCoaches = () => {
 }
 
 // export const borrarCoach = (id) => {
-//     fetch('http://192.168.1.51:3000/delete/'+id)
+//     fetch('http://${Hostname}:${PortNumber}/delete/'+id)
 // }
