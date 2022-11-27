@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
         paddingBottom: 295,
         paddingHorizontal: 20,
         height: '120%',
-        backgroundColor: '#00779E'
+        backgroundColor: '#dce4f2cc'
     },
     title: {
         textAlign: 'start',

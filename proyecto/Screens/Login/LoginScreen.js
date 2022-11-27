@@ -1,9 +1,8 @@
 import React, { useContext, useEffect, useInsertionEffect, useState } from 'react'
-import { Text, View, StyleSheet, Button } from 'react-native'
+import { Text, View, StyleSheet, Button, Image } from 'react-native'
 import CustomButton from '../../Components/CustomButton';
 import * as Google from 'expo-auth-session/providers/google';
-import { useNavigation } from '@react-navigation/native';
-import { Picker } from '@react-native-picker/picker';
+import logo from '../../assets/adaptive-icon.png'
 import AuthContext from '../../Services/AuthContext';
 import { Hostname, PortNumber } from '../../config';
 
@@ -19,10 +18,10 @@ function LoginScreen() {
   });
 
   useEffect(() => {
-    
+
     if (response?.type === 'success') {
       const { authentication } = response;
-      
+
       console.log(authentication.accessToken) //uso este log para poder acceder al token si tengo que hacer pruebas desde el back
       if (rol === 'Atleta') {
         fetch(`${Hostname}:${PortNumber}/auth/v1/login-athlete/google/${authentication.accessToken}`)
@@ -64,22 +63,28 @@ function LoginScreen() {
 
   return (
     <View style={style.root}>
-
+      <Image
+        style={style.logo}
+        source={logo}
+      />
+      <Text style={style.title} >TRAIN-IT</Text>
       {
         !rol
           ?
           <>
-            <Text style={style.title}>Train It</Text>
+
             <Text style={style.login}>Por favor seleccione una opcion</Text>
             <CustomButton style={style.googleButton} bgColor='#00779E' text="Atleta" onPress={() => setRolBtn('Atleta')} />
             <CustomButton style={style.googleButton} bgColor='#00779E' text="Coach" onPress={() => setRolBtn('Coach')} />
           </>
           :
           <>
-            <Text style={style.title}>Train It</Text>
             <Text style={style.login}>Inicia sesion para poder continuar</Text>
             <CustomButton style={style.googleButton} text="Sign In With Google" onPress={() => promptAsync()} />
-            <CustomButton style={style.googleButton} bgColor='#00779E' text="Go Back" onPress={() => setRol()} />
+            <CustomButton style={style.googleButton} bgColor='#00779E' text="Go Back" onPress={() => {
+              setError('')
+              setRol('')
+            }} />
             <Text style={style.errorMessage}>{error}</Text>
           </>
       }
@@ -92,7 +97,7 @@ export default LoginScreen
 const style = StyleSheet.create({
   root: {
     width: '100%',
-    backgroundColor: '#FDF0E0',
+    backgroundColor: '#dce4f2cc',
     height: '100%',
     padding: '10%',
     alignItems: 'center',
@@ -108,6 +113,7 @@ const style = StyleSheet.create({
     paddingTop: 15,
     paddingBottom: 20,
     width: '100%',
+    fontWeight: '600',
     textAlign: 'center'
   },
   registerTxt: {
@@ -127,12 +133,25 @@ const style = StyleSheet.create({
     borderColor: '#888',
     shadowColor: 'grey'
   },
-
+  logo: {
+    width: 100,
+    height: 100,
+    marginBottom: -15
+  },
   errorMessage: {
     color: 'red',
     fontSize: 15,
     fontWeight: 'bold',
     alignContent: 'center',
     justifyContent: 'center'
-  }
+  },
+  title: {
+    textAlign: 'start',
+    fontSize: 65,
+    marginBottom: 10,
+    justifyContent: 'center',
+    fontStyle: 'italic',
+    fontWeight: '700',
+    color: '#ef6797'
+  },
 });

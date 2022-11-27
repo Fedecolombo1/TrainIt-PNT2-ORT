@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from "react";
 import { Button, Image, StyleSheet, Text, View } from "react-native";
-import CustomButton from "../../Components/CustomButton";
 import AuthContext from "../../Services/AuthContext";
 
 
@@ -51,7 +50,7 @@ export default function Profile() {
                         <Text style={style.text}>Edad: {getAge()}</Text>
                     </View>
                     <View style={style.textBox}>
-                        <Text style={style.text}>Clases anotadas: {user.clases.length}</Text>
+                    <Text style={style.text}>{!user.team ? `Team: ${user.team}` : "Todavia no pertenece al team"}</Text>
                     </View>
                     <View style={style.textBox}>
                         <Text style={style.text}>{user.aptoFisico ? "Apto Fisico al dia" : "Renovar el apto fisico"}</Text>
@@ -74,7 +73,7 @@ const style = StyleSheet.create({
         alignItems: 'center',
         paddingTop: 20,
         height: '100%',
-        backgroundColor: '#00779E'
+        backgroundColor: '#dce4f2cc'
     },
     datosBox: {
         width: '100%',
@@ -110,7 +109,7 @@ const style = StyleSheet.create({
         fontSize: 25,
         textAlign: 'center',
         fontWeight: '600',
-        color: 'white'
+        color: '#000'
         
     },
     img: {

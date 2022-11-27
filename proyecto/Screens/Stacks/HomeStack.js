@@ -28,7 +28,6 @@ function HomeStack() {
           <Stack.Screen name='Detalle Clase' component={DetalleClase} />
           <Stack.Screen name='Notification' component={FeedbackView} />
           <Stack.Screen name='SolicitudFeedback' component={SolicitudFeedback} />
-          <Stack.Screen name='Clases' component={ClasesListScreen} />
           <Stack.Screen name='DevolucionFeedback' component={DevolucionFeedback} />
         </>
       }
