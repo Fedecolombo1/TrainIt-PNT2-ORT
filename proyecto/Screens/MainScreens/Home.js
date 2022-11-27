@@ -6,6 +6,7 @@ import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import Card from '../../Components/Card/Index.js'
 import { getClases } from '../../Services/Clases.js';
 import logo from '../../assets/adaptive-icon.png'
+import { Hostname, PortNumber } from '../../config';
 
 export default function Home({ navigation }) {
 
@@ -14,11 +15,13 @@ export default function Home({ navigation }) {
     const [diasRestantes, setDiasRestantes] = useState(0)
     const [showCard, setShowCard] = useState(false)
     const [newNext, setNewNext] = useState({})
+    const [userClasses, setUserClasses] = useState([])
 
     useEffect(() => {
-        getClases()
-            .then((data) => {
 
+        fetch(`${Hostname}:${PortNumber}/training_class/clasesDeAtleta/${user.googleId}`)
+            .then(res => res.json())
+            .then(data => {
                 //For next class
                 const randomNumber = Math.floor(Math.random() * data.length)
                 const orderedArray = data.slice().sort((a, b) => {
@@ -38,14 +41,7 @@ export default function Home({ navigation }) {
                     }
                 })
                 const next = firstClosestDate[0]
-                console.log(next);
-
-                const nuevo = firstClosestDate.filter(elem => {
-                    return elem.alumnos.filter(alu => {
-                        return alu.atletaId === user.googleId
-                    })
-                })
-                console.log(nuevo);
+                // console.log(next);
 
                 if (next) {
                     const classDate = new Date(next.diaActividad)
@@ -62,7 +58,9 @@ export default function Home({ navigation }) {
                 For recommended class, check classes
                 where the user isnt 
                 */
-                setClases(next)
+
+                // const closestDateRandomNumber = Math.floor(Math.random() * firstClosestDate.length)
+                // setClases(firstClosestDate[closestDateRandomNumber])
 
 
                 if (true) {
@@ -71,10 +69,32 @@ export default function Home({ navigation }) {
                 } else {
                     setShowCard(false)
                 }
-
-
+                // setUserClasses(data)
             })
             .catch(err => { console.log(err); })
+
+        getClases().then(data => {
+            const randomNumber = Math.floor(Math.random() * data.length)
+            const orderedArray = data.slice().sort((a, b) => {
+                const date1 = new Date(a.diaActividad)
+                const date2 = new Date(b.diaActividad)
+                return date1 - date2
+            })
+
+
+            const firstClosestDate = orderedArray.filter(elem => {
+                const classDate = new Date(elem.diaActividad)
+                const today = new Date();
+                const difTiempo = today.getTime() - classDate.getTime();
+                const difDias = difTiempo / (1000 * 3600 * 24);
+                if (difDias < 0) {
+                    return elem
+                }
+            })
+            const closestDateRandomNumber = Math.floor(Math.random() * firstClosestDate.length)
+            setClases(firstClosestDate[closestDateRandomNumber])
+        })
+
     }, [])
 
     const navigate = (claseDetail) => {
