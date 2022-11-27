@@ -9,31 +9,62 @@ import logo from '../../assets/adaptive-icon.png'
 
 export default function Home({ navigation }) {
 
-    const { user, setUser } = useContext(AuthContext)
+    const { user } = useContext(AuthContext)
     const [clases, setClases] = useState({})
-    const [nextClass, setNextClass] = useState({})
     const [diasRestantes, setDiasRestantes] = useState(0)
-    const [dateActividad, setDateActividad] = useState(0)
     const [showCard, setShowCard] = useState(false)
+    const [newNext, setNewNext] = useState({})
 
     useEffect(() => {
         getClases()
             .then((data) => {
-                const randomNumber = Math.floor(Math.random() * data.length)
-                setClases(data[randomNumber])
 
-                const userDate = new Date(data[randomNumber].diaActividad)
-                setDateActividad(userDate)
-                const today = new Date();
-                const differenciaTiempo = today.getTime() - userDate.getTime();
-                const differenciaDias = differenciaTiempo / (1000 * 3600 * 24);
-                differenciaDias < 0
-                    ?
-                    setDiasRestantes(differenciaDias)
-                    :
-                    console.log(`Ya paso la clase ${clases.titulo}`)
-                console.log(nextClass.ubicacion);
-                setNextClass(data[randomNumber])
+                //For next class
+                const randomNumber = Math.floor(Math.random() * data.length)
+                const orderedArray = data.slice().sort((a, b) => {
+                    const date1 = new Date(a.diaActividad)
+                    const date2 = new Date(b.diaActividad)
+                    return date1 - date2
+                })
+
+
+                const firstClosestDate = orderedArray.filter(elem => {
+                    const classDate = new Date(elem.diaActividad)
+                    const today = new Date();
+                    const difTiempo = today.getTime() - classDate.getTime();
+                    const difDias = difTiempo / (1000 * 3600 * 24);
+                    if (difDias < 0) {
+                        return elem
+                    }
+                })
+                const next = firstClosestDate[0]
+                console.log(next);
+
+                const nuevo = firstClosestDate.filter(elem => {
+                    return elem.alumnos.filter(alu => {
+                        return alu.atletaId === user.googleId
+                    })
+                })
+                console.log(nuevo);
+
+                if (next) {
+                    const classDate = new Date(next.diaActividad)
+                    const newToday = new Date();
+                    const difTiempo = newToday.getTime() - classDate.getTime();
+                    const difDias = difTiempo / (1000 * 3600 * 24);
+
+                    setDiasRestantes(Math.trunc(difDias))
+                    setNewNext(next)
+
+                }
+
+                /*
+                For recommended class, check classes
+                where the user isnt 
+                */
+                setClases(next)
+
+
                 if (true) {
                     setShowCard(true)
 
@@ -44,7 +75,7 @@ export default function Home({ navigation }) {
 
             })
             .catch(err => { console.log(err); })
-    }, [navigation])
+    }, [])
 
     const navigate = (claseDetail) => {
         return navigation.navigate("Detalle Clase", { clase: claseDetail })
@@ -64,6 +95,7 @@ export default function Home({ navigation }) {
                 />)
         })
     }, [navigation])
+
     return (
         <ScrollView style={style.scrollView}>
             <View style={style.root}>
@@ -74,17 +106,20 @@ export default function Home({ navigation }) {
                 <Text style={style.title} >TRAIN-IT</Text>
                 <Text style={style.nombre} >Bienvenido {user.nombre} {user.apellido}</Text>
 
-                {nextClass ?
+                {newNext ?
                     <>
-                        {nextClass.alumnos
+                        {newNext.alumnos
                             ?
                             <>
                                 <Text style={style.subtitle}>Tu proxima clase</Text>
                                 <View style={style.cardHome}>
-                                    <Text style={style.text}>{nextClass.titulo}</Text>
-                                    <Text style={style.text}>Cupo de Clase <Text style={style.textNum}> {nextClass.alumnos.length} / {nextClass.cupo}</Text></Text>
-
-                                    <Text style={style.text}>Faltan {-Math.trunc(diasRestantes)} dias</Text>
+                                    <Text style={style.text}>{newNext.titulo}</Text>
+                                    <Text style={style.text}>Lugares restantes <Text style={style.textNum}> {newNext.cupo - newNext.alumnos.length}</Text></Text>
+                                    {Math.trunc(diasRestantes) === -1 ?
+                                        <Text style={style.text}>Falta {-Math.trunc(diasRestantes)} dia</Text>
+                                        :
+                                        <Text style={style.text}>Faltan {-Math.trunc(diasRestantes)} dias</Text>
+                                    }
                                 </View>
                                 <View style={style.mapaBox}>
                                     <MapView
@@ -92,33 +127,40 @@ export default function Home({ navigation }) {
                                         scrollEnabled={false}
                                         zoomEnabled={false}
                                         initialRegion={{
-                                            latitude: nextClass.ubicacion.lat,
-                                            longitude: nextClass.ubicacion.lng,
+                                            latitude: newNext.ubicacion.lat,
+                                            longitude: newNext.ubicacion.lng,
                                             latitudeDelta: 0.02,
                                             longitudeDelta: 0.04
                                         }}
                                     >
                                         <Marker
                                             draggable={false}
-                                            coordinate={{latitude: nextClass.ubicacion.lat,
-                                                        longitude: nextClass.ubicacion.lng
+                                            coordinate={{
+                                                latitude: newNext.ubicacion.lat,
+                                                longitude: newNext.ubicacion.lng
                                             }}
                                         />
                                     </MapView>
                                 </View>
                             </>
                             :
-                            <></>
+                            <Text>Por Ahora no estas anotado a ninguna clase</Text>
                         }
                     </>
                     :
                     <Text>No hay next class</Text>
                 }
 
-                {showCard ?
+                {showCard && clases ?
                     <>
                         <Text style={[style.subtitle, { marginBottom: -12, marginTop: 20 }]}>Nuestra sugerencia</Text>
-                        <Card fecha={`${dateActividad.getDay()}/${dateActividad.getMonth()}/${dateActividad.getFullYear()}`} cupo={clases.cupo} alumnosAnotados={(clases.alumnos)} navigate={() => { navigate(clases) }} title={clases.titulo} />
+                        <Card
+                            estaUnido={clases.alumnos.find(alu => alu.atletaId == user.googleId) ? true : false}
+                            fecha={clases.diaActividad}
+                            cupo={clases.cupo}
+                            alumnosAnotados={(clases.alumnos)}
+                            navigate={() => { navigate(clases) }}
+                            title={clases.titulo} />
                     </>
                     :
                     <Text style={style.subtitle}>

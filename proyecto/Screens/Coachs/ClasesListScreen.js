@@ -8,7 +8,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import AuthContext from '../../Services/AuthContext/index.js';
 import { getClases } from '../../Services/Clases.js';
 
-export default function ClasesListScreen({navigation}) {
+export default function ClasesListScreen({ navigation }) {
 
     const { user } = useContext(AuthContext)
 
@@ -27,11 +27,11 @@ export default function ClasesListScreen({navigation}) {
     }, [navigation])
 
     const searchFilterFunction = (text) => {
-        if(text){
+        if (text) {
             getClases().then((data) => {
                 setClases(data.filter(clase => clase.titulo == text));
             })
-        }else{
+        } else {
             getClases().then((data) => {
                 setClases(data)
             })
@@ -39,17 +39,17 @@ export default function ClasesListScreen({navigation}) {
     }
 
     const navigate = (claseDetail) => {
-        return navigation.navigate("Detalle Clase", {clase: claseDetail, setClases: setClases})
+        return navigation.navigate("Detalle Clase", { clase: claseDetail, setClases: setClases })
     }
 
     useEffect(() => {
-        
+
         getClases().then((data) => {
             setClases(data)
         })
 
     }, [])
-    
+
     return (
         <SafeAreaView>
 
@@ -58,24 +58,23 @@ export default function ClasesListScreen({navigation}) {
                 <ScrollView style={styles.cardBox} showsVerticalScrollIndicator={false}>
                     {
                         clases.length > 0 ?
-                        clases.map( clase => {
-                            const dateActividad = new Date(clase.diaActividad)
-                           return <Card estaUnido={clase.alumnos.find(alu => alu.atletaId == user.googleId) ? true : false} navigate={() => navigate(clase)} title={clase.titulo} fecha={`${dateActividad.getDay()}/${dateActividad.getMonth()}/${dateActividad.getFullYear()}`} cupo={clase.cupo} alumnosAnotados={(clase.alumnos)} key={clase._id} /> 
-                        })
-                        :
-                        <Text style={{color: 'white', fontWeight: 'bold', fontSize: 20, textAlign: 'center'}}>Buscando..</Text>                        
+                            clases.map(clase => {
+                                return <Card estaUnido={clase.alumnos.find(alu => alu.atletaId == user.googleId) ? true : false} navigate={() => navigate(clase)} title={clase.titulo} fecha={clase.diaActividad} cupo={clase.cupo} alumnosAnotados={(clase.alumnos)} key={clase._id} />
+                            })
+                            :
+                            <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20, textAlign: 'center' }}>Buscando..</Text>
                     }
                 </ScrollView>
 
                 {user.rol == "Coach"
-                ?
-                <Pressable style={styles.agregarBox} onPress={() => navigation.navigate("Crear Clase")}>
-                    <Ionicons name="add" size={24} color="black" />
-                </Pressable>
-                :
-                <></>
+                    ?
+                    <Pressable style={styles.agregarBox} onPress={() => navigation.navigate("Crear Clase")}>
+                        <Ionicons name="add" size={24} color="black" />
+                    </Pressable>
+                    :
+                    <></>
                 }
-                
+
             </View>
         </SafeAreaView>
     );
