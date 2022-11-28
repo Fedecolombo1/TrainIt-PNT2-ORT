@@ -1,11 +1,12 @@
 import { useCallback, useContext, useEffect, useState } from "react"
-import { View, Text, StyleSheet, ViewBase, Pressable, ScrollView, Image } from "react-native"
+import { View, Text, StyleSheet, ViewBase, Pressable, ScrollView, Image, Button } from "react-native"
 import MapView, { Marker } from "react-native-maps"
 import AuthContext from "../../Services/AuthContext";
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import Card from '../../Components/Card/Index.js'
 import { getClases } from '../../Services/Clases.js';
 import logo from '../../assets/adaptive-icon.png'
+import { Hostname, PortNumber } from '../../config';
 
 export default function Home({ navigation }) {
 
@@ -14,11 +15,13 @@ export default function Home({ navigation }) {
     const [diasRestantes, setDiasRestantes] = useState(0)
     const [showCard, setShowCard] = useState(false)
     const [newNext, setNewNext] = useState({})
+    const [userClasses, setUserClasses] = useState([])
 
     useEffect(() => {
-        getClases()
-            .then((data) => {
 
+        fetch(`${Hostname}:${PortNumber}/training_class/clasesDeAtleta/${user.googleId}`)
+            .then(res => res.json())
+            .then(data => {
                 //For next class
                 const randomNumber = Math.floor(Math.random() * data.length)
                 const orderedArray = data.slice().sort((a, b) => {
@@ -38,14 +41,6 @@ export default function Home({ navigation }) {
                     }
                 })
                 const next = firstClosestDate[0]
-                console.log(next);
-
-                const nuevo = firstClosestDate.filter(elem => {
-                    return elem.alumnos.filter(alu => {
-                        return alu.atletaId === user.googleId
-                    })
-                })
-                console.log(nuevo);
 
                 if (next) {
                     const classDate = new Date(next.diaActividad)
@@ -58,27 +53,49 @@ export default function Home({ navigation }) {
 
                 }
 
-                /*
-                For recommended class, check classes
-                where the user isnt 
-                */
-                setClases(next)
-
-
-                if (true) {
-                    setShowCard(true)
-
-                } else {
-                    setShowCard(false)
-                }
-
-
             })
             .catch(err => { console.log(err); })
+
+        getClases()
+        .then(data => {
+            const randomNumber = Math.floor(Math.random() * data.length)
+            const orderedArray = data.slice().sort((a, b) => {
+                const date1 = new Date(a.diaActividad)
+                const date2 = new Date(b.diaActividad)
+                return date1 - date2
+            })
+
+
+            const firstClosestDate = orderedArray.filter(elem => {
+                const classDate = new Date(elem.diaActividad)
+                const today = new Date();
+                const difTiempo = today.getTime() - classDate.getTime();
+                const difDias = difTiempo / (1000 * 3600 * 24);
+                if (difDias < 0) {
+                    return elem
+                }
+            })
+            const closestDateRandomNumber = Math.floor(Math.random() * firstClosestDate.length)
+            setClases(firstClosestDate[closestDateRandomNumber])
+
+            if (firstClosestDate.length > 0) {
+                setShowCard(true)
+
+            } else {
+                setShowCard(false)
+            }
+        })
+        .catch(err => {console.log(err)})
+
     }, [])
 
-    const navigate = (claseDetail) => {
+    const navigateToDetail = (claseDetail) => {
         return navigation.navigate("Detalle Clase", { clase: claseDetail })
+    }
+
+    const navigateToClasses = () => {
+        return navigation.navigate('ClassTab', { screen: 'Clases' });
+
     }
 
     useEffect(() => {
@@ -144,11 +161,16 @@ export default function Home({ navigation }) {
                                 </View>
                             </>
                             :
-                            <Text>Por Ahora no estas anotado a ninguna clase</Text>
+                            <>
+                                <Text>Anotate a tu proxima clase:</Text>
+                                <Button 
+                                title={user.rol !== 'Atleta' ? "Ir a todas las clases" : "Ver todas las clases"} 
+                                onPress={() => { navigateToClasses() }} />
+                            </>
                         }
                     </>
                     :
-                    <Text>No hay next class</Text>
+                    <></>
                 }
 
                 {showCard && clases ?
@@ -159,7 +181,7 @@ export default function Home({ navigation }) {
                             fecha={clases.diaActividad}
                             cupo={clases.cupo}
                             alumnosAnotados={(clases.alumnos)}
-                            navigate={() => { navigate(clases) }}
+                            navigate={() => { navigateToDetail(clases) }}
                             title={clases.titulo} />
                     </>
                     :
@@ -177,7 +199,8 @@ const style = StyleSheet.create({
         height: '100%',
         paddingHorizontal: '5%',
         alignItems: 'center',
-        paddingBottom: 300
+        paddingBottom: 300,
+        backgroundColor: '#dce4f2cc'
     },
     title: {
         textAlign: 'start',
