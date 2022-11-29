@@ -67,7 +67,7 @@ export default function ClasesListScreen({ navigation }) {
                                         key={clase._id} />
                                 })
                                 :
-                                <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20, textAlign: 'center' }}>Buscando..</Text>
+                                <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 20, textAlign: 'center' }}>Buscando..</Text>
                         }
 
                     </ScrollView>

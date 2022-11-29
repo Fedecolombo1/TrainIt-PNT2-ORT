@@ -24,7 +24,6 @@ function CreateClaseScreen() {
     const month = classDate.getMonth()
     const day = classDate.getDate()
     const hours = classDate.getHours()
-    const minutes = classDate.getMinutes()
 
     const createClass = () => {
         const clase = {

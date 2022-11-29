@@ -37,7 +37,7 @@ export default function MainNavigator() {
                         }
                         return <Ionicons name={iconName} size={size} color={color} />;
                     },
-                    tabBarActiveTintColor: 'black',
+                    tabBarActiveTintColor: '#00779E',
                     tabBarLabel: () => { return null }
                 })}
             >

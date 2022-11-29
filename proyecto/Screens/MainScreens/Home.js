@@ -75,8 +75,8 @@ export default function Home({ navigation }) {
                     const date2 = new Date(b.diaActividad)
                     return date1 - date2
                 })
-
-
+                
+                
                 const firstClosestDate = orderedArray.filter(elem => {
                     const classDate = new Date(elem.diaActividad)
                     const today = new Date();
@@ -88,7 +88,7 @@ export default function Home({ navigation }) {
                 })
                 const closestDateRandomNumber = Math.floor(Math.random() * firstClosestDate.length)
                 setClases(firstClosestDate[closestDateRandomNumber])
-
+                
                 if (firstClosestDate.length > 0) {
                     setShowCard(true)
 
@@ -122,7 +122,7 @@ export default function Home({ navigation }) {
         return navigation.navigate('ClassTab', { screen: 'Clases' });
 
     }
-
+    console.log(clases);
     return (
         <ScrollView style={style.scrollView}>
             <View style={style.root}>
@@ -151,8 +151,8 @@ export default function Home({ navigation }) {
                                 <View style={style.mapaBox}>
                                     <MapView
                                         style={style.mapa}
-                                        scrollEnabled={false}
-                                        zoomEnabled={false}
+                                        scrollEnabled={true}
+                                        zoomEnabled={true}
                                         initialRegion={{
                                             latitude: newNext.ubicacion.lat,
                                             longitude: newNext.ubicacion.lng,
@@ -182,14 +182,14 @@ export default function Home({ navigation }) {
                     :
                     <></>
                 }
-                {user.rol === 'Coach'
+                {user.rol === 'Atleta'
                     ?
                     <>
                         {showCard && clases ?
                             <>
                                 <Text style={[style.subtitle, { marginBottom: -12, marginTop: 20 }]}>Nuestra sugerencia</Text>
                                 <Card
-                                    estaUnido={user.rol === 'Coach' ? true : clase.alumnos.find(alu => alu.atletaId == user.googleId) ? true : false}
+                                    estaUnido={user.rol === 'Coach' ? true : clases.alumnos.find(alu => alu.atletaId == user.googleId) ? true : false}
                                     fecha={clases.diaActividad}
                                     cupo={clases.cupo}
                                     alumnosAnotados={(clases.alumnos)}

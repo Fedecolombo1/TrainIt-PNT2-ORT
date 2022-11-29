@@ -16,7 +16,7 @@ function ClassDetail({ navigation }) {
 
     const clase = route.params.clase;
     const setClases = route.params.setClases;
-    console.log(clase.ubicacion);
+    
     const initialOrigin = {
         latitude: clase.ubicacion.lat,
         longitude: clase.ubicacion.lng
@@ -120,7 +120,7 @@ function ClassDetail({ navigation }) {
                         moveOnMarkerPress={false}
                     >
                         <Marker
-                            draggable
+                            draggable={false}
                             coordinate={coordenadasClase}
                         />
 
