@@ -5,32 +5,31 @@ import AuthContext from "../../Services/AuthContext";
 import { Picker } from '@react-native-picker/picker';
 import { Hostname, PortNumber } from '../../config';
 
-let listaDeCoaches = [];
-
-
+let selectedCoach;
 
 export default function SolicitudFeedback({ navigation }) {
 
     const { user } = useContext(AuthContext)
-    const [coach, setCoach] = useState()
     const [clase, setClase] = useState()
-    const [athletes, setAthletes] = useState([])
+    const [listaDeCoaches, setListaDeCoaches] = useState([])
 
-    useEffect(useCallback(() => {
+    useEffect(() => {
         fetch(`${Hostname}:${PortNumber}/coaches`)
             .then(res => res.json())
             .then(data => {
-                console.log(data)
-                setAthletes(data)
+                setListaDeCoaches(data)
+                console.log('veamos data[0] . ', data[0])
+                selectedCoach = data[0]
+                console.log('selectedCoach: ', selectedCoach.dni)
             })
             .catch(err => console.log(err))
-    }), [])
+    }, [])
 
     const requestFeedback = () => {
         const bodyObj = {
             dni_atleta: user.dni,
             titulo_clase: clase,
-            dni_coach: coach.dni
+            dni_coach: selectedCoach.dni
         }
         const requestOptions = {
             method: 'POST',
@@ -54,14 +53,14 @@ export default function SolicitudFeedback({ navigation }) {
             <Text style={style.title}>Ingrese a quien se le pedira el feedback</Text>
             <View style={style.coachSelectBox}>
                 <Picker
-                    selectedValue={coach}
+                    selectedValue={selectedCoach}
                     onValueChange={(itemValue, itemIndex) => {
                         console.log('coach elegido: ', itemValue)
-                        setCoach(itemValue)
+                        selectedCoach = itemValue
                     }
                     }>
                     {
-                        athletes.map(element => {
+                        listaDeCoaches.map(element => {
                             const fullname = element.nombre + ' ' + element.apellido;
                             return <Picker.Item key={element._id} label={fullname} value={element} />
                         })
