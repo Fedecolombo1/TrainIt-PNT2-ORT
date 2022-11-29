@@ -15,14 +15,60 @@ export default function Home({ navigation }) {
     const [diasRestantes, setDiasRestantes] = useState(0)
     const [showCard, setShowCard] = useState(false)
     const [newNext, setNewNext] = useState({})
-    const [userClasses, setUserClasses] = useState([])
+
+    const closestClassDate = (data) => {
+        const randomNumber = Math.floor(Math.random() * data.length)
+        const orderedArray = data.slice().sort((a, b) => {
+            const date1 = new Date(a.diaActividad)
+            const date2 = new Date(b.diaActividad)
+            return date1 - date2
+        })
+
+
+        const firstClosestDate = orderedArray.filter(elem => {
+            const classDate = new Date(elem.diaActividad)
+            const today = new Date();
+            const difTiempo = today.getTime() - classDate.getTime();
+            const difDias = difTiempo / (1000 * 3600 * 24);
+            if (difDias < 0) {
+                return elem
+            }
+        })
+        const next = firstClosestDate[0]
+
+        if (next) {
+            const classDate = new Date(next.diaActividad)
+            const newToday = new Date();
+            const difTiempo = newToday.getTime() - classDate.getTime();
+            const difDias = difTiempo / (1000 * 3600 * 24);
+
+            setDiasRestantes(Math.trunc(difDias))
+            setNewNext(next)
+        }
+    }
 
     useEffect(() => {
+        if (user.rol === 'Atleta') {
+            fetch(`${Hostname}:${PortNumber}/training_class/clasesDeAtleta/${user.googleId}`)
+                .then(res => res.json())
+                .then(data => {
+                    //For next class
+                    closestClassDate(data)
+                })
+                .catch(err => { console.log(err); })
 
-        fetch(`${Hostname}:${PortNumber}/training_class/clasesDeAtleta/${user.googleId}`)
-            .then(res => res.json())
+
+        } else if (user.rol === 'Coach') {
+            fetch(`${Hostname}:${PortNumber}/training_class/clasesDeCoach/${user.googleId}`)
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data);
+                    closestClassDate(data)
+                })
+                .catch(err => console.log(err))
+        }
+        getClases()
             .then(data => {
-                //For next class
                 const randomNumber = Math.floor(Math.random() * data.length)
                 const orderedArray = data.slice().sort((a, b) => {
                     const date1 = new Date(a.diaActividad)
@@ -40,65 +86,19 @@ export default function Home({ navigation }) {
                         return elem
                     }
                 })
-                const next = firstClosestDate[0]
+                const closestDateRandomNumber = Math.floor(Math.random() * firstClosestDate.length)
+                setClases(firstClosestDate[closestDateRandomNumber])
 
-                if (next) {
-                    const classDate = new Date(next.diaActividad)
-                    const newToday = new Date();
-                    const difTiempo = newToday.getTime() - classDate.getTime();
-                    const difDias = difTiempo / (1000 * 3600 * 24);
+                if (firstClosestDate.length > 0) {
+                    setShowCard(true)
 
-                    setDiasRestantes(Math.trunc(difDias))
-                    setNewNext(next)
-
-                }
-
-            })
-            .catch(err => { console.log(err); })
-
-        getClases()
-        .then(data => {
-            const randomNumber = Math.floor(Math.random() * data.length)
-            const orderedArray = data.slice().sort((a, b) => {
-                const date1 = new Date(a.diaActividad)
-                const date2 = new Date(b.diaActividad)
-                return date1 - date2
-            })
-
-
-            const firstClosestDate = orderedArray.filter(elem => {
-                const classDate = new Date(elem.diaActividad)
-                const today = new Date();
-                const difTiempo = today.getTime() - classDate.getTime();
-                const difDias = difTiempo / (1000 * 3600 * 24);
-                if (difDias < 0) {
-                    return elem
+                } else {
+                    setShowCard(false)
                 }
             })
-            const closestDateRandomNumber = Math.floor(Math.random() * firstClosestDate.length)
-            setClases(firstClosestDate[closestDateRandomNumber])
+            .catch(err => { console.log(err) })
 
-            if (firstClosestDate.length > 0) {
-                setShowCard(true)
 
-            } else {
-                setShowCard(false)
-            }
-        })
-        .catch(err => {console.log(err)})
-
-    }, [])
-
-    const navigateToDetail = (claseDetail) => {
-        return navigation.navigate("Detalle Clase", { clase: claseDetail })
-    }
-
-    const navigateToClasses = () => {
-        return navigation.navigate('ClassTab', { screen: 'Clases' });
-
-    }
-
-    useEffect(() => {
         navigation.setOptions({
             headerRight: () => (
                 <MaterialCommunityIcons
@@ -111,7 +111,17 @@ export default function Home({ navigation }) {
                     onPress={() => { navigation.navigate("Notification") }}
                 />)
         })
-    }, [navigation])
+
+    }, [])
+
+    const navigateToDetail = (claseDetail) => {
+        return navigation.navigate("Detalle Clase", { clase: claseDetail })
+    }
+
+    const navigateToClasses = () => {
+        return navigation.navigate('ClassTab', { screen: 'Clases' });
+
+    }
 
     return (
         <ScrollView style={style.scrollView}>
@@ -162,33 +172,38 @@ export default function Home({ navigation }) {
                             </>
                             :
                             <>
-                                <Text>Anotate a tu proxima clase:</Text>
-                                <Button 
-                                title={user.rol !== 'Atleta' ? "Ir a todas las clases" : "Ver todas las clases"} 
-                                onPress={() => { navigateToClasses() }} />
+                                <Text>{user.rol === 'Atleta' ? "Anotate a tu proxima clase" : "Crea tu proxima clase"}</Text>
+                                <Button
+                                    title={"Ir a todas las clases"}
+                                    onPress={() => { navigateToClasses() }} />
                             </>
                         }
                     </>
                     :
                     <></>
                 }
-
-                {showCard && clases ?
+                {user.rol === 'Coach'
+                    ?
                     <>
-                        <Text style={[style.subtitle, { marginBottom: -12, marginTop: 20 }]}>Nuestra sugerencia</Text>
-                        <Card
-                            estaUnido={clases.alumnos.find(alu => alu.atletaId == user.googleId) ? true : false}
-                            fecha={clases.diaActividad}
-                            cupo={clases.cupo}
-                            alumnosAnotados={(clases.alumnos)}
-                            navigate={() => { navigateToDetail(clases) }}
-                            title={clases.titulo} />
+                        {showCard && clases ?
+                            <>
+                                <Text style={[style.subtitle, { marginBottom: -12, marginTop: 20 }]}>Nuestra sugerencia</Text>
+                                <Card
+                                    estaUnido={user.rol === 'Coach' ? true : clase.alumnos.find(alu => alu.atletaId == user.googleId) ? true : false}
+                                    fecha={clases.diaActividad}
+                                    cupo={clases.cupo}
+                                    alumnosAnotados={(clases.alumnos)}
+                                    navigate={() => { navigateToDetail(clases) }}
+                                    title={clases.titulo} />
+                            </>
+                            :
+                            <Text style={style.subtitle}>
+                                No hay ninguna sugerencia... Por ahora
+                            </Text>
+                        }
                     </>
                     :
-                    <Text style={style.subtitle}>
-                        No hay ninguna sugerencia... Por ahora
-                    </Text>
-                }
+                    <></>}
             </View>
         </ScrollView>
     );

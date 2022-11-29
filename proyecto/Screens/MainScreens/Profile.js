@@ -41,20 +41,25 @@ export default function Profile() {
                             source={{ uri: user.picture }}
                         />
                     </View>
-                    
+
                     <Text style={style.nombre}>{user.nombre} {user.apellido}</Text>
+                    <Text style={style.email}>{user.email}</Text>
                 </View>
 
                 <View style={style.infoBox}>
                     <View style={style.textBox}>
-                        <Text style={style.text}>Edad: {getAge()}</Text>
+                        <Text style={style.text}>Edad: {getAge()} años</Text>
                     </View>
                     <View style={style.textBox}>
-                    <Text style={style.text}>{!user.team ? `Team: ${user.team}` : "Todavia no pertenece al team"}</Text>
+                        <Text style={style.text}>{user.team ? `Team: ${user.team}` : "Todavia no fue dado de alta al team"}</Text>
                     </View>
-                    <View style={style.textBox}>
-                        <Text style={style.text}>{user.aptoFisico ? "Apto Fisico al dia" : "Renovar el apto fisico"}</Text>
-                    </View>
+                    {user.rol === 'Atleta' ?
+                        <View style={style.textBox}>
+                            <Text style={style.text}>{user.aptoFisico ? "Apto Fisico al dia" : "Renovar el apto fisico"}</Text>
+                        </View>
+                        :
+                        <></>
+                    }
                     <View style={style.textBox}>
                         <Button color='#00779E' title="Sign Out" onPress={signOut} />
                     </View >
@@ -90,18 +95,26 @@ const style = StyleSheet.create({
         borderBottomColor: '#ddd',
         borderBottomWidth: 0.5
     },
-    imgNomBox:{
+    imgNomBox: {
         paddingTop: 30,
         paddingBottom: 20,
         alignItems: 'center',
         width: '95%',
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,
-    },  
+    },
     text: {
         marginVertical: 2,
         fontSize: 21,
         textAlign: 'center',
+    },
+    email: {
+        marginTop: 6,
+        marginBottom: 10,
+        fontSize: 15,
+        textAlign: 'center',
+        fontWeight: '300',
+        color: '#555'
     },
     nombre: {
         marginTop: 2,
@@ -110,7 +123,6 @@ const style = StyleSheet.create({
         textAlign: 'center',
         fontWeight: '600',
         color: '#000'
-        
     },
     img: {
         display: 'flex',
@@ -122,7 +134,7 @@ const style = StyleSheet.create({
         borderRadius: "100%",
         //borderColor: '#00779E',
     },
-    imgShadow:{
+    imgShadow: {
         shadowOffset: { width: -2, height: 4 },
         shadowColor: '#171717',
         shadowOpacity: 0.2,

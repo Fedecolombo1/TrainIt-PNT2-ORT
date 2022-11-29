@@ -23,7 +23,6 @@ function ClassStack() {
     return (
 
         <StackNavigator.Navigator initialRouteName='Clases'>
-            {/* <StackNavigator.Screen name='Class' component={Class} /> */}
             <StackNavigator.Screen name='Class' component={ClasesCoachScreen} />
             <StackNavigator.Screen name='AlumnosAdminScreen' component={AlumnosAdminScreen} />
             <StackNavigator.Screen name='Buscador Clase' component={ClassBrowser} />

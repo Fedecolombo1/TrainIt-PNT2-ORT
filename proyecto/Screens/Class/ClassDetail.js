@@ -126,15 +126,28 @@ function ClassDetail({ navigation }) {
 
                     </MapView>
                 </View>
-                {user.rol == "Atleta"
-                    ?
-                    !clase.alumnos.find(alu => alu.atletaId == user.googleId)
-                        ?
-                        <CustomButton text={"Unirse"} onPress={unirseAClase} />
-                        :
-                        <CustomButton text={"Darme de baja"} bgColor={"red"} onPress={darseDeBajaClase} />
+                {!clase.esCancelada ?
+                    <>
+                        {user.rol == "Atleta"
+                            ?
+                            !clase.alumnos.find(alu => alu.atletaId == user.googleId)
+                                ?
+                                <CustomButton text={"Unirse"} onPress={unirseAClase} />
+                                :
+                                <CustomButton text={"Darme de baja"} bgColor={"red"} onPress={darseDeBajaClase} />
+                            :
+                            <>
+                                {clase.coachId === user.googleId ?
+                                    <CustomButton text={"Cancelar"} bgColor={"red"} onPress={cancelarClase} />
+                                    :
+                                    <></>
+                                }
+                            </>
+                        }
+                    </>
                     :
-                    <CustomButton text={"Cancelar"} bgColor={"red"} onPress={cancelarClase} />
+
+                    <Text style={styles.cancelledText}>Esta Clase fue cancelada</Text>
                 }
             </View>
         </>
@@ -156,6 +169,12 @@ const styles = StyleSheet.create({
         marginVertical: 2,
         fontSize: 21,
         textAlign: 'center'
+    },
+    cancelledText: {
+        marginVertical: 2,
+        fontSize: 21,
+        textAlign: 'center',
+        color: 'red'
     },
     textNum: {
         fontWeight: "600",
