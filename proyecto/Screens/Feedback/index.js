@@ -4,38 +4,35 @@ import AuthContext from "../../Services/AuthContext";
 import { StyleSheet } from "react-native";
 import Card from "../../Components/CardFeedback/Index";
 import { Hostname, PortNumber } from '../../config';
+import { getListaDeFeedbacks } from '../../Services/Feedbacks'
 
+let feedbackInterval;
 export default function FeedbackView({ navigation }) {
     const { user } = useContext(AuthContext)
-    const [feedbacksAtleta, setFeedbacksAtleta] = useState([])
-    const [feedbacksCoach, setFeedbacksCoach] = useState([])
-    const [cerrado, setCerrado] = useState(false)
+    const [listaDeFeedbacks, setListaDeFeedbacks] = useState([])
+
+    const obtenerListaDeFeedbacks = () => {
+        if (user.rol === 'Atleta') {
+            getListaDeFeedbacks('athlete', user.dni)
+            .then( result => {
+                setListaDeFeedbacks(result)
+            })
+        } else if (user.rol === 'Coach') {
+            getListaDeFeedbacks('coach', user.dni)
+            .then( result => {
+                console.log(result)
+                setListaDeFeedbacks(result)
+            })
+        }    
+    }
 
     useEffect(useCallback(() => {
-        console.log("entre en la vista de feedback. Estoy en useeffect usecallback");
-        if (user.rol === 'Atleta') {
-            console.log("Aca llame al feedback de atletas");
-            fetch(`${Hostname}:${PortNumber}/feedback/athlete/${user.dni}`)
-                .then(res => res.json())
-                .then(data => {
-                    console.log(data);
-                    setFeedbacksAtleta(data.slice())
-                    console.log('pasamos por el fetch de feedbacksAtleta: ', feedbacksAtleta.length)
-                    feedbacksAtleta.forEach(el => console.log(el))
-                })
-                .catch(err => console.log(err))
-        } else if (user.rol === 'Coach') {
-            console.log("Aca llame al feedback de coach");
-            fetch(`${Hostname}:${PortNumber}/feedback/coach/` + user.dni)
-                .then(res => res.json())
-                .then(data => {
-                    setFeedbacksCoach(data.slice())
-                    console.log('pasamos por el fetch de feedbacksCoach: ', feedbacksCoach.length)
-                    feedbacksCoach.forEach(el => console.log(el))
-                })
-                .catch(err => console.log(err))
-        }
-
+        console.log('useEffect... llamo por primera vez a obtenerListaDeFeedbacks.')
+        obtenerListaDeFeedbacks()
+        feedbackInterval = setInterval(() => {
+            obtenerListaDeFeedbacks()
+        }, 5000)
+        return (() => { clearInterval(feedbackInterval) })
     }), [])
 
     const cerrarFeedback = () => {
@@ -47,8 +44,6 @@ export default function FeedbackView({ navigation }) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(bodyObj)
         };
-        console.log('Detallamos bodyObj:');
-        console.log(bodyObj);
         fetch(`${Hostname}:${PortNumber}/feedback/close-feedback/` + user.dni, requestOptions)
             .then(res => {
                 res.status == 200 || res.status == 201
@@ -58,7 +53,6 @@ export default function FeedbackView({ navigation }) {
                     alert('Por favor revisa tu lista de feedbacks.')
             })
             .catch(err => console.log(err))
-        setCerrado(true)
         navigation.navigate("Notification")
     }
 
@@ -68,10 +62,10 @@ export default function FeedbackView({ navigation }) {
                 <Text style={style.subtitle}>{user.nombre} aca vas a poder ver tus feedbacks y pedir nuevos en caso de que quieras </Text>
                 <ScrollView style={style.scrollBox} showsVerticalScrollIndicator={false}>
                     {
-                        feedbacksAtleta.filter(elem => elem.estado == 'pending').map(elemento => {
+                        listaDeFeedbacks.filter(elem => elem.estado == 'pending').map(elemento => {
                             let dniProp = elemento.dni_atleta
                             return (
-                                <View>
+                                <View key={elemento._id}>
                                     <Card key={elemento._id} state={elemento.estado} title={elemento.titulo_clase} />
                                     {
                                         (user.rol == 'Coach') ? 
@@ -83,9 +77,9 @@ export default function FeedbackView({ navigation }) {
                         })
                     }
                     {
-                        feedbacksAtleta.filter(elem => elem.estado == 'completed').map(elemento => {
+                        listaDeFeedbacks.filter(elem => elem.estado == 'completed').map(elemento => {
                             return (
-                                <View>
+                                <View key={elemento._id}>
                                     <Card key={elemento._id} state={elemento.estado} title={elemento.titulo_clase} feedback={elemento.feedbackContent} />
                                     {
                                         (user.rol == 'Atleta') ?
@@ -97,9 +91,9 @@ export default function FeedbackView({ navigation }) {
                         })
                     }
                     {
-                        feedbacksAtleta.filter(elem => elem.estado == 'closed').map(elemento => {
+                        listaDeFeedbacks.filter(elem => elem.estado == 'closed').map(elemento => {
                             return (
-                                <View>
+                                <View key={elemento._id}>
                                     <Card key={elemento._id} state={elemento.estado} title={elemento.titulo_clase} feedback={elemento.feedbackContent} />
                                 </View>
                             )
@@ -117,9 +111,9 @@ export default function FeedbackView({ navigation }) {
             <Text style={style.subtitle}>{user.nombre} aca vas a poder ver los feedbacks solicitados y hacer las devoluciones necesarias </Text>
             <ScrollView style={style.scrollBox} showsVerticalScrollIndicator={false}>
                 {
-                    feedbacksCoach.filter(elem => elem.estado == 'pending').map(elemento => {
+                    listaDeFeedbacks.filter(elem => elem.estado == 'pending').map(elemento => {
                         return (
-                            <View>
+                            <View key={elemento._id}>
                                 <Card key={elemento._id} state={elemento.estado} title={elemento.titulo_clase} />
                                 <Button title="Dar Feedback" onPress={() => { navigation.navigate("DevolucionFeedback", { dniProp: elemento.dni_atleta }) }} />
                             </View>
@@ -127,18 +121,18 @@ export default function FeedbackView({ navigation }) {
                     })
                 }
                 {
-                    feedbacksCoach.filter(elem => elem.estado == 'completed').map(elemento => {
+                    listaDeFeedbacks.filter(elem => elem.estado == 'completed').map(elemento => {
                         return (
-                            <View>
+                            <View key={elemento._id}>
                                 <Card key={elemento._id} state={elemento.estado} title={elemento.titulo_clase} feedback={elemento.feedbackContent} />
                             </View>
                         )
                     })
                 }
                 {
-                    feedbacksCoach.filter(elem => elem.estado == 'closed').map(elemento => {
+                    listaDeFeedbacks.filter(elem => elem.estado == 'closed').map(elemento => {
                         return (
-                            <View>
+                            <View key={elemento._id}>
                                 <Card key={elemento._id} state={elemento.estado} title={elemento.titulo_clase} feedback={elemento.feedbackContent} />
                             </View>
                         )
