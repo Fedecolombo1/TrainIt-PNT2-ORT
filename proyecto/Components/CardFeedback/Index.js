@@ -68,15 +68,6 @@ function Index({coach, title, feedback, state, coachDni, atletaDni}) {
                 <Text style={styles.txtCard}>{state}</Text>
                 <Text style={styles.txtCardTitle}>Devolución:</Text>
                 <Text style={styles.txtCard}>{feedback}</Text>
-                {(state == "pending" && coach == true)
-                    ? 
-                    <>
-                        <TextInput style={styles.txtInput} onChangeText={() => {} } value={text} multiline={true} /> 
-                        <Button title="enviar"/>
-                    </>
-                    : 
-                    <></>
-                }
         </Pressable>      
     </>
   )
