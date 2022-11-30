@@ -87,10 +87,10 @@ const style = StyleSheet.create({
     root: {
         width: '100%',
         height: '95%',
-        marginTop: 30,
         paddingHorizontal: '5%',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        backgroundColor: '#dce4f2cc'
     },
     coachSelectBox: {
         width: "100%"

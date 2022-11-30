@@ -3,7 +3,7 @@ import { Pressable, Text, StyleSheet, TextInput, Button } from 'react-native'
 import { useState } from 'react'
 import { agregarCoach } from '../../Services/coaches.js'
 
-function Index({coach, title, feedback, state}) {
+function Index({coach, title, feedback, state, coachDni, atletaDni}) {
 
     const [text, setText] = useState()
     
@@ -53,6 +53,17 @@ function Index({coach, title, feedback, state}) {
     <>
         <Pressable style={estilo(state)}>
                 <Text style={styles.titleCard}>{title}</Text>
+                { coach == true ?
+                <>
+                <Text style={styles.txtCardTitle}>DNI atleta:</Text>
+                <Text style={styles.txtCard}>{atletaDni}</Text>
+                </>
+                : 
+                <>
+                <Text style={styles.txtCardTitle}>DNI Coach:</Text>
+                <Text style={styles.txtCard}>{coachDni}</Text>
+                </>
+            }
                 <Text style={styles.txtCardTitle}>Estado:</Text>
                 <Text style={styles.txtCard}>{state}</Text>
                 <Text style={styles.txtCardTitle}>Devolución:</Text>

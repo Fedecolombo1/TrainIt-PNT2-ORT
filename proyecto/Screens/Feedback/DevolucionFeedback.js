@@ -8,12 +8,15 @@ import { useRoute } from '@react-navigation/native';
 export default function DevolucionFeedback({ navigation }) {
 
     const { user } = useContext(AuthContext)
-    const [feedbackContent, setFeedbackContent] = useState()
+    const [feedbackContent, setFeedbackContent] = useState('')
 
     const route = useRoute();
     const dniProp = route.params.dniProp;
 
     const giveFeedback = () => {
+        if(feedbackContent.length <= 3) {
+            return alert('Por favor escribe una devolución.')
+        }
         const bodyObj = {
             devolucion: feedbackContent
         }
@@ -56,17 +59,17 @@ const style = StyleSheet.create({
     root: {
         width: '100%',
         height: '95%',
-        marginTop: 30,
         paddingHorizontal: '5%',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        backgroundColor: '#dce4f2cc'
     },
     coachSelectBox: {
         width: "100%"
     },
     title: {
         width: 400,
-        textAlign: 'start',
+        textAlign: 'center',
         fontSize: 21,
         fontWeight: '600',
         paddingHorizontal: 10,

@@ -7,6 +7,7 @@ import { Hostname, PortNumber } from '../../config';
 import { getListaDeFeedbacks } from '../../Services/Feedbacks'
 
 let feedbackInterval;
+
 export default function FeedbackView({ navigation }) {
     const { user } = useContext(AuthContext)
     const [listaDeFeedbacks, setListaDeFeedbacks] = useState([])
@@ -20,7 +21,6 @@ export default function FeedbackView({ navigation }) {
         } else if (user.rol === 'Coach') {
             getListaDeFeedbacks('coach', user.dni)
             .then( result => {
-                console.log(result)
                 setListaDeFeedbacks(result)
             })
         }    
@@ -31,7 +31,7 @@ export default function FeedbackView({ navigation }) {
         obtenerListaDeFeedbacks()
         feedbackInterval = setInterval(() => {
             obtenerListaDeFeedbacks()
-        }, 5000)
+                }, 5000)
         return (() => { clearInterval(feedbackInterval) })
     }), [])
 
@@ -66,7 +66,7 @@ export default function FeedbackView({ navigation }) {
                             let dniProp = elemento.dni_atleta
                             return (
                                 <View key={elemento._id}>
-                                    <Card key={elemento._id} state={elemento.estado} title={elemento.titulo_clase} />
+                                    <Card key={elemento._id} state={elemento.estado} title={elemento.titulo_clase} coachDni={elemento.dni_coach} />
                                     {
                                         (user.rol == 'Coach') ? 
                                             <Button title="Dar Feedback" onPress={() => { navigation.navigate("DevolucionFeedback", { dniProp }) }} />
@@ -80,7 +80,7 @@ export default function FeedbackView({ navigation }) {
                         listaDeFeedbacks.filter(elem => elem.estado == 'completed').map(elemento => {
                             return (
                                 <View key={elemento._id}>
-                                    <Card key={elemento._id} state={elemento.estado} title={elemento.titulo_clase} feedback={elemento.feedbackContent} />
+                                    <Card key={elemento._id} state={elemento.estado} title={elemento.titulo_clase} feedback={elemento.feedbackContent} coachDni={elemento.dni_coach} />
                                     {
                                         (user.rol == 'Atleta') ?
                                             <Button title="Cerrar Feedback" onPress={() => cerrarFeedback()} />
@@ -94,7 +94,7 @@ export default function FeedbackView({ navigation }) {
                         listaDeFeedbacks.filter(elem => elem.estado == 'closed').map(elemento => {
                             return (
                                 <View key={elemento._id}>
-                                    <Card key={elemento._id} state={elemento.estado} title={elemento.titulo_clase} feedback={elemento.feedbackContent} />
+                                    <Card key={elemento._id} state={elemento.estado} title={elemento.titulo_clase} feedback={elemento.feedbackContent} coachDni={elemento.dni_coach} />
                                 </View>
                             )
                         })
@@ -114,7 +114,7 @@ export default function FeedbackView({ navigation }) {
                     listaDeFeedbacks.filter(elem => elem.estado == 'pending').map(elemento => {
                         return (
                             <View key={elemento._id}>
-                                <Card key={elemento._id} state={elemento.estado} title={elemento.titulo_clase} />
+                                <Card key={elemento._id} coach={true} state={elemento.estado} title={elemento.titulo_clase} atletaDni={elemento.dni_atleta} />
                                 <Button title="Dar Feedback" onPress={() => { navigation.navigate("DevolucionFeedback", { dniProp: elemento.dni_atleta }) }} />
                             </View>
                         )
@@ -124,7 +124,7 @@ export default function FeedbackView({ navigation }) {
                     listaDeFeedbacks.filter(elem => elem.estado == 'completed').map(elemento => {
                         return (
                             <View key={elemento._id}>
-                                <Card key={elemento._id} state={elemento.estado} title={elemento.titulo_clase} feedback={elemento.feedbackContent} />
+                                <Card key={elemento._id} coach={true} state={elemento.estado} title={elemento.titulo_clase} feedback={elemento.feedbackContent} atletaDni={elemento.dni_atleta} />
                             </View>
                         )
                     })
@@ -133,7 +133,7 @@ export default function FeedbackView({ navigation }) {
                     listaDeFeedbacks.filter(elem => elem.estado == 'closed').map(elemento => {
                         return (
                             <View key={elemento._id}>
-                                <Card key={elemento._id} state={elemento.estado} title={elemento.titulo_clase} feedback={elemento.feedbackContent} />
+                                <Card key={elemento._id} coach={true} state={elemento.estado} title={elemento.titulo_clase} feedback={elemento.feedbackContent} atletaDni={elemento.dni_atleta} />
                             </View>
                         )
                     })
@@ -148,10 +148,10 @@ const style = StyleSheet.create({
     root: {
         width: '100%',
         height: '95%',
-        marginTop: 30,
         paddingHorizontal: '5%',
         justifyContent: 'space-between',
-        alignItems: 'center'
+        alignItems: 'center',
+        backgroundColor: '#dce4f2cc'
     },
     scrollBox: {
         width: "100%"
