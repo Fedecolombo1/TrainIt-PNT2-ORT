@@ -7,6 +7,10 @@ export const getCoaches = () => {
             .then(data => {
                 return resolve(data)
             })
+            .catch(err => {
+                console.log(err)
+                reject(err)
+            })
     })
 }
 
