@@ -1,6 +1,6 @@
 import { useRoute } from '@react-navigation/native';
 import React, { useContext, useEffect, useState } from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, DrawerLayoutAndroidBase } from 'react-native'
 import { StyleSheet } from 'react-native'
 import MapView, { Marker } from 'react-native-maps';
 import CustomButton from '../../Components/CustomButton';
@@ -46,6 +46,7 @@ function ClassDetail({ navigation }) {
                 getClases().then((data) => {
                     setClases(data)
                 })
+                .catch(err => console.log(err))
                 if(clase.cupo == clase.alumnos.length){
                     res.status == 200 || res.status == 201 ? alert(`Bien! \nTe uniste a la lista de espera!.`) : alert('Por favor intenta mas tarde.')
                 }else{
@@ -74,6 +75,7 @@ function ClassDetail({ navigation }) {
                 getClases().then((data) => {
                     setClases(data)
                 })
+                .catch(err => console.log(err))
                 res.status == 200 || res.status == 201 ? alert(`Ok! \nTe diste de baja la clase :(.`) : alert('Por favor intenta mas tarde.')
             })
             .catch(err => console.log(err))
@@ -97,6 +99,7 @@ function ClassDetail({ navigation }) {
                 getClases().then((data) => {
                     setClases(data)
                 })
+                .catch(err => console.log(err))
                 res.status == 200 || res.status == 201 ? alert(`Ok! \nCancelaste la clase.`) : alert('Por favor intenta mas tarde.')
             })
             .catch(err => console.log(err))

@@ -6,6 +6,7 @@ const login = (accessToken) => {
             accept(data)
           })
           .catch(err => {
+            reject(err)
             console.log(err);
           })
     })

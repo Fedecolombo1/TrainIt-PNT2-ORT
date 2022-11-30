@@ -8,6 +8,9 @@ export const getListaDeFeedbacks = (rol, dniUser) => {
             .then(data => {
                 return resolve(data.slice())
             })
-            .catch(err => console.log(err))
+            .catch(err => {
+                console.log(err)
+                reject(err)
+            })
     })
 }
