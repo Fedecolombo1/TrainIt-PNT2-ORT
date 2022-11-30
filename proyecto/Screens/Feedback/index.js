@@ -26,6 +26,11 @@ export default function FeedbackView({ navigation }) {
         }    
     }
 
+    const hayPendientes = () => {
+        const buscado = listaDeFeedbacks.find(elem => elem.estado == 'pending' || elem.estado == 'completed')
+        return !(buscado == undefined)
+    }
+
     useEffect(useCallback(() => {
         console.log('useEffect... llamo por primera vez a obtenerListaDeFeedbacks.')
         obtenerListaDeFeedbacks()
@@ -101,7 +106,13 @@ export default function FeedbackView({ navigation }) {
                     }
                 </ScrollView>
                 <View style={style.btnsBox}>
-                    <Button title="Pedir feedback" onPress={() => { navigation.navigate("SolicitudFeedback") }} />
+                    <Button title="Pedir feedback" onPress={() => { 
+                        console.log(hayPendientes)
+                        hayPendientes() == true ?
+                        alert('Tienes solicitudes de feedback en curso.')
+                        :
+                        navigation.navigate("SolicitudFeedback") 
+                        }} />
                 </View>
             </View>
         )

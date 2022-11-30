@@ -8,7 +8,7 @@ import { Hostname, PortNumber } from '../../config';
 export default function SolicitudFeedback({ navigation }) {
     const pickerRef = useRef();
     const { user } = useContext(AuthContext)
-    const [clase, setClase] = useState()
+    const [clase, setClase] = useState('')
     const [listaDeCoaches, setListaDeCoaches] = useState([])
     const [selectedCoach, setSelectedCoach] = useState()
 
@@ -27,26 +27,31 @@ export default function SolicitudFeedback({ navigation }) {
     const requestFeedback = () => {
         console.log('mostramos selectedCoach en request:')
         console.log(selectedCoach)
-        const bodyObj = {
-            dni_atleta: user.dni,
-            titulo_clase: clase,
-            dni_coach: selectedCoach
+        if(clase.length <= 3){
+            alert('Por favor agrega más información para tener una devolución adecuada.')
+        } else {
+            const bodyObj = {
+                dni_atleta: user.dni,
+                titulo_clase: clase,
+                dni_coach: selectedCoach
+            }
+            const requestOptions = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(bodyObj)
+            };
+            console.log('Detallamos bodyObj:');
+            console.log(bodyObj);
+    
+            fetch(`${Hostname}:${PortNumber}/feedback`, requestOptions)
+                .then(res => {
+                    res.status == 200 || res.status == 201 ? alert(`Bien! \nTu solicitud fue enviada.`) : alert('Por favor revisa tu lista de feedbacks.')
+                })
+                .catch(err => console.log(err))
+    
+            navigation.navigate("Notification")
+    
         }
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(bodyObj)
-        };
-        console.log('Detallamos bodyObj:');
-        console.log(bodyObj);
-
-        fetch(`${Hostname}:${PortNumber}/feedback`, requestOptions)
-            .then(res => {
-                res.status == 200 || res.status == 201 ? alert(`Bien! \nTu solicitud fue enviada.`) : alert('Por favor revisa tu lista de feedbacks.')
-            })
-            .catch(err => console.log(err))
-
-        navigation.navigate("Notification")
     }
 
     return (
@@ -92,7 +97,7 @@ export default function SolicitudFeedback({ navigation }) {
 const style = StyleSheet.create({
     root: {
         width: '100%',
-        height: '95%',
+        height: '100%',
         paddingHorizontal: '5%',
         justifyContent: 'center',
         alignItems: 'center',
