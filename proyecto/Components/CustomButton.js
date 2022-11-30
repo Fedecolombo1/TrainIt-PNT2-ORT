@@ -1,19 +1,33 @@
 import React from 'react'
 import { View, Text, StyleSheet, Pressable } from 'react-native'
 
-function CustomButton({onPress, text, bgColor}) {
+function CustomButton({onPress, text, bgColor, disabled}) {
   return (
-    <Pressable 
-        onPress={onPress} 
-        style={[style.container,
-        bgColor ? {backgroundColor: bgColor} : {}
-        ]}>
+    <>
+      {disabled 
+      ? 
+      <Pressable
+        style={[style.container,{backgroundColor: "grey"}]}>
             <Text 
                 style={[style.text,
                 bgColor=='none' ? {color: '#bbb'} : {}
                 ]}>{text}
             </Text>
-    </Pressable>
+      </Pressable>
+        :
+      <Pressable
+          onPress={onPress} 
+          style={[style.container,
+          bgColor ? {backgroundColor: bgColor} : {}
+          ]}>
+              <Text 
+                  style={[style.text,
+                  bgColor=='none' ? {color: '#bbb'} : {}
+                  ]}>{text}
+              </Text>
+      </Pressable>
+      }
+    </>
   )
 }
 

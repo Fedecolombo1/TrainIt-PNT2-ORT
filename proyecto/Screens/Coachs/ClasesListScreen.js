@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, ScrollView, Pressable, Image } from 'react-native';
 import Card from '../../Components/Card/Index.js'
-import { useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AuthContext from '../../Services/AuthContext/index.js';
@@ -40,13 +40,14 @@ export default function ClasesListScreen({ navigation }) {
         return navigation.navigate("Detalle Clase", { clase: claseDetail, setClases: setClases })
     }
 
-    useEffect(() => {
-
-        getClases().then((data) => {
-            setClases(data)
-        })
-
-    }, [])
+    useEffect(useCallback(() => {
+        classInterval = setInterval(() => {
+            getClases().then((data) => {
+                setClases(data)
+            })
+        }, 2000)
+        return (() => { clearInterval(classInterval) })
+    }), [])
 
     return (
         <>
@@ -58,13 +59,13 @@ export default function ClasesListScreen({ navigation }) {
                             clases.length > 0 ?
                                 clases.map(clase => {
                                     return <Card
-                                        estaUnido={user.rol === 'Coach' ? true : clase.alumnos.find(alu => alu.atletaId == user.googleId) ? true : false}
+                                        key={clase._id}
+                                        estaUnido={user.rol === 'Coach' ? true : (clase.alumnos.find(alu => alu.atletaId == user.googleId) || clase.listaEspera.find(alu => alu.atletaId == user.googleId)) ? true : false}
                                         navigate={() => navigate(clase)}
                                         title={clase.titulo}
                                         fecha={clase.diaActividad}
                                         cupo={clase.cupo}
-                                        alumnosAnotados={(clase.alumnos)}
-                                        key={clase._id} />
+                                        alumnosAnotados={(clase.alumnos)} />
                                 })
                                 :
                                 <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 20, textAlign: 'center' }}>Buscando..</Text>
@@ -106,8 +107,8 @@ const styles = StyleSheet.create({
         right: 40,
         backgroundColor: '#2d4b5a',
         opacity: 0.75,
-        borderRadius: 30,
-        padding: 8,
+        borderRadius: 50,
+        padding: 10,
         zIndex: 50,
         shadowOffset: { width: -2, height: 4 },
         shadowColor: '#171717',

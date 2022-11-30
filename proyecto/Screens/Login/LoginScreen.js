@@ -22,7 +22,7 @@ function LoginScreen() {
     if (response?.type === 'success') {
       const { authentication } = response;
 
-      console.log(authentication.accessToken) //uso este log para poder acceder al token si tengo que hacer pruebas desde el back
+      console.log("AccessToken: " + authentication.accessToken) //uso este log para poder acceder al token si tengo que hacer pruebas desde el back
       if (rol === 'Atleta') {
         fetch(`${Hostname}:${PortNumber}/auth/v1/login-athlete/google/${authentication.accessToken}`)
           .then(res => res.ok ? res.json() : null)
@@ -52,6 +52,22 @@ function LoginScreen() {
             setError(err.message);
             console.log(error);
           })
+      }else{
+        fetch(`${Hostname}:${PortNumber}/Admin/${authentication.accessToken}`)
+        .then(res => res.ok ? res.json() : null
+        )
+        .then(data => {
+          if (data) {
+            console.log(data);
+            setUser(data)
+          } else {
+            throw new Error("Hubo un error al iniciar la sesion")
+          }
+        })
+        .catch(err => {
+          setError(err.message);
+          console.log(error);
+        })
       }
     }
 
@@ -76,6 +92,7 @@ function LoginScreen() {
             <Text style={style.login}>Por favor seleccione una opcion</Text>
             <CustomButton style={style.googleButton} bgColor='#00779E' text="Atleta" onPress={() => setRolBtn('Atleta')} />
             <CustomButton style={style.googleButton} bgColor='#00779E' text="Coach" onPress={() => setRolBtn('Coach')} />
+            <CustomButton style={style.googleButton} bgColor='#00779E' text="Administrador" onPress={() => setRolBtn('Administrador')} />
           </>
           :
           <>

@@ -8,9 +8,10 @@ import { ScrollView } from 'react-native-gesture-handler';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AuthContext from '../../Services/AuthContext';
 import { Hostname, PortNumber } from '../../config';
+import { getClases } from '../../Services/Clases';
 
 
-function CreateClaseScreen() {
+function CreateClaseScreen({navigation}) {
     const { user } = useContext(AuthContext)
     const [nombreClase, setnombreClase] = useState('')
     const [cupo, setCupo] = useState(0)
@@ -53,6 +54,7 @@ function CreateClaseScreen() {
                 }
             })
             .catch(err => console.log(err))
+        navigation.navigate("Clases")
     }
 
     const onChange = (event, selectedDate) => {

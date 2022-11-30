@@ -209,6 +209,9 @@ export default function Home({ navigation }) {
     );
 }
 const style = StyleSheet.create({
+    scrollView:{
+        backgroundColor: '#dce4f2cc'
+    },
     root: {
         width: '100%',
         height: '100%',

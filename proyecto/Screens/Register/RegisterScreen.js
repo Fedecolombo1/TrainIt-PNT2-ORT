@@ -54,7 +54,7 @@ function RegisterScreen() {
         })
         .catch(err => console.log(err))
 
-    } else {
+    } else if (user.rol === 'Coach'){
       const bodyObj = {
         googleId: user.googleId,
         nombre: nombre,
@@ -78,16 +78,15 @@ function RegisterScreen() {
 
     setValidated(true)
   }
-
+  
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate;
     setFechaNac(currentDate);
   };
 
-
+  
   return (
     <View style={style.root}>
-
       {!validated ?
         <>
           <Text style={style.title}>Train It</Text>
@@ -107,7 +106,7 @@ function RegisterScreen() {
             <CustomInput type={'default'} placeholder="Nombre" value={nombre} setValue={setNombre} secureTextEntry={false} />
             <Text style={style.registerTxt}>Apellido</Text>
             <CustomInput type={'default'} placeholder="Apellido" value={apellido} setValue={setApellido} secureTextEntry={false} />
-            <CustomButton text="Next" onPress={() => setNomApe(true)} />
+            <CustomButton text="Next" onPress={() => setNomApe(true)} disabled={nombre == '' || apellido == '' ? true : false}/>
           </>
           :
           <>
@@ -115,7 +114,7 @@ function RegisterScreen() {
               <>
                 <Text style={style.registerTxt}>Dni</Text>
                 <CustomInput type={'number-pad'} placeholder="Dni" value={dni} setValue={setDni} secureTextEntry={false} />
-                <CustomButton text="Next" onPress={() => setDniTxt(true)} />
+                <CustomButton text="Next" onPress={() => setDniTxt(true)} disabled={dni == '' ? true : false}/>
                 <CustomButton text="Back" onPress={() => setNomApe(false)} />
               </>
               :
