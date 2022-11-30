@@ -1,35 +1,36 @@
-import { useContext, useState, useEffect, useCallback } from "react";
+import { useContext, useState, useEffect, useCallback, useRef } from "react";
 import { Button, Text, View, StyleSheet, ScrollView } from "react-native";
 import CustomInput from '../../Components/TextInput';
 import AuthContext from "../../Services/AuthContext";
 import { Picker } from '@react-native-picker/picker';
 import { Hostname, PortNumber } from '../../config';
 
-let selectedCoach;
-
 export default function SolicitudFeedback({ navigation }) {
-
+    const pickerRef = useRef();
     const { user } = useContext(AuthContext)
     const [clase, setClase] = useState()
     const [listaDeCoaches, setListaDeCoaches] = useState([])
+    const [selectedCoach, setSelectedCoach] = useState()
 
     useEffect(() => {
         fetch(`${Hostname}:${PortNumber}/coaches`)
             .then(res => res.json())
             .then(data => {
-                setListaDeCoaches(data)
+                setListaDeCoaches(data.slice())
                 console.log('veamos data[0] . ', data[0])
-                selectedCoach = data[0]
-                console.log('selectedCoach: ', selectedCoach.dni)
+                setSelectedCoach(data[0]);
+                console.log('selectedCoach: ', selectedCoach.nombre)
             })
             .catch(err => console.log(err))
     }, [])
 
     const requestFeedback = () => {
+        console.log('mostramos selectedCoach en request:')
+        console.log(selectedCoach)
         const bodyObj = {
             dni_atleta: user.dni,
             titulo_clase: clase,
-            dni_coach: selectedCoach.dni
+            dni_coach: selectedCoach
         }
         const requestOptions = {
             method: 'POST',
@@ -52,19 +53,24 @@ export default function SolicitudFeedback({ navigation }) {
         <View style={style.root}>
             <Text style={style.title}>Ingrese a quien se le pedira el feedback</Text>
             <View style={style.coachSelectBox}>
+                <View>
+                    
+                </View>
                 <Picker
+                    ref={pickerRef}
                     selectedValue={selectedCoach}
                     onValueChange={(itemValue, itemIndex) => {
-                        console.log('coach elegido: ', itemValue)
-                        selectedCoach = itemValue
+                        setSelectedCoach(itemValue)
+                        console.log('que onda itemValue... ')
+                        console.log(itemValue)
                     }
-                    }>
+                    }
+                    >
                     {
-                        listaDeCoaches.map(element => {
-                            const fullname = element.nombre + ' ' + element.apellido;
-                            return <Picker.Item key={element._id} label={fullname} value={element} />
+                        listaDeCoaches.map( (element) => {
+                            const fullname = element.nombre + ' ' + element.apellido
+                            return <Picker.Item key={element._id} label={fullname} value={element.dni} />
                         })
-
                     }
                 </Picker>
                 <Text style={style.title}>Sobre qué deseas una devolución?</Text>
