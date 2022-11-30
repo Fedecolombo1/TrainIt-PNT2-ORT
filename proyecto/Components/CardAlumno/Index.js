@@ -1,20 +1,41 @@
-import React from 'react'
-import { Pressable, Text, StyleSheet } from 'react-native'
+import React, { useState } from 'react'
+import { Pressable, Text, StyleSheet, Button, View } from 'react-native'
 
-function Index({nombre, navigate, edad, apellido, aptoFisico}) {
+function Index({nombre, edad, apellido, aptoFisico, aprobarPress, sinAptoFisico}) {
+
+    const [visible, setVisible] = useState(false)
+
+    const visiblePress = () => {
+        if(visible){
+            setVisible(false)
+        }else{
+            setVisible(true)
+        }
+    }
 
   return (
     <>
-        <Pressable onPress={navigate} style={styles.card}>
+        <Pressable onPress={visiblePress} style={styles.card}>
                 <Text style={styles.titleCard}>{nombre} {apellido}</Text>
                 <Text style={styles.titleCard}>{edad}</Text>
                 {aptoFisico
                 ?
                 <Text style={styles.good}>Tiene apto fisico al dia</Text>
                 :
+                !sinAptoFisico?
                 <Text style={styles.warning}>No tiene apto fisico al dia</Text>
+                :
+                <></>
                 }
         </Pressable>
+        {visible ? 
+        <Pressable onPress={aprobarPress} style={styles.btnAprobar}>
+            <Text style={styles.txtBtn}>Aprobar</Text>
+        </Pressable>
+        :
+         <></>
+        }
+
     </>
   )
 }
@@ -57,5 +78,18 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         textAlign: 'center',
         color: 'red'
+    },
+    txtBtn:{
+        color: "white",
+        textAlign: 'center',
+        fontWeight: '500',
+        fontSize: '16'
+    },  
+    btnAprobar:{
+        backgroundColor: 'green',
+        padding: 15,
+        width : '100%',
+        borderRadius: 10,
+        marginTop: 15
     }
 })

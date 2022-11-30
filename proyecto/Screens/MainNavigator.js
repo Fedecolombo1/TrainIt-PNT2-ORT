@@ -10,7 +10,7 @@ import RegisterScreen from './Register/RegisterScreen';
 export default function MainNavigator() {
     const { user } = useContext(AuthContext)
     const Tab = createBottomTabNavigator()
-
+    
     return (
         <>
         {user.rol != "Administrador"
@@ -75,8 +75,6 @@ export default function MainNavigator() {
                             iconName = focused
                                 ? 'ios-home'
                                 : 'ios-home-outline';
-                        } else if (route.name === 'ClassTab') {
-                            iconName = focused ? 'ios-barbell' : 'ios-barbell-outline';
                         } else if (route.name === 'ProfileTab') {
                             iconName = focused ? 'ios-person' : 'ios-person-outline';
 

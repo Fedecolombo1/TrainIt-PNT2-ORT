@@ -47,9 +47,13 @@ export default function Profile() {
                 </View>
 
                 <View style={style.infoBox}>
+                    {user.rol !== 'Administrador' ?
                     <View style={style.textBox}>
                         <Text style={style.text}>Edad: {getAge()} años</Text>
                     </View>
+                    :
+                    <></>
+                    }
                     <View style={style.textBox}>
                         <Text style={style.text}>{user.team ? `Team: ${user.team}` : "Todavia no fue dado de alta al team"}</Text>
                     </View>

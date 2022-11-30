@@ -46,7 +46,11 @@ function ClassDetail({ navigation }) {
                 getClases().then((data) => {
                     setClases(data)
                 })
-                res.status == 200 || res.status == 201 ? alert(`Bien! \nTe uniste a la clase!.`) : alert('Por favor intenta mas tarde.')
+                if(clase.cupo == clase.alumnos.length){
+                    res.status == 200 || res.status == 201 ? alert(`Bien! \nTe uniste a la lista de espera!.`) : alert('Por favor intenta mas tarde.')
+                }else{
+                    res.status == 200 || res.status == 201 ? alert(`Bien! \nTe uniste a la clase!.`) : alert('Por favor intenta mas tarde.')
+                }
             })
             .catch(err => console.log(err))
         navigation.navigate("Clases")
@@ -130,11 +134,17 @@ function ClassDetail({ navigation }) {
                     <>
                         {user.rol == "Atleta"
                             ?
-                            !clase.alumnos.find(alu => alu.atletaId == user.googleId)
+                            !clase.alumnos.find(alu => alu.atletaId == user.googleId) && !clase.listaEspera.find(alu => alu.atletaId == user.googleId)
                                 ?
                                 <CustomButton text={"Unirse"} onPress={unirseAClase} />
                                 :
+                                
+                                clase.listaEspera.find(alu => alu.atletaId == user.googleId)
+                                ?
+                                <CustomButton text={"Darme de baja de la lista de espera"} bgColor={"red"} onPress={darseDeBajaClase} />
+                                :
                                 <CustomButton text={"Darme de baja"} bgColor={"red"} onPress={darseDeBajaClase} />
+                                
                             :
                             <>
                                 {clase.coachId === user.googleId ?
