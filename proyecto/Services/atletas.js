@@ -14,3 +14,14 @@ export const getAtletas = () => {
 // export const borrarCoach = (id) => {
 //     fetch('http://${Hostname}:${PortNumber}/delete/'+id)
 // }
+
+export const getAtletaPorDni = (dniAtleta) => {
+    return new Promise((resolve, reject) => {
+        fetch(`${Hostname}:${PortNumber}/athletes/athlete-dni/${dniAtleta}`)
+            .then((response) => response.json())
+            .then(data => {
+                return resolve(data)
+            })
+            .catch(err => reject(err))
+    })
+}
